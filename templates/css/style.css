@@ -1,0 +1,16 @@
+@tailwind base;
+
+h1 {
+    @apply break-normal text-3xl
+}
+
+p {
+    @apply text-base mb-5
+}
+a {
+    @apply text-orange-600 font-bold
+}
+
+@tailwind components;
+
+@tailwind utilities;

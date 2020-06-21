@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ Title }}</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal mx-auto">
+<nav class="bg-black p-4 mt-0 w-full">
+    <div class="container mx-auto flex items-center">
+        <div class="flex text-white font-extrabold">
+            <a class="flex text-white text-base no-underline hover:text-white hover:no-underline" href="#">
+                👻 <span class="hidden w-0 md:w-auto md:block pl-1">Ghostwind CSS</span>
+            </a>
+        </div>
+        <div class="flex pl-4 text-sm">
+            <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
+                <li class="mr-2">
+                    <a class="inline-block py-2 px-2 text-white no-underline" href="index.html">HOME</a>
+                </li>
+                <li class="mr-2">
+                    <a class="inline-block text-grey-dark no-underline hover:text-grey-lighter hover:text-underline py-2 px-2"
+                       href="#">LINK</a>
+                </li>
+                <li class="mr-2">
+                    <a class="inline-block text-grey-dark no-underline hover:text-grey-lighter hover:text-underline py-2 px-2"
+                       href="#">LINK</a>
+                </li>
+                <li class="mr-2">
+                    <a class="inline-block text-grey-dark no-underline hover:text-grey-lighter hover:text-underline py-2 px-2"
+                       href="#">LINK</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container max-w-4xl mx-auto">
+    {% block content %}
+        {{ content }}
+    {% endblock content %}
+</div>
+</body>
+</html>
