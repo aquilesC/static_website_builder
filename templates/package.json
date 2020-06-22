@@ -11,8 +11,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "postcss css/style.css -o ../output/style.css",
-    "watch": "postcss css/style.css -o ../output/style.css --watch"
+    "build": "postcss css/style.css -o ../static/style.css",
+    "watch": "postcss css/style.css -o ../static/style.css --watch"
   },
   "repository": {
     "type": "git",
