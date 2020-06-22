@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ Title }}</title>
-    <link href="{{ static }}/style.css" rel="stylesheet">
+    <link href="/{{ static }}/style.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal mx-auto">
 <nav class="bg-black p-4 mt-0 w-full">
     <div class="container mx-auto flex items-center">
         <div class="flex text-white font-extrabold">
-            <a class="flex text-white text-base no-underline hover:text-white hover:no-underline" href="#">
-                👻 <span class="hidden w-0 md:w-auto md:block pl-1">Ghostwind CSS</span>
+            <a class="flex text-white text-base no-underline hover:text-white hover:no-underline" href="/">
+                👻 <span class="hidden w-0 md:w-auto md:block pl-1">Aquiles Notes</span>
             </a>
         </div>
         <div class="flex pl-4 text-sm">
@@ -34,7 +34,8 @@
         </div>
     </div>
 </nav>
-<div class="container max-w-4xl mx-auto">
+
+<div class="container py-12 max-w-4xl mx-auto">
     {% block content %}
         {{ content }}
     {% endblock content %}

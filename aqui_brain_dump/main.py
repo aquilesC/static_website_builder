@@ -25,10 +25,14 @@ f_walk = os.walk(dir)
 for dirs in f_walk:
     cur_dir = dirs[0]
     for file in dirs[2]:
+        if not file.endswith('.md'):
+            continue
         with open(os.path.join(cur_dir, file), 'r') as f:
             filename = ''.join(file.split('.')[:-1])
-            html = markdown.markdown(f.read(), extensions=['wikilinks', ])
-            with open(os.path.join(out_dir, filename+'.html'), 'w') as out_file:
+            html = markdown.markdown(f.read(), extensions=['wikilinks', 'mdx_gh_links'])
+            dest_folder = os.path.relpath(os.path.join(cur_dir, file), start=dir)
+            os.makedirs(os.path.join(out_dir, dest_folder, filename), exist_ok=True)
+            with open(os.path.join(out_dir, dest_folder, filename, 'index.html'), 'w') as out_file:
                 context = {
                     'content': html,
                     'static': 'static',
