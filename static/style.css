@@ -594,7 +594,15 @@ video {
 h1 {
   overflow-wrap: normal;
   word-break: normal;
-  font-size: 1.875rem
+  font-size: 1.875rem;
+  margin-bottom: 0.5rem
+}
+
+h2 {
+  overflow-wrap: normal;
+  word-break: normal;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem
 }
 
 p {
@@ -602,11 +610,15 @@ p {
   margin-bottom: 1.25rem
 }
 
-a {
+a.wikilink {
   --text-opacity: 1;
   color: #dd6b20;
   color: rgba(221, 107, 32, var(--text-opacity));
   font-weight: 700
+}
+
+a.wikilink:hover {
+  text-decoration: underline
 }
 
 .container {

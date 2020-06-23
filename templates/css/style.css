@@ -1,14 +1,23 @@
 @tailwind base;
 
 h1 {
-    @apply break-normal text-3xl
+    @apply break-normal text-3xl mb-2
+}
+
+h2 {
+    @apply break-normal text-2xl mb-2
 }
 
 p {
     @apply text-base mb-5
 }
-a {
+
+a.wikilink {
     @apply text-orange-600 font-bold
+}
+
+a.wikilink:hover {
+    @apply underline
 }
 
 @tailwind components;
