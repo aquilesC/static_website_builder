@@ -1,15 +1,27 @@
 @tailwind base;
 
 h1 {
-    @apply break-normal text-3xl mb-2
+    @apply break-normal text-5xl mb-2 mt-1 font-head leading-none
 }
 
 h2 {
-    @apply break-normal text-2xl mb-2
+    @apply break-normal text-4xl mb-2 mt-1 font-head
+}
+
+h3 {
+    @apply break-normal text-3xl mb-2 mt-1 font-head
 }
 
 p {
     @apply text-base mb-5
+}
+
+a {
+    @apply text-indigo-600 font-bold
+}
+
+a:hover {
+    @apply underline
 }
 
 a.wikilink {
@@ -20,6 +32,15 @@ a.wikilink:hover {
     @apply underline
 }
 
+ul {
+    @apply ml-6 list-disc
+}
+
+img {
+    @apply shadow-lg
+}
+
 @tailwind components;
 
 @tailwind utilities;
+

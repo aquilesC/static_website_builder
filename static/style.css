@@ -594,20 +594,45 @@ video {
 h1 {
   overflow-wrap: normal;
   word-break: normal;
-  font-size: 1.875rem;
-  margin-bottom: 0.5rem
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  font-family: Red Hat Text, sans-serif;
+  line-height: 1
 }
 
 h2 {
   overflow-wrap: normal;
   word-break: normal;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  font-family: Red Hat Text, sans-serif
+}
+
+h3 {
+  overflow-wrap: normal;
+  word-break: normal;
+  font-size: 1.875rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  font-family: Red Hat Text, sans-serif
 }
 
 p {
   font-size: 1rem;
   margin-bottom: 1.25rem
+}
+
+a {
+  --text-opacity: 1;
+  color: #5a67d8;
+  color: rgba(90, 103, 216, var(--text-opacity));
+  font-weight: 700
+}
+
+a:hover {
+  text-decoration: underline
 }
 
 a.wikilink {
@@ -619,6 +644,15 @@ a.wikilink {
 
 a.wikilink:hover {
   text-decoration: underline
+}
+
+ul {
+  margin-left: 1.5rem;
+  list-style-type: disc
+}
+
+img {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
 }
 
 .container {
@@ -86971,3 +87005,4 @@ a.wikilink:hover {
     transition-delay: 1000ms;
   }
 }
+

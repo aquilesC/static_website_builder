@@ -2,45 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ Title }}</title>
+    <title>{{ title }}</title>
     <link href="/{{ static }}/style.css" rel="stylesheet">
     <link href="/{{ static }}/prism.css" rel="stylesheet" data-noprefix>
     <script src="/{{ static }}/prism.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Red+Hat+Text&Playfair+Display" rel="stylesheet">
+
+    <link rel="canonical" href="{{ url }}">
+    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:description" content="{{ description }}" />
+    <meta property="og:url" content="{{ url }}">
+
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal mx-auto">
-<nav class="bg-black p-4 mt-0 w-full">
-    <div class="container mx-auto flex items-center">
-        <div class="flex text-white font-extrabold">
-            <a class="flex text-white text-base no-underline hover:text-white hover:no-underline" href="/">
-                👻 <span class="hidden w-0 md:w-auto md:block pl-1">Aquiles Notes</span>
+<nav class="bg-gray-900 p-4 mt-0 w-full">
+    <div class="container mx-auto">
+        <div>
+            <a class="flex font-extrabold text-2xl text-white items-center text-base no-underline hover:text-red-600 hover:no-underline" href="/">
+                <img class="h-6 w-6 mr-3" src="/{{ static }}/favicon.svg"/> Aquiles.me
             </a>
-        </div>
-        <div class="flex pl-4 text-sm">
-            <ul class="list-reset flex justify-between flex-1 md:flex-none items-center">
-                <li class="mr-2">
-                    <a class="inline-block py-2 px-2 text-white no-underline" href="index.html">HOME</a>
-                </li>
-                <li class="mr-2">
-                    <a class="inline-block text-grey-dark no-underline hover:text-grey-lighter hover:text-underline py-2 px-2"
-                       href="#">LINK</a>
-                </li>
-                <li class="mr-2">
-                    <a class="inline-block text-grey-dark no-underline hover:text-grey-lighter hover:text-underline py-2 px-2"
-                       href="#">LINK</a>
-                </li>
-                <li class="mr-2">
-                    <a class="inline-block text-grey-dark no-underline hover:text-grey-lighter hover:text-underline py-2 px-2"
-                       href="#">LINK</a>
-                </li>
-            </ul>
         </div>
     </div>
 </nav>
 
-<div class="container py-12 max-w-4xl mx-auto">
-    {% block content %}
-        {{ content }}
-    {% endblock content %}
+<div class="container px-2 md:px-0 text-sm md:text-base xl:text-lg py-3 md:py-12 max-w-4xl mx-auto">
+    <div class="mb-12 bg-white shadow-lg p-6">
+        {% block content %}
+            {% if content %}
+                {{ content }}
+            {% else %}
+                <h1>{{ title }}</h1>
+                <p class="text-base">This element has no content, which means it was automatically created because
+                    something else links here. If you want to learn more about how this website works, head to our <a
+                            href="/about">about page</a></p>
+            {% endif %}
+        {% endblock content %}
+    </div>
+    <div class="bg-blue-100">
+        <p class="md:p-8 shadow-lg">If you have any comments regarding what you read, you can always ping me via direct message on Twitter <a
+                href="https://twitter.com/aquicarattino">@aquicarattino</a>.</p>
+    </div>
+    <div>
+        <iframe src="https://aquiles.substack.com/embed" width="100%" height="320"
+                style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div class="mt-10 p-4 md:p-8 bg-gray-300">
+        <h4 class="text-2xl font-serif font-semibold">Backlinks</h4>
+        <p class="leading-4">These are the pages that link in here. If you are curious about why there is
+            no pagination nor recommended articles, you can check our <a href="/about">about page</a></p>
+        {% if not inbound_links %}
+            <div class="text-sm">Nothing links here, how did you reach this page then?</div>
+        {% else %}
+            {% for link in inbound_links %}
+                <a href="{{ link }}">{{ link }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>
+<div class="bg-gray-200 p-0 w-full">
+    <div class="">&copy; 2020 Aquiles Carattino</div>
+</div>
+
 </body>
 </html>
