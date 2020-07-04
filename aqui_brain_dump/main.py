@@ -1,7 +1,8 @@
+import time
 from distutils.dir_util import copy_tree
 from shutil import copyfile
 import frontmatter
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, Template
 import markdown
 import os
 
@@ -70,6 +71,7 @@ def main(
                     'meta': post.metadata,
                     'filename': filename,
                     'url': base_website+page_url,
+                    'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime))
                 })
                 for link in md.links:
                     if link not in pages:
@@ -100,6 +102,12 @@ def main(
 
         with open(os.path.join(out_dir, page, 'index.html'), 'w') as out_file:
             out_file.write(template_article.render(context))
+
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sitemap.xml'), 'r') as f:
+        template = Template(f.read())
+
+    with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
+        f.write(template.render({'pages': pages}))
 
 if __name__ == '__main__':
     main()

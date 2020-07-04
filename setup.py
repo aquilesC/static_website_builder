@@ -1,4 +1,4 @@
-#  Copyright (c) 2020. 
+#  Copyright (c) 2020.
 
 from setuptools import setup, find_packages
 
