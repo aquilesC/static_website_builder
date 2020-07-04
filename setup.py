@@ -1,19 +1,33 @@
-#  Copyright (c) 2020. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-#  Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-#  Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-#  Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-#  Vestibulum commodo. Ut rhoncus gravida arcu.
+#  Copyright (c) 2020. 
 
-from setuptools import setup
+from setuptools import setup, find_packages
+
+README = open('README.md', 'r').read()
 
 setup(
     name='aqui_brain_dump',
     version='1.0',
-    packages=[''],
-    package_dir={'': 'static'},
+    packages=find_packages(),
+    package_data={'': ['static/', 'templates/']},
+    include_package_data=True,
+    # package_dir={'': 'aqui_brain_dump'},
     url='https://github.com/aquilesC/static_website_builder',
-    license='BSDv3',
+    license='BSD',
     author='Aquiles Carattino',
     author_email='aqui.carattino@gmail.com',
-    description='Convert a bunch of markdown files to a beautiful website'
+    description='Convert a bunch of markdown files to a beautiful website',
+    long_description=README,
+    long_description_content_type='text/markdown',
+    entry_points={
+        'console_scripts': [
+            'brain_dump=aqui_brain_dump.main:main'
+        ]
+    },
+    install_requires=[
+        'Jinja2',
+        'markdown',
+        'markdown-checklist',
+        'pyembed-markdown',
+        'python-frontmatter',
+    ]
 )
