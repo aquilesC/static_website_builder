@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block main %}
+    <div class="mb-12 bg-white shadow-lg p-6">
+        {% block content %}
+            {% if content %}
+                {{ content }}
+            {% else %}
+                <h1>{{ title }}</h1>
+                <p class="text-base">This element has no content, which means it was automatically created because
+                    something else links here. If you want to learn more about how this website works, head to our <a
+                            href="/about">about page</a></p>
+            {% endif %}
+        {% endblock content %}
+    </div>
+    <div class="bg-blue-100">
+        <p class="md:p-8 shadow-lg">If you have any comments regarding what you read, you can always ping me via direct
+            message on Twitter <a
+                    href="https://twitter.com/aquicarattino">@aquicarattino</a>.</p>
+    </div>
+    <div>
+        <iframe src="https://aquiles.substack.com/embed" width="100%" height="320"
+                style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div class="mt-10 p-4 md:p-8 bg-gray-300">
+        <h4 class="text-2xl font-serif font-semibold">Backlinks</h4>
+        <p class="leading-4">These are the pages that link in here. If you are curious about why there is
+            no pagination nor recommended articles, you can check our <a href="/about">about page</a></p>
+        {% if not inbound_links %}
+            <div class="text-sm">Nothing links here, how did you reach this page then?</div>
+        {% else %}
+            {% for link in inbound_links %}
+                <a href="{{ link }}">{{ link }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock main %}

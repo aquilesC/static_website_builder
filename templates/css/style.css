@@ -1,7 +1,7 @@
 @tailwind base;
 
 h1 {
-    @apply break-normal text-5xl mb-2 mt-1 font-head leading-none
+    @apply break-normal text-5xl mb-10 mt-1 font-head leading-none
 }
 
 h2 {
