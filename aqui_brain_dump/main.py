@@ -59,6 +59,7 @@ def main(
 
             filename = ''.join(file.split('.')[:-1])
             page_url = f"{sub_dir}/{filename}"
+            page_url = page_url.replace(' ', '_')
             if not page_url in pages:
                 pages[page_url] = dict(content=None, links=[], meta={}, filename='', url='')
 
