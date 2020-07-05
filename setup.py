@@ -6,7 +6,7 @@ README = open('README.md', 'r').read()
 
 setup(
     name='aqui_brain_dump',
-    version='1.0',
+    version='1.0.1',
     packages=find_packages(),
     package_data={'': ['static/', 'templates/']},
     include_package_data=True,
