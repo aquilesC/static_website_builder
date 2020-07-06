@@ -1,3 +1,4 @@
+import codecs
 import time
 from distutils.dir_util import copy_tree
 from shutil import copyfile
@@ -43,6 +44,7 @@ def main(
         'fenced_code',
         'codehilite',
         'pyembed.markdown',
+        'footnotes',
     ])
 
     pages = {}
@@ -51,6 +53,8 @@ def main(
         cur_dir = dirs[0]
         sub_dir = os.path.relpath(cur_dir, start=dir)
         if sub_dir == '.': sub_dir = ''
+        if sub_dir.startswith('.'):
+            continue
         for file in dirs[2]:
             if not file.endswith('.md'):
                 print(os.path.join(cur_dir, file))
@@ -63,7 +67,7 @@ def main(
             if not page_url in pages:
                 pages[page_url] = dict(content=None, links=[], meta={}, filename='', url='')
 
-            with open(os.path.join(cur_dir, file), 'r') as f:
+            with codecs.open(os.path.join(cur_dir, file), 'r', encoding='utf-8') as f:
                 md.reset()
                 md.links = []
                 post = frontmatter.load(f)
@@ -75,6 +79,8 @@ def main(
                     'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime))
                 })
                 for link in md.links:
+                    link = link.replace(' ', '_')
+                    print(f'Page: {page_url}, link: {link}')
                     if link not in pages:
                         pages[link] = dict(content=None, links=[], meta={}, filename=link, url=base_website+link)
                     pages[link]['links'].append(page_url)
@@ -88,7 +94,7 @@ def main(
         print(f"Creating {page}")
         os.makedirs(os.path.join(out_dir, page), exist_ok=True)
         context = {
-            'title': values['filename'],
+            'title': values['filename'].replace('_', ' '),
             'content': values['content'],
             'static': 'static',
             'inbound_links': values['links'],
