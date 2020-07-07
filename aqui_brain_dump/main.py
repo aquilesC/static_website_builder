@@ -57,7 +57,6 @@ def main(
             continue
         for file in dirs[2]:
             if not file.endswith('.md'):
-                print(os.path.join(cur_dir, file))
                 copyfile(os.path.join(cur_dir, file), os.path.join(out_dir, sub_dir, file))
                 continue
 
@@ -80,10 +79,12 @@ def main(
                 })
                 for link in md.links:
                     link = link.replace(' ', '_')
-                    print(f'Page: {page_url}, link: {link}')
                     if link not in pages:
                         pages[link] = dict(content=None, links=[], meta={}, filename=link, url=base_website+link)
-                    pages[link]['links'].append(page_url)
+
+                    pages[link]['links'].append(
+                        page_url if not file == index_page else f'{sub_dir}/'
+                    )
 
     env = Environment(loader=FileSystemLoader(template_dir))
     template_article = env.get_template('article.html')
