@@ -948,6 +948,14 @@ img {
   max-width: 28rem;
 }
 
+.footnote{
+  margin-top: 1rem;
+}
+
+.footnote p {
+  font-size: 0.875rem;
+}
+
 @media (min-width: 768px) {
   .md\:text-base {
     font-size: 1rem;

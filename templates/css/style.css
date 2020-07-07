@@ -92,3 +92,11 @@ img {
 .admonition.image.medium{
     @apply max-w-md;
 }
+
+.footnote{
+    @apply mt-4;
+}
+
+.footnote p {
+    @apply text-sm;
+}
