@@ -44,9 +44,51 @@ img {
 @tailwind utilities;
 
 .wikilink {
-    @apply text-orange-600 font-bold;
+    @apply text-orange-500 font-bold;
 }
 
 .wikilink:hover {
     @apply underline;
+}
+
+.admonition {
+    @apply m-2 shadow-sm;
+}
+
+@screen md{
+    .admonition {
+        @apply m-10;
+    }
+}
+
+.admonition.note {
+    @apply border-solid border-gray-200 border shadow-lg rounded-md;
+}
+
+.admonition.note .admonition-title{
+    @apply py-2 pl-4 font-bold text-xl border-b-2 border-gray-300;
+}
+
+.admonition.note p{
+    @apply py-4 px-8;
+}
+
+
+.admonition.image p{
+    @apply mt-5;
+}
+.admonition.image{
+    @apply mx-auto;
+}
+
+.admonition.image .admonition-title{
+    @apply invisible;
+}
+
+.admonition.image.small{
+    @apply max-w-sm;
+}
+
+.admonition.image.medium{
+    @apply max-w-md;
 }

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block main %}
-    <div class="mb-12 bg-white shadow-lg p-6">
+    <div class="mb-12 bg-white shadow-lg p-1 md:p-6">
         {% block content %}
             {% if content %}
                 {{ content }}
@@ -9,6 +9,13 @@
                 <p class="text-base">This element has no content, which means it was automatically created because
                     something else links here. If you want to learn more about how this website works, head to our <a
                             href="/about">about page</a></p>
+                <p class="text-base"><span class="font-extrabold">These other pages link here:</span>
+                <ul>
+                    {% for link in inbound_links %}
+                        <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>
+                    {% endfor %}
+                </ul>
+                </p>
             {% endif %}
         {% endblock content %}
     </div>
@@ -30,9 +37,11 @@
         {% if not inbound_links %}
             <div class="text-sm">Nothing links here, how did you reach this page then?</div>
         {% else %}
-            {% for link in inbound_links %}
-                <a href="{{ link }}">{{ link }}</a>
-            {% endfor %}
+            <ul>
+                {% for link in inbound_links %}
+                    <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
 {% endblock main %}
