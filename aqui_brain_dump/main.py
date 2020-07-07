@@ -61,7 +61,7 @@ def main(
                 continue
 
             filename = ''.join(file.split('.')[:-1])
-            page_url = f"{sub_dir}/{filename}"
+            page_url = f"{sub_dir}/{filename}".lower()
             page_url = page_url.replace(' ', '_')
             if not page_url in pages:
                 pages[page_url] = dict(content=None, links=[], meta={}, filename='', url='')
@@ -78,7 +78,7 @@ def main(
                     'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime))
                 })
                 for link in md.links:
-                    link = link.replace(' ', '_')
+                    link = link.replace(' ', '_').lower()
                     if link not in pages:
                         pages[link] = dict(content=None, links=[], meta={}, filename=link, url=base_website+link)
 

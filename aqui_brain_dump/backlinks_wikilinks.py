@@ -61,7 +61,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
             url = self.config['build_url'](label, base_url, end_url)
             a = etree.Element('a')
             a.text = label
-            a.set('href', url)
+            a.set('href', url.lower())
             if html_class:
                 a.set('class', html_class)
         else:
