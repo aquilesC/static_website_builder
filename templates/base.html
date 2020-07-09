@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Red+Hat+Text&Playfair+Display" rel="stylesheet">
 
     <link rel="canonical" href="{{ url }}">
-    <meta property="og:title" content="{{ title }}" />
-    <meta property="og:description" content="{{ description }}" />
+    <meta property="og:title" content="{{ title }}"/>
+    <meta property="og:description" content="{{ description }}"/>
     <meta property="og:url" content="{{ url }}">
     <meta property="og:type" content="article"/>
 
@@ -20,7 +20,8 @@
 <nav class="bg-gray-900 p-4 mt-0 w-full">
     <div class="container mx-auto">
         <div>
-            <a class="flex font-extrabold text-2xl text-white items-center text-base no-underline hover:text-red-600 hover:no-underline" href="/">
+            <a class="flex font-extrabold text-2xl text-white items-center text-base no-underline hover:text-red-600 hover:no-underline"
+               href="/">
                 <img class="h-6 w-6 mr-3" src="/{{ static }}/favicon.svg" alt="aquiles.me logo"/> Aquiles.me
             </a>
         </div>
@@ -31,8 +32,20 @@
     {% block main %}
     {% endblock main %}
 </div>
-<div class="bg-gray-200 p-0 w-full">
-    <div class="">&copy; 2020 Aquiles Carattino</div>
+<div class="bg-gray-200 p-3 w-full">
+    <div class="m-2 p-2 inline-block text-center">&copy; 2020 Aquiles Carattino</div>
+    <div class="m-2 p-2 inline-block text-center"><a href="/privacy_policy">Privacy Policy</a></div>
+    <div class="m-2 p-2 inline-block text-center align-middle">
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            <img alt="Creative Commons License"
+                 style="border-width:0"
+                 src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"/>
+        </a>
+    </div>
+    <div class="m-2 p-2 text-xs inline-block">This
+        work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+            Attribution-ShareAlike 4.0 International License</a>.
+    </div>
 </div>
 
 </body>

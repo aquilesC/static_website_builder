@@ -11,7 +11,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "postcss css/style.css -o ../static/style.css",
+    "build": "npx tailwindcss build css/style.css -o ../static/style.css",
     "develop": "postcss css/style.css -o ../static/style.css",
     "watch": "postcss css/style.css -o ../static/style.css --watch"
   },
