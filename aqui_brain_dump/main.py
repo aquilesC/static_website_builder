@@ -55,6 +55,7 @@ def main(
         if sub_dir == '.': sub_dir = ''
         if sub_dir.startswith('.'):
             continue
+        if sub_dir: sub_dir = f'/{sub_dir}'
         for file in dirs[2]:
             if not file.endswith('.md'):
                 copyfile(os.path.join(cur_dir, file), os.path.join(out_dir, sub_dir, file))
@@ -85,6 +86,7 @@ def main(
                     pages[link]['links'].append(
                         page_url if not file == index_page else f'{sub_dir}/'
                     )
+                    print(f'{page_url}')
 
     env = Environment(loader=FileSystemLoader(template_dir))
     template_article = env.get_template('article.html')
@@ -116,6 +118,7 @@ def main(
 
     with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
         f.write(template.render({'pages': pages}))
+
 
 if __name__ == '__main__':
     main()
