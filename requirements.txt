@@ -9,7 +9,6 @@ markdown-checklist==0.4.3
 MarkupSafe==1.1.1
 mdx-gh-links==0.2
 mdx-sections==0.1
-pkg-resources==0.0.0
 pyembed==1.3.3
 pyembed-markdown==1.1.0
 python-frontmatter==0.5.0
