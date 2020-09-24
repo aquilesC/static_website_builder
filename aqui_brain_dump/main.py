@@ -89,9 +89,10 @@ def main(
                     if link not in pages:
                         pages[link] = dict(content=None, links=[], meta={}, filename=link, url=base_website+link)
 
-                    pages[link]['links'].append(
-                        page_url if not file == index_page else f'{sub_dir}/'
-                    )
+                    pages[link]['links'].append({
+                        'link': page_url if not file == index_page else f'{sub_dir}/',
+                        'title': ' '.join(page_url.split('_'))
+                    })
 
     env = Environment(loader=FileSystemLoader(template_dir))
     template_article = env.get_template('article.html')
