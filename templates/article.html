@@ -1,47 +1,81 @@
 {% extends "base.html" %}
 {% block main %}
-    <div class="mb-12 bg-white shadow-lg p-1 md:p-6">
-        {% block content %}
-            {% if content %}
-                {{ content }}
-            {% else %}
-                <h1>{{ title }}</h1>
-                <p class="text-base">This element has no content, which means it was automatically created because
-                    something else links here. If you want to learn more about how this website works, head to our <a
-                            href="/about">about page</a></p>
-                <p class="text-base"><span class="font-extrabold">These other pages link here:</span>
-                <ul>
-                    {% for link in inbound_links %}
-                        <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>
-                    {% endfor %}
-                </ul>
-                </p>
-            {% endif %}
-        {% endblock content %}
-    </div>
-    <div class="bg-blue-100">
-        <p class="md:p-8 shadow-lg">
-            If you have any comments regarding what you read, you can reach me by email: <b>hey@aquiles.me</b>,
-            or you can ping me via direct message on Twitter <a
-                href="https://twitter.com/aquicarattino">@aquicarattino</a>.
-        </p>
-    </div>
-    <div>
-        <iframe src="https://aquiles.substack.com/embed" width="100%" height="320"
-                style="border:1px solid #EEE; background:white;" frameborder="0" scrolling="no"></iframe>
-    </div>
-    <div class="mt-10 p-4 md:p-8 bg-gray-300">
-        <h4 class="text-2xl font-serif font-semibold">Backlinks</h4>
-        <p class="leading-4">These are the pages that link in here. If you are curious about why there is
-            no pagination nor recommended articles, you can check our <a href="/about">about page</a></p>
-        {% if not inbound_links %}
-            <div class="text-sm">Nothing links here, how did you reach this page then?</div>
-        {% else %}
-            <ul>
-                {% for link in inbound_links %}
-                    <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    <div class="flex mt-5 md:w-screen">
+        <div class="w-full md:w-4/5">
+            <div class="mb-12 bg-white shadow-lg p-1 md:rounded md:mx-16">
+                {% block content %}
+                    {% if content %}
+                        {{ content }}
+                        <div class="comments mt-10">
+                            <script src="https://utteranc.es/client.js"
+                                    repo="aquilesC/aquiles.me"
+                                    issue-term="pathname"
+                                    label="comment"
+                                    theme="github-light"
+                                    crossorigin="anonymous"
+                                    async>
+                            </script>
+                        </div>
+                    {% else %}
+                        <h1>{{ title }}</h1>
+                        <p class="text-base">This element has no content, which means it was automatically created
+                            because
+                            something else links here. If you want to learn more about how this website works, head to
+                            our
+                            <a class="wikilink" href="/about">about page</a>
+                        </p>
+                        <span class="font-extrabold">These other pages link here:</span>
+                        <ul class="text-base">
+                            {% for link in inbound_links %}
+                                <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endblock content %}
+                <div class="bg-blue-100">
+                    <p class="md:mt-10 md:p-8 shadow-lg">
+                        If you have any comments regarding what you read, you can reach me by email:
+                        <b>hey@aquiles.me</b>,
+                        or you can ping me via direct message on Twitter <a
+                            href="https://twitter.com/aquicarattino">@aquicarattino</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="w-full md:w-1/5 bg-white md:shadow-lg px-2 text-center fixed bottom-0 md:pt-8 md:right-0 h-24 md:h-full overflow-x-auto md:overflow-x-hidden md:overflow-y-auto md:border-r-4 md:border-gray-600">
+            <div class="md:relative mx-auto ">
+                <h4 class="text-2xl font-serif font-semibold">Backlinks</h4>
+                {% if not inbound_links %}
+                    <div class="text-sm">Nothing links here, how did you reach this page then?</div>
+                {% else %}
+                    <ul class="list-reset flex flex-row md:flex-col text-center md:text-left"  style="list-style: none">
+                        {% for link in inbound_links %}
+                            <li class="mr-3 flex-1">
+                                <a href="{{ link.link }}"
+                                   class="wikilink block py-1 md:py-1 pl-1 align-middle">{{ link.title }}
+                                    <span class="pb-1 md:pb-0 text-xs md:text-base text-gray-900 block md:inline-block"></span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        {#
+<!--    <div class="mt-10 p-4 md:p-8 bg-gray-300">-->
+<!--        <h4 class="text-2xl font-serif font-semibold">Backlinks</h4>-->
+<!--        <p class="leading-4">These are the pages that link in here. If you are curious about why there is-->
+<!--            no pagination nor recommended articles, you can check our <a href="/about">about page</a></p>-->
+<!--        {% if not inbound_links %}-->
+<!--        <div class="text-sm">Nothing links here, how did you reach this page then?</div>-->
+<!--        {% else %}-->
+<!--        <ul>-->
+<!--            {% for link in inbound_links %}-->
+<!--            <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>-->
+<!--            {% endfor %}-->
+<!--        </ul>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+  #}
     </div>
 {% endblock main %}
