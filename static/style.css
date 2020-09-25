@@ -620,7 +620,7 @@ h3 {
 }
 
 p {
-  font-size: 1rem;
+  font-size: 0.875rem;
   margin-bottom: 1.25rem;
 }
 
@@ -637,7 +637,13 @@ a:hover {
 
 ul {
   margin-left: 1.5rem;
+  margin-bottom: 2.5rem;
+  font-size: 0.875rem;
   list-style-type: disc;
+}
+
+li {
+  margin-bottom: 0.75rem
 }
 
 img {
@@ -822,8 +828,12 @@ img {
   margin-top: 0;
 }
 
-.mr-3 {
-  margin-right: 0.75rem;
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
 }
 
 .mt-5 {
@@ -877,10 +887,6 @@ img {
   padding-right: 0.5rem;
 }
 
-.pb-1 {
-  padding-bottom: 0.25rem;
-}
-
 .pl-1 {
   padding-left: 0.25rem;
 }
@@ -909,12 +915,6 @@ img {
   --text-opacity: 1;
   color: #fff;
   color: rgba(255, 255, 255, var(--text-opacity));
-}
-
-.text-gray-900 {
-  --text-opacity: 1;
-  color: #1a202c;
-  color: rgba(26, 32, 44, var(--text-opacity));
 }
 
 .hover\:text-red-600:hover {
@@ -947,12 +947,7 @@ a.wikilink {
   --text-opacity: 1;
   color: #ed8936;
   color: rgba(237, 137, 54, var(--text-opacity));
-  font-weight: 700;
-  border-style: solid;
-  border-bottom-width: 2px;
-  --border-opacity: 1;
-  border-color: #ed8936;
-  border-color: rgba(237, 137, 54, var(--border-opacity));
+  font-weight: 600;
 }
 
 a.wikilink:hover {
@@ -968,6 +963,16 @@ a.wikilink:hover {
 @media (min-width: 768px){
   .admonition {
     margin: 2.5rem;
+  }
+
+  p, ul {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px){
+  p, ul {
+    font-size: 1.125rem;
   }
 }
 
@@ -1044,20 +1049,12 @@ a.wikilink:hover {
     border-right-width: 4px;
   }
 
-  .md\:inline-block {
-    display: inline-block;
-  }
-
   .md\:flex-col {
     flex-direction: column;
   }
 
   .md\:h-full {
     height: 100%;
-  }
-
-  .md\:text-base {
-    font-size: 1rem;
   }
 
   .md\:mx-16 {
@@ -1068,6 +1065,10 @@ a.wikilink:hover {
   .md\:mx-auto {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .md\:mb-1 {
+    margin-bottom: 0.25rem;
   }
 
   .md\:mt-10 {
@@ -1086,13 +1087,9 @@ a.wikilink:hover {
     padding: 2rem;
   }
 
-  .md\:py-2 {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .md\:pb-0 {
-    padding-bottom: 0;
+  .md\:py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
   }
 
   .md\:pt-8 {
@@ -1125,11 +1122,5 @@ a.wikilink:hover {
 
   .md\:w-screen {
     width: 100vw;
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:text-lg {
-    font-size: 1.125rem;
   }
 }

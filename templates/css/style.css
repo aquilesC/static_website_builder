@@ -13,7 +13,7 @@ h3 {
 }
 
 p {
-    @apply text-base mb-5;
+    @apply text-sm mb-5;
 }
 
 a {
@@ -25,7 +25,11 @@ a:hover {
 }
 
 ul {
-    @apply ml-6 list-disc;
+    @apply ml-6 mb-10 text-sm list-disc;
+}
+
+li {
+    @apply mb-3
 }
 
 img {
@@ -44,7 +48,7 @@ img {
 @tailwind utilities;
 
 a.wikilink {
-    @apply text-orange-500 font-bold border-solid border-b-2 border-orange-500;
+    @apply text-orange-500 font-semibold;
 }
 
 a.wikilink:hover {
@@ -59,8 +63,16 @@ a.wikilink:hover {
     .admonition {
         @apply m-10;
     }
+    p, ul {
+        @apply text-base;
+    }
 }
 
+@screen lg{
+    p, ul {
+        @apply text-lg;
+    }
+}
 .admonition.note {
     @apply border-solid border-gray-200 border shadow-lg rounded-md;
 }
