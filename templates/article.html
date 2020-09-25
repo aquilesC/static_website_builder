@@ -27,7 +27,7 @@
                         <span class="font-extrabold">These other pages link here:</span>
                         <ul class="text-base">
                             {% for link in inbound_links %}
-                                <li><a class="wikilink" href="{{ link }}">{{ link }}</a></li>
+                                <li><a class="wikilink" href="{{ link.link }}">{{ link.title }}</a></li>
                             {% endfor %}
                         </ul>
                     {% endif %}
