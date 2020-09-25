@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% block main %}
-    <div class="mb-12 bg-white shadow-lg p-6">
+<div class="md:w-4/5 content-center md:mx-auto">
+    <div class="mb-12 bg-white shadow-lg p-6 mx-auto">
         {% block content %}
-            {% if content %}
-                {{ content }}
-            {% else %}
-                <h1>{{ title }}</h1>
-                <p class="text-base">This element has no content, which means it was automatically created because
-                    something else links here. If you want to learn more about how this website works, head to our <a
-                            class="wikilink" href="/about">about page</a></p>
-            {% endif %}
+        {% if content %}
+        {{ content }}
+        {% else %}
+        <h1>{{ title }}</h1>
+        <p class="text-base">This element has no content, which means it was automatically created because
+            something else links here. If you want to learn more about how this website works, head to our <a
+                    class="wikilink" href="/about">about page</a></p>
+        {% endif %}
         {% endblock content %}
     </div>
     <div class="bg-blue-100">
@@ -19,4 +20,5 @@
                 href="https://twitter.com/aquicarattino">@aquicarattino</a>.
         </p>
     </div>
+</div>
 {% endblock main %}

@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>{{ title }} | Aquiles Carattino</title>
-    <link href="/{{ static }}/style.min.css" rel="stylesheet">
+    <link href="/{{ static }}/style.css" rel="stylesheet">
     <link href="/{{ static }}/prism.min.css" rel="stylesheet" data-noprefix>
     <script src="/{{ static }}/prism.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Red+Hat+Text&Playfair+Display" rel="stylesheet">
 
     <link rel="canonical" href="{{ url }}">
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/{{ static }}/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/{{ static }}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/{{ static }}/favicon-16x16.png">
+    <link rel="manifest" href="/{{ static }}/site.webmanifest">
+    <link rel="mask-icon" href="/{{ static }}/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+
     <meta property="og:title" content="{{ title }}"/>
     <meta property="og:description" content="{{ description }}"/>
     <meta property="og:url" content="{{ url }}">
@@ -24,13 +34,13 @@
         <div>
             <a class="flex font-extrabold text-2xl text-white items-center text-base no-underline hover:text-red-600 hover:no-underline"
                href="/">
-                <img class="h-6 w-6 mr-3" src="/{{ static }}/favicon.svg" alt="aquiles.me logo"/> Aquiles.me
+                <img class="h-12" src="/{{ static }}/logo.svg" alt="aquiles.me logo"/>&nbsp;
             </a>
         </div>
     </div>
 </nav>
 
-<div class="container px-0 text-sm md:text-base xl:text-lg">
+<div class="px-0 text-sm md:text-base xl:text-lg">
     {% block main %}
     {% endblock main %}
 </div>

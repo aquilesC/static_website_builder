@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -9,18 +7,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="192"
-   height="192"
-   viewBox="0 0 50.799999 50.800001"
+   width="20mm"
+   height="20mm"
+   viewBox="0 0 20 20"
    version="1.1"
-   id="svg8"
-   inkscape:export-filename="/home/aquiles/Documents/Web/aquicarattino/aqui_carattino/static/images/favicons/favicon.ico.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   id="svg861"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    sodipodi:docname="favicon.svg">
   <defs
-     id="defs2" />
+     id="defs855" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -28,20 +23,24 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="-50.67861"
-     inkscape:cy="123.68166"
+     inkscape:zoom="2.9624086"
+     inkscape:cx="-32.576114"
+     inkscape:cy="21.743285"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
      showgrid="false"
-     units="px"
-     inkscape:window-width="3082"
-     inkscape:window-height="1689"
-     inkscape:window-x="118"
-     inkscape:window-y="55"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1541"
+     inkscape:window-height="845"
+     inkscape:window-x="59"
+     inkscape:window-y="27"
      inkscape:window-maximized="1" />
   <metadata
-     id="metadata5">
+     id="metadata858">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -56,28 +55,32 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-246.19998)">
+     transform="translate(-105.01223,-117.70305)">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:44.67926407px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#4993ca;fill-opacity:1;stroke:none;stroke-width:1.11698151;"
-       x="2.6735902"
-       y="283.2356"
-       id="text12"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="106.98517"
+       y="115.4186"
+       id="text1426"><tspan
          sodipodi:role="line"
-         id="tspan10"
-         x="2.6735902"
-         y="283.2356"
-         style="stroke-width:1.11698151;fill:#4993ca;fill-opacity:1;">A</tspan></text>
+         id="tspan1424"
+         x="106.98517"
+         y="115.4186"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:49.63056564px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#e94356;fill-opacity:1;stroke:none;stroke-width:1.24076414;"
-       x="13.30904"
-       y="294.84344"
-       id="text16"><tspan
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="108.3925"
+       y="132.85258"
+       id="text1430"><tspan
          sodipodi:role="line"
-         id="tspan14"
-         x="13.30904"
-         y="294.84344"
-         style="stroke-width:1.24076414;fill:#e94356;fill-opacity:1;">C</tspan></text>
+         id="tspan1428"
+         x="108.3925"
+         y="132.85258"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"><tspan
+           style="fill:#f44000;fill-opacity:1"
+           id="tspan1432">A</tspan><tspan
+           style="fill:#1f46c8;fill-opacity:1"
+           id="tspan1512">C</tspan></tspan></text>
   </g>
 </svg>

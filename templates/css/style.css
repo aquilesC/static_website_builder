@@ -43,12 +43,12 @@ img {
 
 @tailwind utilities;
 
-.wikilink {
-    @apply text-orange-500 font-bold;
+a.wikilink {
+    @apply text-orange-500 font-bold border-solid border-b-2 border-orange-500;
 }
 
-.wikilink:hover {
-    @apply underline;
+a.wikilink:hover {
+    @apply border-b-4 no-underline;
 }
 
 .admonition {
