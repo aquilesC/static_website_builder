@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block main %}
+    <nav class="bg-gray-100 border-orange-800 border-l-8 p-4 mt-0 w-full text-4xl">
+        <div class="container mx-auto">
+            <a class="shadow-none" href="/">
+                <span class="font-brand">Aquiles Carattino</span>
+            </a>
+        </div>
+    </nav>
     <div class="flex mt-5 md:w-screen">
         <div class="w-full md:w-4/5 lg:max-w-screen-md lg:ml-48">
             <div class="mb-12 bg-white shadow-lg p-1 md:rounded lg:p-10">
@@ -18,7 +25,8 @@
                         </div>
                     {% else %}
                         <h1>{{ title }}</h1>
-                        <p>This element has no content, which means it was automatically created because something else links here. If you want to learn more about how this website works, head to
+                        <p>This element has no content, which means it was automatically created because something else
+                            links here. If you want to learn more about how this website works, head to
                             the <a class="wikilink" href="/about">about page</a>.
                         </p>
                         <p class="font-extrabold mb-4">These other pages link here:</p>

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>{{ title }} | Aquiles Carattino</title>
-    <link href="/{{ static }}/style.min.css" rel="stylesheet">
+    <link href="/{{ static }}/style.css" rel="stylesheet">
     <link href="/{{ static }}/prism.min.css" rel="stylesheet" data-noprefix>
     <script src="/{{ static }}/prism.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Red+Hat+Text&Playfair+Display&family=Raleway"
@@ -39,18 +39,9 @@
     <meta name="twitter:description" content="{{ description }}"/>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal mx-auto">
-<nav class="bg-gray-100 border-orange-800 border-l-8 p-4 mt-0 w-full text-4xl">
-    <div class="container mx-auto">
-        <a class="shadow-none" href="/">
-            <span class="font-brand">Aquiles Carattino</span>
-        </a>
-    </div>
-</nav>
 
-<div class="px-2">
-    {% block main %}
-    {% endblock main %}
-</div>
+{% block main %}
+{% endblock main %}
 <div class="flex bg-gray-200 p-3 w-full">
     <div class="m-2 p-2 inline-block text-center">&copy; 2020 Aquiles Carattino</div>
     <div class="m-2 p-2 inline-block text-center"><a class="wikilink" href="/privacy_policy">Privacy Policy</a></div>

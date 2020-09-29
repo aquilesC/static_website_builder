@@ -12,7 +12,11 @@ module.exports = {
                 sans: ['Poppins'],
                 head: ['Red Hat Text, sans-serif'],
                 brand: ['Raleway'],
-            }
+            },
+            backgroundImage: theme => ({
+                'hero-image': "url('/static/Aquiles.jpg')",
+                'hero-image-square': "url('/static/aquiles_square.jpg')",
+            })
         },
         boxShadow: {
             sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',

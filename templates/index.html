@@ -1,24 +1,36 @@
 {% extends "base.html" %}
 {% block main %}
-<div class="md:w-4/5 content-center md:mx-auto">
-    <div class="mb-12 bg-white shadow-lg p-6 mx-auto lg:max-w-screen-md lg:ml-48">
-        {% block content %}
-        {% if content %}
-        {{ content }}
-        {% else %}
-        <h1>{{ title }}</h1>
-        <p>This element has no content, which means it was automatically created because
-            something else links here. If you want to learn more about how this website works, head to our <a
-                    class="wikilink" href="/about">about page</a></p>
-        {% endif %}
-        {% endblock content %}
+    <div class="mt-16 md:w-4/5 content-center md:mx-auto">
+        <!-- Hero -->
+        <div class="md:bg-hero-image bg-center h-auto grid grid-cols-1 md:grid-cols-2 p-6 md:p-16">
+            <div class="col-span-1 bg-gray-200 bg-opacity-50 pl-2 pt-8 pr-2 md:pl-6 md:pt-16 md:pr-16">
+                <p class="text-4xl font-extrabold">Hello There</p>
+                <p class="leading-normal">My name is <b>Aquiles</b>, I am a scientist traversing the entrepreneurial path.</p>
+                <p class="leading-normal">I am passionate about building tools that can have an impact.</p>
+                <p class="leading-normal">I want to make a positive change in the world, through technology,
+                    education, and any other available means.</p>
+                <p class="leading-normal"><a class="wikilink" href="/about_me">Learn more about me</a> </p>
+            </div>
+{#            <div class="col-span-1 bg-hero-image-square lg:bg-none">&nbsp;</div>#}
+        </div>
+        <div class="mb-12 bg-white shadow-lg p-6 mx-auto lg:max-w-screen-md lg:ml-48">
+            {% block content %}
+                {% if content %}
+                    {{ content }}
+                {% else %}
+                    <h1>{{ title }}</h1>
+                    <p>This element has no content, which means it was automatically created because
+                        something else links here. If you want to learn more about how this website works, head to our
+                        <a class="wikilink" href="/about">about page</a></p>
+                {% endif %}
+            {% endblock content %}
+        </div>
+        <div class="bg-blue-100">
+            <p class="md:p-8 shadow-lg">
+                If you have any comments regarding what you read, you can reach me by email: <b>hey@aquiles.me</b>,
+                or you can ping me via direct message on Twitter <a
+                    href="https://twitter.com/aquicarattino">@aquicarattino</a>.
+            </p>
+        </div>
     </div>
-    <div class="bg-blue-100">
-        <p class="md:p-8 shadow-lg">
-            If you have any comments regarding what you read, you can reach me by email: <b>hey@aquiles.me</b>,
-            or you can ping me via direct message on Twitter <a
-                href="https://twitter.com/aquicarattino">@aquicarattino</a>.
-        </p>
-    </div>
-</div>
 {% endblock main %}
