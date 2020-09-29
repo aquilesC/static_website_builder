@@ -17,6 +17,7 @@ import re
 
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """
+    label = label.split('|')[0]
     clean_label = re.sub(r'([ ]+_)|(_[ ]+)|([ ]+)', '_', label)
     return '{}{}{}'.format(base, clean_label, end)
 
@@ -40,7 +41,7 @@ class WikiLinkExtension(Extension):
         self.md = md
 
         # append to end of inline patterns
-        WIKILINK_RE = r'\[\[([\w0-9\/_ -.]+)\]\]'
+        WIKILINK_RE = r'\[\[([\w0-9\/_\| -.]+)\]\]'
         wikilinkPattern = WikiLinksInlineProcessor(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
         md.inlinePatterns.register(wikilinkPattern, 'wikilink', 75)
@@ -60,7 +61,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
             self.md.links.append(label)
             url = self.config['build_url'](label, base_url, end_url)
             a = etree.Element('a')
-            a.text = label
+            a.text = label.split('|')[-1]
             a.set('href', url.lower())
             if html_class:
                 a.set('class', html_class)
