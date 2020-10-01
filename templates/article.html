@@ -7,12 +7,14 @@
             </a>
         </div>
     </nav>
-    <div class="flex mt-5 md:w-screen">
+    <div class="flex mt-5 md:w-screen max-w-full lg:max-w-screen-lg">
         <div class="w-full md:w-4/5 lg:max-w-screen-md lg:ml-48">
             <div class="mb-12 bg-white shadow-lg p-1 md:rounded lg:p-10">
                 {% block content %}
                     {% if content %}
-                        {{ content }}
+                        <article class="prose lg:prose-xl">
+                            {{ content }}
+                        </article>
                         <div class="comments mt-10">
                             <script src="https://utteranc.es/client.js"
                                     repo="aquilesC/aquiles.me"

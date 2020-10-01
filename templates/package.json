@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@tailwindcss/typography": "^0.2.0",
     "autoprefixer": "^9.8.0",
     "postcss": "^7.0.31",
     "postcss-cli": "^7.1.1",

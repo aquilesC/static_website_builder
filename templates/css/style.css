@@ -25,7 +25,7 @@ a {
 }
 
 ul {
-    @apply ml-6 mb-10 text-sm list-disc;
+    @apply ml-6 mb-10 list-disc;
 }
 
 li {
