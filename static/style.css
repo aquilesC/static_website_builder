@@ -1982,6 +1982,10 @@ img {
   display: inline-block;
 }
 
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
 }
@@ -2024,6 +2028,10 @@ img {
 
 .font-extrabold {
   font-weight: 800;
+}
+
+.h-4 {
+  height: 1rem;
 }
 
 .h-6 {
@@ -2081,6 +2089,10 @@ img {
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.mr-4 {
+  margin-right: 1rem;
 }
 
 .mb-4 {
@@ -2189,12 +2201,20 @@ img {
   text-align: center;
 }
 
+.no-underline {
+  text-decoration: none;
+}
+
 .tracking-normal {
   letter-spacing: 0;
 }
 
 .align-middle {
   vertical-align: middle;
+}
+
+.w-4 {
+  width: 1rem;
 }
 
 .w-6 {
