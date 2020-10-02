@@ -6,6 +6,7 @@ import frontmatter
 from jinja2 import Environment, FileSystemLoader, Template
 import markdown
 import os
+from bs4 import BeautifulSoup
 
 from aqui_brain_dump.backlinks_wikilinks import WikiLinkExtension
 
@@ -13,7 +14,7 @@ THIS_DIR = os.getcwd()
 
 
 def main(
-        base_website="https://www.aquiles.me",
+        base_website="http://localhost:8000",
         content_dir='content',
         output_dir='output',
         static_dir='static',
@@ -70,29 +71,66 @@ def main(
             page_url = f"{sub_dir}/{filename}".lower()
             page_url = page_url.replace(' ', '_')
             if page_url not in pages:
-                pages[page_url] = dict(content=None, links=[], meta={}, filename='', url='')
+                pages[page_url] = dict(
+                    content=None,
+                    links=[],
+                    meta={}, filename='',
+                    url='',
+                    last_mod=None,
+                    creation_date=None,
+                    description='',
+                    title='',
+                )
 
             with codecs.open(os.path.join(cur_dir, file), 'r', encoding='utf-8') as f:
                 md.reset()
                 md.links = []
                 post = frontmatter.load(f)
+                content = md.convert(post.content)
+                bs = BeautifulSoup(content, 'html.parser')
+                h1 = bs.find('h1')
+                h1_title = None
+                if h1 is not None and h1.get_text() != '':
+                    h1_title = h1.get_text()
+                    h1.decompose()
+                    content = bs.prettify()
+                if 'title' in post.metadata:
+                    title = post.metadata['title']
+                elif h1_title is not None:
+                    title = h1_title
+                else:
+                    title = ' '.join(page_url.split('_')).strip('/')
+
                 pages[page_url].update({
-                    'content': md.convert(post.content),
+                    'content': content,
                     'meta': post.metadata,
                     'filename': filename,
-                    'url': base_website+page_url,
-                    'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime))
+                    'url': base_website+'/' if index_page.startswith(filename) else base_website+page_url,
+                    'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime)),
+                    'creation_date': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_ctime)),
+                    'links': md.links,
+                    'backlinks': [],
+                    'title': title
                 })
+
                 for link in md.links:
                     link = link.replace(' ', '_').lower()
                     link = f"/{link}"
                     if link not in pages:
-                        pages[link] = dict(content=None, links=[], meta={}, filename=link, url=base_website+link)
-
-                    pages[link]['links'].append({
-                        'link': page_url if not file == index_page else f'{sub_dir}/',
-                        'title': ' '.join(page_url.split('_'))
-                    })
+                        pages[link] = dict(
+                            content=None,
+                            links=[],
+                            backlinks=[],
+                            meta={},
+                            filename='',
+                            url='',
+                            last_mod=None,
+                            creation_date=None,
+                            description='',
+                            title='',
+                        )
+                    if pages[page_url] not in pages[link]['backlinks']:
+                        pages[link]['backlinks'].append(pages[page_url])
 
     env = Environment(loader=FileSystemLoader(template_dir))
     template_article = env.get_template('article.html')
@@ -109,6 +147,7 @@ def main(
             'inbound_links': values['links'],
             'meta': values['meta'],
             'url': values['url'],
+            'page': values,
         }
         context.update(values['meta'])
 
