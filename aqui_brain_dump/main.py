@@ -14,7 +14,7 @@ THIS_DIR = os.getcwd()
 
 
 def main(
-        base_website="http://localhost:8000",
+        base_website="https://www.aquiles.me",
         content_dir='content',
         output_dir='output',
         static_dir='static',
