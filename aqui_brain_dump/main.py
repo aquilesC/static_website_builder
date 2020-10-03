@@ -160,6 +160,7 @@ def main(
             'title': values['filename'].replace('_', ' '),
             'content': values['content'],
             'static': 'static',
+            'base_url': base_website,
             'inbound_links': values['links'],
             'meta': values['meta'],
             'url': values['url'],
