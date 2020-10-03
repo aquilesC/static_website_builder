@@ -44,33 +44,24 @@
                             <div class="e-content">
                                 {{ content }}
                             </div>
-
+                            <div class="p-author h-card flex">
+                                <img alt="Aquiles Carattino" src="{{ base_url }}/{{ static }}/aquiles_square.jpg"
+                                     class="u-photo h-24 w-24"/>
+                                <span class="p-name md:ml-16">Aquiles Carattino</span>
+                            </div>
                         </article>
-                        <div class="u-author h-card flex">
-                            <img src="/{{ static }}/aquiles_square.jpg" class="u-photo h-24 w-24"/>
-                            <span class="md:ml-16 p-name">Aquiles Carattino</span>
-                            </a>
-                        </div>
                         <div class="comments mt-10">
-                            <script src="https://utteranc.es/client.js"
-                                    repo="aquilesC/aquiles.me"
-                                    issue-term="pathname"
-                                    label="comment"
-                                    theme="github-light"
-                                    crossorigin="anonymous"
-                                    async>
-                            </script>
                         </div>
                     {% else %}
                         <h1>{{ title }}</h1>
                         <p>This element has no content, which means it was automatically created because something else
                             links here. If you want to learn more about how this website works, head to
-                            the <a class="wikilink" href="/about">about page</a>.
+                            the <a class="wikilink" href="{{ base_url }}/about">about page</a>.
                         </p>
                         <p class="font-extrabold mb-4">These other pages link here:</p>
-                        <ul>
+                        <ul class="h-feed">
                             {% for link in page.backlinks %}
-                                <li><a class="wikilink" href="{{ link.url }}">{{ link.title }}</a></li>
+                                <li class="h-entry"><a class="wikilink" href="{{ link.url }}">{{ link.title }}</a></li>
                             {% endfor %}
                         </ul>
                     {% endif %}
@@ -91,10 +82,10 @@
                 {% if not page.backlink|length == 0 %}
                     <div class="text-sm">Nothing links here, how did you reach this page then?</div>
                 {% else %}
-                    <ul class="list-reset flex flex-row md:flex-col md:mb-1 text-center md:text-left"
+                    <ul class="h-feed list-reset flex flex-row md:flex-col md:mb-1 text-center md:text-left"
                         style="list-style: none">
                         {% for link in page.backlinks %}
-                            <li class="mr-2 mb-0 flex-1 md:mb-2">
+                            <li class="h-entry mr-2 mb-0 flex-1 md:mb-2">
                                 <a href="{{ link.url }}"
                                    class="wikilink text-sm shadow-none block py-1 md:py-1 pl-1 align-middle">{{ link.title }}
                                 </a>
@@ -106,3 +97,14 @@
         </div>
     </div>
 {% endblock main %}
+
+{% block footer_scripts %}
+    <script src="https://utteranc.es/client.js"
+            repo="aquilesC/aquiles.me"
+            issue-term="pathname"
+            label="comment"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+{% endblock %}

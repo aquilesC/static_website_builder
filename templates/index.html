@@ -25,14 +25,14 @@
                         <a class="wikilink" href="/about">about page</a></p>
                 {% endif %}
             {% endblock content %}
-            <div id="hcard-Aquiles-Carattino" class="flex vcard bg-blue-100 shadow-lg">
-                <img src="https://www.aquiles.me/static/aquiles_square.jpg"
+            <div id="hcard-Aquiles-Carattino" class="h-card flex vcard bg-blue-100 shadow-lg">
+                <img src="/{{ static }}/aquiles_square.jpg"
                      alt="photo of Aquiles Carattino" class="u-photo h-64 mr-8"/>
                 <div class="ml-12">
                     <h3 class="font-serif">Aquiles Carattino</h3>
                     <div class="md:p-8 flex">
                         <div class="h-6">
-                            <a href="https://github.com/aquilesC" rel="me">
+                            <a href="https://github.com/aquilesC" rel="me" class="u-url">
                                 <svg class="h-6 w-6" version="1.1" id="Github" xmlns="https://www.w3.org/2000/svg"
                                      xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
                                      viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
@@ -49,7 +49,7 @@
                             </a>
                         </div>
                         <div class="h-6 ml-4">
-                            <a href="https://www.twitter.com/aquicarattino" rel="me">
+                            <a href="https://www.twitter.com/aquicarattino" rel="me" class="u-url">
                                 <svg class="w-6 h-6" version="1.1" id="Twitter" xmlns="https://www.w3.org/2000/svg"
                                      xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
                                      viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
@@ -64,7 +64,7 @@
                             </a>
                         </div>
                         <div class="h-6 ml-4">
-                            <a href="https://www.linkedin.com/in/aquic/" rel="me">
+                            <a href="https://www.linkedin.com/in/aquic/" rel="me" class="u-url">
                                 <svg class="h-6 w-6" version="1.1" id="LinkedIn" xmlns="https://www.w3.org/2000/svg"
                                      xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
                                      viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
@@ -75,7 +75,7 @@
                             </a>
                         </div>
                         <div class="h-6 ml-4">
-                            <a class="email" href="mailto:hey@aquiles.me">
+                            <a class="email u-email" href="mailto:hey@aquiles.me" rel="me">
                                 <svg class="w-6 h-6" version="1.1" id="Email" xmlns="https://www.w3.org/2000/svg"
                                      xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
                                      viewBox="0 0 20 20" style="enable-background:new 0 0 20 20;" xml:space="preserve">
@@ -90,7 +90,7 @@
                             </a>
                         </div>
                         <div class="h-6 ml-4">
-                            <a class="url fn" href="https://www.aquiles.me">
+                            <a class="url fn u-url u-uid" href="https://www.aquiles.me/" rel="me">
                                 <svg class="w-6 h-6" version="1.1" id="Link" xmlns="https://www.w3.org/2000/svg"
                                      xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px"
                                      viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">

@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Aquiles Carattino">
+    <meta name="description" content="{{ description }}">
+    <meta name="generator" content="Aqui Brain Dump">
+
     <title>{{ page.title }} | Aquiles Carattino</title>
-    <link href="/{{ static }}/style.min.css" rel="stylesheet">
-    <link href="/{{ static }}/prism.min.css" rel="stylesheet" data-noprefix>
-    <script src="/{{ static }}/prism.js"></script>
+    <link href="{{ base_url }}/{{ static }}/style.min.css" rel="stylesheet">
+    <link href="{{ base_url }}/{{ static }}/prism.min.css" rel="stylesheet" data-noprefix>
+    <script src="{{ base_url }}/{{ static }}/prism.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Red+Hat+Text&Playfair+Display&family=Raleway"
           rel="stylesheet">
 
@@ -57,5 +61,7 @@
             Attribution-ShareAlike 4.0 International License</a>.
     </div>
 </div>
+{% block footer_scripts %}
+{% endblock %}
 </body>
 </html>
