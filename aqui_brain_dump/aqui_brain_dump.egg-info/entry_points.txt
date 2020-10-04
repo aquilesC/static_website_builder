@@ -1,3 +1,0 @@
-[console_scripts]
-brain_dump = aqui_brain_dump.main
-

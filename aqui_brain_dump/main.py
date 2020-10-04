@@ -1,5 +1,6 @@
 import codecs
 import subprocess
+import sys
 import time
 from distutils.dir_util import copy_tree
 from shutil import copyfile
@@ -10,6 +11,7 @@ import os
 from bs4 import BeautifulSoup
 
 from aqui_brain_dump.backlinks_wikilinks import WikiLinkExtension
+from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date
 
 THIS_DIR = os.getcwd()
 
@@ -22,28 +24,17 @@ def main(
         template_dir='templates',
         index_page='index.md',
 ):
-
+    if len(sys.argv) > 1:
+        base_website = sys.argv[1]
+    print(base_website)
     dir = os.path.abspath(os.path.join(THIS_DIR, content_dir))
     out_dir = os.path.abspath(os.path.join(THIS_DIR, output_dir))
     static_dir = os.path.abspath(os.path.join(THIS_DIR, static_dir))
     template_dir = os.path.abspath(os.path.join(THIS_DIR, template_dir))
 
 
-    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', content_dir],
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE)
-    result = result.stdout.decode('utf-8').split('\n')
-    creation_dates = {}
-    date = 0
-    for line in result:
-        if line.startswith('"'):
-            date = line.strip('"')
-        else:
-            if line.endswith('.md'):
-                page_url = line.strip(content_dir).strip('.md')
-                page_url = page_url.replace(' ', '_')
-
-                creation_dates[page_url] = date
+    creation_dates = get_creation_date(content_dir)
+    modification_dates = get_last_modification_date(content_dir)
 
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
@@ -90,7 +81,8 @@ def main(
                 pages[page_url] = dict(
                     content=None,
                     links=[],
-                    meta={}, filename='',
+                    meta={},
+                    filename='',
                     url='',
                     last_mod=None,
                     creation_date=None,
@@ -122,7 +114,7 @@ def main(
                     'meta': post.metadata,
                     'filename': filename,
                     'url': base_website+'/' if index_page.startswith(filename) else base_website+page_url+'/',
-                    'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime)),
+                    'last_mod': modification_dates.get(page_url, 'None'),
                     'creation_date': creation_dates.get(page_url, 'None'),
                     'links': md.links,
                     'backlinks': [],

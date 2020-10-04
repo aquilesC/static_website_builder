@@ -1,5 +1,0 @@
-Jinja2
-Markdown
-markdown-checklist
-pyembed-markdown
-python-frontmatter
