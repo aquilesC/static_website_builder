@@ -16,10 +16,6 @@ h4 {
     @apply break-normal text-2xl mb-2 my-1 font-head;
 }
 
-p {
-    @apply text-base mb-5;
-}
-
 a {
     @apply shadow-link no-underline;
 }
