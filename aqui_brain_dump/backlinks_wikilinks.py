@@ -56,13 +56,16 @@ class WikiLinksInlineProcessor(InlineProcessor):
         if m.group(1).strip():
             base_url, end_url, html_class = self._getMeta()
             label = m.group(1).strip()
+            text = label.split('|')[-1]
+            href = label.split('|')[0].lower().replace(' ', '_')
             if not hasattr(self.md, 'links'):
                 self.md.links = []
-            self.md.links.append(label)
-            url = self.config['build_url'](label, base_url, end_url)
+            self.md.links.append(href)
+            url = self.config['build_url'](href, base_url, end_url)
             a = etree.Element('a')
-            a.text = label.split('|')[-1]
+            a.text = text
             a.set('href', url.lower())
+
             if html_class:
                 a.set('class', html_class)
         else:

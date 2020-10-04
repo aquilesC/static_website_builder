@@ -155,13 +155,12 @@ def main(
     for page, values in pages.items():
         if page.startswith('/'): page = page[1:]
         os.makedirs(os.path.join(out_dir, page), exist_ok=True)
-        print(f'Creating {page}')
         context = {
             'title': values['filename'].replace('_', ' '),
             'content': values['content'],
             'static': 'static',
             'base_url': base_website,
-            'inbound_links': values['links'],
+            'backlinks': values['links'],
             'meta': values['meta'],
             'url': values['url'],
             'page': values,
