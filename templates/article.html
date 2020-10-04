@@ -185,7 +185,7 @@
         <div class="w-full md:w-1/5 bg-white md:shadow-lg px-2 text-center fixed bottom-0 md:pt-8 md:right-0 h-24 md:h-full overflow-x-auto md:overflow-x-hidden md:overflow-y-auto md:border-r-4 md:border-gray-600">
             <div class="md:relative mx-auto ">
                 <h4 class="text-2xl font-serif font-semibold">Backlinks</h4>
-                {% if not page.backlink|length == 0 %}
+                {% if page.backlinks|length == 0 %}
                     <div class="text-sm">Nothing links here, how did you reach this page then?</div>
                 {% else %}
                     <ul class="h-feed list-reset flex flex-row md:flex-col md:mb-1 text-center md:text-left"
