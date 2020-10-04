@@ -10,9 +10,15 @@
     "postcss-cli": "^7.1.1",
     "tailwindcss": "^1.8"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-csso": "^4.0.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "^2.0.0"
+  },
   "scripts": {
-    "build": "npx tailwindcss build css/style.css -o ../static/style.css",
+    "build": "npx tailwindcss build css/style.css -o ./static/style.css && gulp",
     "develop": "postcss css/style.css -o ../static/style.css",
     "watch": "postcss css/style.css -o ../static/style.css --watch"
   },
