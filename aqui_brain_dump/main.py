@@ -15,7 +15,7 @@ THIS_DIR = os.getcwd()
 
 
 def main(
-        base_website="https://www.aquiles.me",
+        base_website="http://localhost:8000",
         content_dir='content',
         output_dir='output',
         static_dir='static',
@@ -121,7 +121,7 @@ def main(
                     'content': content,
                     'meta': post.metadata,
                     'filename': filename,
-                    'url': base_website+'/' if index_page.startswith(filename) else base_website+page_url,
+                    'url': base_website+'/' if index_page.startswith(filename) else base_website+page_url+'/',
                     'last_mod': time.strftime('%Y-%m-%d', time.localtime(os.stat(os.path.join(cur_dir, file)).st_mtime)),
                     'creation_date': creation_dates.get(page_url, 'None'),
                     'links': md.links,
