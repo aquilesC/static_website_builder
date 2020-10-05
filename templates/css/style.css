@@ -20,6 +20,10 @@ a {
     @apply shadow-link no-underline;
 }
 
+a:hover {
+    @apply shadow-linkhover no-underline;
+}
+
 ul {
     @apply ml-6 mb-10 list-disc;
 }
@@ -35,10 +39,11 @@ img {
 @tailwind components;
 
 .btn-blue {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
 }
+
 .btn-blue:hover {
-  @apply bg-blue-700;
+    @apply bg-blue-700;
 }
 
 @tailwind utilities;
@@ -47,57 +52,48 @@ a.wikilink {
     @apply no-underline shadow-wikilink;
 }
 
+a.wikilink:hover {
+    @apply shadow-wikihover;
+}
+
 .admonition {
     @apply m-2 shadow-sm;
 }
 
-@screen md{
-    .admonition {
-        @apply m-10;
-    }
-    p, ul {
-        @apply text-base;
-    }
-}
-
-@screen lg{
-    p, ul {
-        @apply text-lg;
-    }
-}
 .admonition.note {
     @apply border-solid border-gray-200 border shadow-lg rounded-md;
 }
 
-.admonition.note .admonition-title{
+.admonition.note .admonition-title {
     @apply py-2 pl-4 font-bold text-xl border-b-2 border-gray-300;
 }
 
-.admonition.note p{
+.admonition.note p {
     @apply py-4 px-8;
 }
 
 
-.admonition.image p{
+.admonition.image p {
     @apply mt-5;
 }
-.admonition.image{
+
+.admonition.image {
     @apply mx-auto;
 }
 
-.admonition.image .admonition-title{
+.admonition.image .admonition-title {
     @apply invisible;
 }
 
-.admonition.image.small{
+.admonition.image.small {
     @apply max-w-sm;
 }
 
-.admonition.image.medium{
+.admonition.image.medium {
     @apply max-w-md;
 }
 
-.footnote{
+.footnote {
     @apply mt-4;
 }
 
