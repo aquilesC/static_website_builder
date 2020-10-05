@@ -131,7 +131,7 @@ def main(
                             backlinks=[],
                             meta={},
                             filename='',
-                            url='',
+                            url=base_website + link,
                             last_mod=None,
                             creation_date=None,
                             description='',
@@ -165,13 +165,18 @@ def main(
             continue
 
         with open(os.path.join(out_dir, page, 'index.html'), 'w') as out_file:
-            out_file.write(template_article.render(context))
+            try:
+                out_file.write(template_article.render(context))
+            except UnicodeEncodeError as e:
+                print(f'Problem creating page for {page}')
 
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sitemap.xml'), 'r') as f:
         template = Template(f.read())
 
     with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
         f.write(template.render({'pages': pages}))
+
+
 
 
 if __name__ == '__main__':
