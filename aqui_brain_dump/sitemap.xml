@@ -4,7 +4,7 @@
     {% for page, values in pages.items() %}
         <url>
             <loc>{{ values["url"] }}</loc>
-            {% if values["last_mod"] %}
+            {% if values["last_mod"] != "None" %}
                 <lastmod>{{ values["last_mod"] }}</lastmod>
             {% endif %}
             <changefreq>monthly</changefreq>
