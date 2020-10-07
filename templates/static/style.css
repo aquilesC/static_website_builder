@@ -1997,6 +1997,10 @@ img {
   border-top-width: 4px;
 }
 
+.border-l-8 {
+  border-left-width: 8px;
+}
+
 .block {
   display: block;
 }
@@ -2023,10 +2027,6 @@ img {
 
 .content-center {
   align-content: center;
-}
-
-.flex-1 {
-  flex: 1 1 0%;
 }
 
 .font-sans {
@@ -2109,22 +2109,23 @@ img {
   margin: 0.5rem;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
-}
-
-.mb-0 {
-  margin-bottom: 0;
-}
-
-.mr-2 {
-  margin-right: 0.5rem;
 }
 
 .mb-2 {
@@ -2169,6 +2170,10 @@ img {
 
 .max-w-full {
   max-width: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
 }
 
 .min-w-0 {
@@ -4968,10 +4973,6 @@ a.wikilink:hover {
     margin-right: auto;
   }
 
-  .md\:mb-2 {
-    margin-bottom: 0.5rem;
-  }
-
   .md\:mt-8 {
     margin-top: 2rem;
   }
@@ -5012,6 +5013,10 @@ a.wikilink:hover {
 
   .md\:w-4\/5 {
     width: 80%;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -6307,6 +6312,10 @@ a.wikilink:hover {
 
   .lg\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .lg\:col-span-1 {

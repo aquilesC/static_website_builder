@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Aquiles Carattino">
-    <meta name="description" content="{{ description }}">
+    {%- if description %}
+        <meta name="description" content="{{ description }}">
+    {% endif %}
+    {%- if 'keywords' in meta.keys() %}
+        <meta name="keywords" content="{{ meta.keywords }}">
+    {% endif %}
     <meta name="generator" content="Aqui Brain Dump">
 
     <title>{{ page.title }} | Aquiles Carattino</title>
@@ -16,6 +21,7 @@
           rel="stylesheet">
 
     <link rel="canonical" href="{{ url }}">
+
 
     <link rel="apple-touch-icon" sizes="180x180" href="/{{ static }}/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/{{ static }}/favicon-32x32.png">
@@ -43,22 +49,16 @@
     <meta name="twitter:description" content="{{ description }}"/>
 </head>
 <body class="bg-white text-gray-800 font-sans leading-normal tracking-normal mx-auto">
-
-{% block main %}
-{% endblock main %}
+<div class="main-block min-h-screen">
+    {% block main %}
+    {% endblock main %}
+</div>
 <div class="flex bg-black text-white p-3 w-full">
     <div class="m-2 p-2 inline-block text-center">&copy; 2020 Aquiles Carattino</div>
     <div class="m-2 p-2 inline-block text-center"><a class="wikilink" href="/privacy_policy">Privacy Policy</a></div>
-    <div class="m-2 p-2 inline-block text-center align-middle">
-        <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
-            <img alt="Creative Commons License"
-                 style="border-width:0"
-                 src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"/>
-        </a>
-    </div>
     <div class="m-2 p-2 text-xs inline-block">This
-        work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
-            Attribution-ShareAlike 4.0 International License</a>.
+        work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
     </div>
 </div>
 {% block footer_scripts %}

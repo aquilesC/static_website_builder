@@ -33,11 +33,24 @@
 
                             </div>
                         </div>
-                        {% if 'epistemic' in meta %}
+                        {%- if 'epistemic' in meta %}
                             <div class="flex mt-4 md:mt-8 p-2 min-w-0 border-solid border-l-2 border-orange-200 text-base shadow-md">
                                 <div class="font-strong"><a class="wikilink" href="/epistemic_status">Epistemic
                                     status:</a></div>
                                 <div class="ml-4 font-extrabold">{{ meta.epistemic }}</div>
+                            </div>
+                        {% endif %}
+                        {% if 'status' in meta and meta.status == 'draft' %}
+                            <div class="my-4 border-solid border-l-8 border-orange-200">
+                                <div class="inline-block">
+                                    <svg class="h-6 w-6 color-text-teal-400" xmlns="http://www.w3.org/2000/svg"
+                                         viewBox="0 0 20 20">
+                                        <path d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"/>
+                                    </svg>
+                                </div>
+                                <div class="inline-block text-base"><p>This article is marked as <strong>draft</strong>.
+                                    It is not
+                                    in its final form.</p></div>
                             </div>
                         {% endif %}
                         <div class="e-content mt-6 md:text-xl lg:text-2xl">
@@ -153,16 +166,15 @@
                         {% if page.backlinks|length == 0 %}
                             <div class="font-strong">Nothing links here, how did you reach this page then?</div>
                         {% else %}
-                            <ul class="h-feed list-reset"
-                                style="list-style: none">
+                            <div class="h-feed grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                                 {% for link in page.backlinks %}
-                                    <li class="h-entry mr-2 mb-0 flex-1 md:mb-2">
+                                    <div class="h-entry col m-4 bg-gray-200">
                                         <a href="{{ link.url }}"
                                            class="wikilink text-sm shadow-none block py-1 md:py-1 pl-1 align-middle">{{ link.title }}
                                         </a>
-                                    </li>
+                                    </div>
                                 {% endfor %}
-                            </ul>
+                            </div>
                         {% endif %}
                     </div>
                     <div class="comments mt-10">
@@ -175,17 +187,19 @@
                                 async></script>
                     </div>
                 {% else %}
-                    <h1>{{ title }}</h1>
-                    <p>This element has no content, which means it was automatically created because something else
-                        links here. If you want to learn more about how this website works, head to
-                        the <a class="wikilink" href="{{ base_url }}/about">about page</a>.
-                    </p>
-                    <p class="font-strong mb-4">These other pages link here:</p>
-                    <ul class="h-feed">
-                        {% for link in page.backlinks %}
-                            <li class="h-entry"><a class="wikilink" href="{{ link.url }}">{{ link.title }}</a></li>
-                        {% endfor %}
-                    </ul>
+                    <div class="md:text-xl lg:text-2xl">
+                        <h1>{{ title }}</h1>
+                        <p>This element has no content, which means it was automatically created because something else
+                            links here. If you want to learn more about how this website works, head to
+                            the <a class="wikilink" href="{{ base_url }}/about">about page</a>.
+                        </p>
+                        <p class="font-strong mb-4">These other pages link here:</p>
+                        <ul class="h-feed">
+                            {% for link in page.backlinks %}
+                                <li class="h-entry"><a class="wikilink" href="{{ link.url }}">{{ link.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 {% endif %}
             {% endblock content %}
         </div>
