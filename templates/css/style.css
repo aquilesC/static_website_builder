@@ -1,19 +1,27 @@
 @tailwind base;
 
 h1 {
-    @apply break-normal text-5xl mb-10 mt-1 font-head leading-none;
+    @apply break-normal text-5xl mb-10 font-head leading-tight;
 }
 
 h2 {
-    @apply break-normal text-4xl mb-2 mt-1 font-head;
+    @apply break-normal text-4xl mb-3 mt-6 font-head leading-tight;
 }
 
 h3 {
-    @apply break-normal text-3xl mb-2 mt-1 font-head;
+    @apply break-normal text-3xl mb-2 mt-6 font-head leading-tight;
 }
 
 h4 {
-    @apply break-normal text-2xl mb-2 my-1 font-head;
+    @apply break-normal text-xl mb-1 my-3 font-head leading-tight;
+}
+
+p {
+    @apply mb-4;
+}
+
+strong {
+    @apply font-strong;
 }
 
 a {
@@ -49,7 +57,7 @@ img {
 @tailwind utilities;
 
 a.wikilink {
-    @apply no-underline shadow-wikilink;
+    @apply no-underline shadow-wikilink transition duration-300 ease-in-out;
 }
 
 a.wikilink:hover {
@@ -82,7 +90,7 @@ a.wikilink:hover {
 }
 
 .admonition.image .admonition-title {
-    @apply invisible;
+    @apply invisible w-0 h-0;
 }
 
 .admonition.image.small {
