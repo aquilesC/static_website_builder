@@ -8,11 +8,9 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                serif: ['Playfair Display'],
                 sans: ['geomanistregular'],
                 head: ['geomanistbold'],
                 strong: ['geomanistbook'],
-                brand: ['Raleway'],
             },
             boxShadow: {
                 link: '0 -4px 0 0 rgba(178, 245, 234, .7) inset',
@@ -37,7 +35,5 @@ module.exports = {
         },
     },
     variants: {},
-    plugins: [
-        require('@tailwindcss/typography'),
-    ],
+    plugins: [],
 }
