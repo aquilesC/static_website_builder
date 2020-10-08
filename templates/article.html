@@ -12,7 +12,7 @@
                                     <path d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"/>
                                 </svg>
                                 <p class="text-xs inline">First published:
-                                    <time class="dt-published">{{ page.creation_date }}</time>
+                                    <time class="dt-published">{{ page.creation_date|datetime }}</time>
                                 </p>
                             </div>
                             <div class="mx-2">
@@ -20,7 +20,13 @@
                                     <path d="M6 6V2c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4v4a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8c0-1.1.9-2 2-2h4zm2 0h4a2 2 0 0 1 2 2v4h4V2H8v4zM2 8v10h10V8H2z"/>
                                 </svg>
                                 <p class="text-xs inline">Last Edited:
-                                    <time class="dt-updated">{{ page.last_mod }}</time>
+                                    <time class="dt-updated">{{ page.last_mod|datetime }}</time>
+                                </p>
+                            </div>
+                            <div class="mx-2">
+                                <svg class="h-4 w-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2 4v14h14v-6l2-2v10H0V2h10L8 4H2zm10.3-.3l4 4L8 16H4v-4l8.3-8.3zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"/></svg>
+                                <p class="text-xs inline">Number of edits:
+                                    <time class="dt-updated">{{ page.number_edits }}</time>
                                 </p>
                             </div>
                             <div class="mx-2">
@@ -30,7 +36,6 @@
                                         <path d="M9.26 13a2 2 0 0 1 .01-2.01A3 3 0 0 0 9 5H5a3 3 0 0 0 0 6h.08a6.06 6.06 0 0 0 0 2H5A5 5 0 0 1 5 3h4a5 5 0 0 1 .26 10zm1.48-6a2 2 0 0 1-.01 2.01A3 3 0 0 0 11 15h4a3 3 0 0 0 0-6h-.08a6.06 6.06 0 0 0 0-2H15a5 5 0 0 1 0 10h-4a5 5 0 0 1-.26-10z"/>
                                     </svg>
                                 </a>
-
                             </div>
                         </div>
                         {%- if 'epistemic' in meta %}

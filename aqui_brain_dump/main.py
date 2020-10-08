@@ -1,7 +1,5 @@
 import codecs
-import subprocess
 import sys
-import time
 from distutils.dir_util import copy_tree
 from shutil import copyfile
 import frontmatter
@@ -11,9 +9,16 @@ import os
 from bs4 import BeautifulSoup
 
 from aqui_brain_dump.backlinks_wikilinks import WikiLinkExtension
-from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date
+from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date, get_number_commits
 
 THIS_DIR = os.getcwd()
+
+
+def datetimeformat(value, format='%Y-%m-%d'):
+    try:
+        return value.strftime(format)
+    except AttributeError:
+        return value
 
 
 def main(
@@ -35,6 +40,7 @@ def main(
 
     creation_dates = get_creation_date(content_dir)
     modification_dates = get_last_modification_date(content_dir)
+    number_of_edits = get_number_commits(content_dir)
 
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
@@ -116,6 +122,7 @@ def main(
                     'url': base_website+'/' if index_page.startswith(filename) else base_website+page_url+'/',
                     'last_mod': modification_dates.get(page_url, 'None'),
                     'creation_date': creation_dates.get(page_url, 'None'),
+                    'number_edits': number_of_edits.get(page_url, 'None'),
                     'links': md.links,
                     'backlinks': [],
                     'title': title
@@ -141,6 +148,8 @@ def main(
                         pages[link]['backlinks'].append(pages[page_url])
 
     env = Environment(loader=FileSystemLoader(template_dir))
+    env.filters['datetime'] = datetimeformat
+
     template_article = env.get_template('article.html')
     template_index = env.get_template('index.html')
 

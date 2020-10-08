@@ -1,4 +1,7 @@
 import subprocess
+from collections import Counter
+from datetime import datetime
+from pathlib import Path
 
 
 def get_creation_date(content_dir):
@@ -18,7 +21,10 @@ def get_creation_date(content_dir):
                 page_url = line.strip(content_dir).strip('.md').lower()
                 page_url = page_url.replace(' ', '_')
 
-                creation_dates[page_url] = date
+                try:
+                    creation_dates[page_url] = datetime.strptime(date, '%Y-%m-%d %H:%M:%S %z')
+                except ValueError:
+                    creation_dates[page_url] = date
 
     return creation_dates
 
@@ -40,7 +46,25 @@ def get_last_modification_date(content_dir):
                     line = line[1:]
                 page_url = line.strip(content_dir).strip('.md').lower()
                 page_url = page_url.replace(' ', '_')
-
-                modification_dates[page_url] = date
+                try:
+                    modification_dates[page_url] = datetime.strptime(date, '%Y-%m-%d %H:%M:%S %z')
+                except ValueError:
+                    modification_dates[page_url] = date
 
     return modification_dates
+
+def get_number_commits(content_dir):
+    command = [
+        'git',
+        'log',
+        '--name-only',
+        '--pretty=format:',
+        content_dir,
+    ]
+    result = subprocess.run(command,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
+
+    result = [r.strip(content_dir).strip('.md').lower().replace(' ', '_') for r in result.stdout.decode('utf-8').split('\n') if r.endswith('.md')]
+    edits = Counter(result)
+    return edits
