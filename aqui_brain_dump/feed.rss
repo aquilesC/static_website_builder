@@ -19,6 +19,7 @@
       <height>144</height>
       </image>
       {% for page, values in pages.items() %}
+      {% if values['content'] != None %}
       <item>
          <title>{{ values['title'] }}</title>
          <author>Aquiles Carattino</author>
@@ -37,6 +38,7 @@
             {% endif %}
          <guid isPermaLink="true">{{ values["url"] }}</guid>
       </item>
+      {% endif %}
       {% endfor %}
    </channel>
 </rss>
