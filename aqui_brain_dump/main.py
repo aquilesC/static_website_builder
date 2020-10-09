@@ -183,7 +183,7 @@ def main(
 
     min_number_edits = min(number_of_edits.values())
     max_number_edits = max(number_of_edits.values())
-    today = datetime.now()
+    today = datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
     env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
     env.filters['datetime'] = datetimeformat
     sitemap = env.get_template('sitemap.xml')
