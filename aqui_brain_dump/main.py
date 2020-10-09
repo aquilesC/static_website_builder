@@ -1,5 +1,6 @@
 import codecs
 import sys
+from datetime import datetime
 from distutils.dir_util import copy_tree
 from shutil import copyfile
 import frontmatter
@@ -182,6 +183,7 @@ def main(
 
     min_number_edits = min(number_of_edits.values())
     max_number_edits = max(number_of_edits.values())
+    today = datetime.now()
     env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
     env.filters['datetime'] = datetimeformat
     sitemap = env.get_template('sitemap.xml')
@@ -189,8 +191,16 @@ def main(
         f.write(sitemap.render(
             {'pages': pages,
              'min_edits': min_number_edits,
-             'max_edits': max_number_edits}))
+             'max_edits': max_number_edits,
+             'today': today}))
 
+    rss_feed = env.get_template('feed.rss')
+    with open(os.path.join(out_dir, 'feed.rss'), 'w') as f:
+        f.write(rss_feed.render(
+            {'pages': pages,
+             'min_edits': min_number_edits,
+             'max_edits': max_number_edits,
+             'today': today}))
 
 if __name__ == '__main__':
     main()

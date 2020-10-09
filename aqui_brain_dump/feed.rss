@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+   <channel>
+      <title>Aquiles Carattino Corner of the Internet</title>
+      <link>https://www.aquiles.me/</link>
+      <description>Digital garden with notes about whatever I find interesting and think about</description>
+      <language>en-us</language>
+      <lastBuildDate>{{ today }}</lastBuildDate>
+      <docs>https://www.rssboard.org/rss-specification</docs>
+      <category>Personal Website</category>
+      <generator>Aqui brain Dump</generator>
+      <managingEditor>het@aquiles.me</managingEditor>
+      <webMaster>hey@aquiles.me</webMaster>
+      <image>
+      <url>https://www.aquiles.me/static/aquiles_square_small.jpg</url>
+      <title>Aquiles Carattino</title>
+      <link>https://www.aquiles.me</link>
+      <width>144</width>
+      <height>144</height>
+      </image>
+      {% for page, values in pages.items() %}
+      <item>
+         <title>{{ values['title'] }}</title>
+         <author>Aquiles Carattino</author>
+         <link>{{ values['url'] }}</link>
+         {% if "topics" in values %}
+         {% for topic in values["topics"] %}
+         <category>{{ topic }}</category>
+         {% endfor %}
+         {% endif %}
+         <description>{{ values['description'] }}</description>
+         <content>{{ values["content"] }}</content>
+         {%- if values["last_mod"] != 'None' %}
+                <pubDate>{{ values["last_mod"]|datetime() }}</pubDate>
+            {% elif values["creation_date"] != 'None' %}
+                <pubDate>{{ values["creation_date"]|datetime() }}</pubDate>
+            {% endif %}
+         <guid isPermaLink="true">{{ values["url"] }}</guid>
+      </item>
+      {% endfor %}
+   </channel>
+</rss>
