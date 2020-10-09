@@ -14,7 +14,7 @@
       <image>
           <url>https://www.aquiles.me/static/aquiles_square_small.jpg</url>
           <title>Aquiles Carattino</title>
-          <link>https://www.aquiles.me</link>
+          <link>https://www.aquiles.me/</link>
           <width>144</width>
           <height>144</height>
       </image>
@@ -25,12 +25,12 @@
          <title>{{ values['title'] }}</title>
          <author>hey@aquiles.me (Aquiles Carattino)</author>
          <link>{{ values['url'] }}</link>
-         {%- if "topics" in values -%}
-         {%- for topic in values["topics"] -%}
+         {% if "topics" in values -%}
+         {% for topic in values["topics"] -%}
          <category>{{ topic }}</category>
          {% endfor -%}
          {% endif -%}
-         {%- if values['description'] != '' %}
+         {% if values['description'] != '' %}
              <description>{{ values['description'] }}</description>
          {% endif -%}
          <content:encoded><![CDATA[
