@@ -37,7 +37,6 @@ def main(
     static_dir = os.path.abspath(os.path.join(THIS_DIR, static_dir))
     template_dir = os.path.abspath(os.path.join(THIS_DIR, template_dir))
 
-
     creation_dates = get_creation_date(content_dir)
     modification_dates = get_last_modification_date(content_dir)
     number_of_edits = get_number_commits(content_dir)
@@ -90,8 +89,9 @@ def main(
                     meta={},
                     filename='',
                     url='',
-                    last_mod=None,
-                    creation_date=None,
+                    last_mod='None',
+                    creation_date='None',
+                    number_of_edits='None',
                     description='',
                     title='',
                 )
@@ -139,8 +139,9 @@ def main(
                             meta={},
                             filename='',
                             url=base_website + link,
-                            last_mod=None,
-                            creation_date=None,
+                            last_mod='None',
+                            creation_date='None',
+                            number_edits='None',
                             description='',
                             title='',
                         )
@@ -179,13 +180,16 @@ def main(
             except UnicodeEncodeError as e:
                 print(f'Problem creating page for {page}')
 
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sitemap.xml'), 'r') as f:
-        template = Template(f.read())
-
+    min_number_edits = min(number_of_edits.values())
+    max_number_edits = max(number_of_edits.values())
+    env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+    env.filters['datetime'] = datetimeformat
+    sitemap = env.get_template('sitemap.xml')
     with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
-        f.write(template.render({'pages': pages}))
-
-
+        f.write(sitemap.render(
+            {'pages': pages,
+             'min_edits': min_number_edits,
+             'max_edits': max_number_edits}))
 
 
 if __name__ == '__main__':
