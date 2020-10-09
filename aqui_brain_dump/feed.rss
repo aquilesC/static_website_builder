@@ -30,7 +30,9 @@
          <category>{{ topic }}</category>
          {% endfor -%}
          {% endif -%}
-         <description>{{ values['description'] }}</description>
+         {%- if values['description'] != '' %}
+             <description>{{ values['description'] }}</description>
+         {% endif -%}
          <content:encoded><![CDATA[
             {{ values["content"] }}
          ]]></content:encoded>
