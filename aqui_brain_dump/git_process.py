@@ -1,7 +1,6 @@
 import subprocess
 from collections import Counter
 from datetime import datetime
-from pathlib import Path
 
 
 def get_creation_date(content_dir):
@@ -12,19 +11,16 @@ def get_creation_date(content_dir):
     creation_dates = {}
     date = 0
     for line in result:
-        if line.startswith('"'):
-            date = line.strip('"')
+        line = line.strip('"')
+        if len(line) and line[0].isdigit():
+            date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
         else:
             if line.endswith('.md'):
                 if line.startswith('/'):
                     line = line[1:]
                 page_url = line.strip(content_dir).strip('.md').lower()
                 page_url = page_url.replace(' ', '_')
-
-                try:
-                    creation_dates[page_url] = datetime.strptime(date, '%Y-%m-%d %H:%M:%S %z')
-                except ValueError:
-                    creation_dates[page_url] = date
+                creation_dates[page_url] = date
 
     return creation_dates
 
@@ -38,20 +34,19 @@ def get_last_modification_date(content_dir):
     modification_dates = {}
     date = 0
     for line in result:
-        if line.startswith('"'):
-            date = line.strip('"')
+        line = line.strip('"')
+        if len(line) and line[0].isdigit():
+            date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
         else:
             if line.endswith('.md'):
                 if line.startswith('/'):
                     line = line[1:]
                 page_url = line.strip(content_dir).strip('.md').lower()
                 page_url = page_url.replace(' ', '_')
-                try:
-                    modification_dates[page_url] = datetime.strptime(date, '%Y-%m-%d %H:%M:%S %z')
-                except ValueError:
-                    modification_dates[page_url] = date
+                modification_dates[page_url] = date
 
     return modification_dates
+
 
 def get_number_commits(content_dir):
     command = [
