@@ -13,10 +13,7 @@
     <meta name="generator" content="Aqui Brain Dump">
 
     <title>{{ page.title }} | Aquiles Carattino</title>
-    <link href="{{ base_url }}/{{ static }}/fonts.css" rel="stylesheet">
-    <link href="{{ base_url }}/{{ static }}/style.min.css" rel="stylesheet">
-    <link href="{{ base_url }}/{{ static }}/prism.css" rel="stylesheet" data-noprefix>
-    <script src="{{ base_url }}/{{ static }}/prism.js"></script>
+    <link href="{{ base_url }}/{{ static }}/bundle.min.css" rel="stylesheet">
 
     <link rel="canonical" href="{{ url }}">
     <link rel="apple-touch-icon" sizes="180x180" href="/{{ static }}/apple-touch-icon.png">
@@ -59,5 +56,7 @@
 </div>
 {% block footer_scripts %}
 {% endblock %}
+<script src="{{ base_url }}/{{ static }}/prism.js"></script>
+
 </body>
 </html>
