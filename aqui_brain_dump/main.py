@@ -1,6 +1,6 @@
 import codecs
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from distutils.dir_util import copy_tree
 from shutil import copyfile
 import frontmatter
@@ -183,7 +183,7 @@ def main(
 
     min_number_edits = min(number_of_edits.values())
     max_number_edits = max(number_of_edits.values())
-    today = datetime.now().strftime('%a, %d %b %Y %H:%M:%S')
+    today = datetime.now(tz=timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %Z')
     env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
     env.filters['datetime'] = datetimeformat
     sitemap = env.get_template('sitemap.xml')
