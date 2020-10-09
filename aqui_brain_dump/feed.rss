@@ -23,7 +23,7 @@
       {% if values['content'] != None -%}
       <item>
          <title>{{ values['title'] }}</title>
-         <author>hey@aquiles.me (Aquiles Carattino)</author>
+         <dc:creator><![CDATA[Aquiles Carattino]]></dc:creator>
          <link>{{ values['url'] }}</link>
          {% if "topics" in values -%}
          {% for topic in values["topics"] -%}
