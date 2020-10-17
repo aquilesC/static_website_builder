@@ -10,6 +10,7 @@ import os
 from bs4 import BeautifulSoup
 
 from aqui_brain_dump.backlinks_wikilinks import WikiLinkExtension
+from aqui_brain_dump.extension_tags import TagExtension
 from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date, get_number_commits
 
 THIS_DIR = os.getcwd()
@@ -53,6 +54,7 @@ def main(
     md = markdown.Markdown(extensions=[
         'meta',
         WikiLinkExtension(),
+        TagExtension(),
         'admonition',
         'markdown_checklist.extension',
         'fenced_code',
