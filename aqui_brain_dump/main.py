@@ -198,6 +198,7 @@ def main(
             except UnicodeEncodeError as e:
                 print(f'Problem creating page for {page}')
 
+
     for tag, values in tags.items():
         # tag = tag.strip('#')
         context = {
@@ -213,12 +214,11 @@ def main(
                 'backlinks': tags[tag],
             }
         }
-        out_dir = os.path.join(out_dir, 'tags', tag.strip('#'))
 
-        if not os.path.isdir(out_dir):
-            os.makedirs(out_dir)
+        tag_dir = os.path.join(tags_dir, tag.strip('#'))
+        os.makedirs(tag_dir, exist_ok=True)
 
-        with open(os.path.join(out_dir, 'index.html'), 'w') as out_file:
+        with open(os.path.join(tag_dir, 'index.html'), 'w') as out_file:
             try:
                 out_file.write(template_article.render(context))
             except UnicodeEncodeError as e:
