@@ -39,12 +39,18 @@ def main(
     static_dir = os.path.abspath(os.path.join(THIS_DIR, static_dir))
     template_dir = os.path.abspath(os.path.join(THIS_DIR, template_dir))
 
+    tags = {}
+
     creation_dates = get_creation_date(content_dir)
     modification_dates = get_last_modification_date(content_dir)
     number_of_edits = get_number_commits(content_dir)
 
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
+
+    tags_dir = os.path.join(out_dir, 'tags')
+    if not os.path.isdir(tags_dir):
+        os.makedirs(tags_dir)
 
     out_static_dir = os.path.join(out_dir, 'static')
     if not os.path.isdir(out_static_dir):
@@ -118,6 +124,7 @@ def main(
                 else:
                     title = ' '.join(page_url.split('_')).strip('/')
 
+
                 pages[page_url].update({
                     'content': content,
                     'meta': post.metadata,
@@ -130,6 +137,14 @@ def main(
                     'backlinks': [],
                     'title': title
                 })
+
+                if len(md.tags):
+                    for tag in md.tags:
+                        if tag not in tags:
+                            tags[tag] = []
+                        tags[tag].append(pages[page_url])
+
+
 
                 for link in md.links:
                     link = link.replace(' ', '_').lower()
@@ -178,6 +193,32 @@ def main(
             continue
 
         with open(os.path.join(out_dir, page, 'index.html'), 'w') as out_file:
+            try:
+                out_file.write(template_article.render(context))
+            except UnicodeEncodeError as e:
+                print(f'Problem creating page for {page}')
+
+    for tag, values in tags.items():
+        # tag = tag.strip('#')
+        context = {
+            'title': tag,
+            'backlinks': tags[tag],
+            'static': 'static',
+            'meta': {
+                'title': 'Tag: ' + tag,
+                'description': 'Articles containing the tag ' + tag
+            },
+            'page': {
+                'content': None,
+                'backlinks': tags[tag],
+            }
+        }
+        out_dir = os.path.join(out_dir, 'tags', tag.strip('#'))
+
+        if not os.path.isdir(out_dir):
+            os.makedirs(out_dir)
+
+        with open(os.path.join(out_dir, 'index.html'), 'w') as out_file:
             try:
                 out_file.write(template_article.render(context))
             except UnicodeEncodeError as e:

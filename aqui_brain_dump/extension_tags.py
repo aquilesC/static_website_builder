@@ -17,20 +17,19 @@ class TagInlineProcessor(InlineProcessor):
         if m.group(1):
             if not hasattr(self.md, 'tags'):
                 self.md.tags = []
-            self.md.tags.append(m.group(1))
 
+            self.md.tags.append(m.group(1))
             a = etree.Element('a')
             a.text = m[0]
-            a.set('href', '/tags/{}'.format(m.group(1)))
-            print(m.group(1))
+            a.set('href', '/tags/{}'.format(m.group(1).strip('#')))
             return a, m.start(0), m.end(0)
 
 
 class TagExtension(Extension):
     def extendMarkdown(self, md):
-        md.registerExtension(self)
         self.md = md
-        md.inlinePatterns.register(TagInlineProcessor(TagInlineProcessor.RE_TAGS, md), 'tag', 65)
+        md.registerExtension(self)
+        md.inlinePatterns.register(TagInlineProcessor(TagInlineProcessor.RE_TAGS, md), 'tags', 65)
 
     def reset(self):
         self.md.tags = []
