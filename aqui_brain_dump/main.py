@@ -152,7 +152,7 @@ def main(
             'content': values['content'],
             'static': 'static',
             'base_url': base_website,
-            'backlinks': values['links'],
+            'backlinks': values['backlinks'],
             'meta': values['meta'],
             'url': values['url'],
             'page': values,
@@ -175,8 +175,6 @@ def main(
 
     with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
         f.write(template.render({'pages': pages}))
-
-
 
 
 if __name__ == '__main__':
