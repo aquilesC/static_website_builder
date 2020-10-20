@@ -1,7 +1,6 @@
 import codecs
-import subprocess
 import sys
-import time
+from datetime import datetime, timezone
 from distutils.dir_util import copy_tree
 from shutil import copyfile
 import frontmatter
@@ -11,9 +10,17 @@ import os
 from bs4 import BeautifulSoup
 
 from aqui_brain_dump.backlinks_wikilinks import WikiLinkExtension
-from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date
+from aqui_brain_dump.extension_tags import TagExtension
+from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date, get_number_commits
 
 THIS_DIR = os.getcwd()
+
+
+def datetimeformat(value, format='%Y-%m-%d'):
+    try:
+        return value.strftime(format)
+    except AttributeError:
+        return value
 
 
 def main(
@@ -32,12 +39,18 @@ def main(
     static_dir = os.path.abspath(os.path.join(THIS_DIR, static_dir))
     template_dir = os.path.abspath(os.path.join(THIS_DIR, template_dir))
 
+    tags = {}
 
     creation_dates = get_creation_date(content_dir)
     modification_dates = get_last_modification_date(content_dir)
+    number_of_edits = get_number_commits(content_dir)
 
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
+
+    tags_dir = os.path.join(out_dir, 'tags')
+    if not os.path.isdir(tags_dir):
+        os.makedirs(tags_dir)
 
     out_static_dir = os.path.join(out_dir, 'static')
     if not os.path.isdir(out_static_dir):
@@ -47,6 +60,7 @@ def main(
     md = markdown.Markdown(extensions=[
         'meta',
         WikiLinkExtension(),
+        TagExtension(),
         'admonition',
         'markdown_checklist.extension',
         'fenced_code',
@@ -84,8 +98,9 @@ def main(
                     meta={},
                     filename='',
                     url='',
-                    last_mod=None,
-                    creation_date=None,
+                    last_mod='None',
+                    creation_date='None',
+                    number_of_edits='None',
                     description='',
                     title='',
                 )
@@ -109,6 +124,7 @@ def main(
                 else:
                     title = ' '.join(page_url.split('_')).strip('/')
 
+
                 pages[page_url].update({
                     'content': content,
                     'meta': post.metadata,
@@ -116,10 +132,19 @@ def main(
                     'url': base_website+'/' if index_page.startswith(filename) else base_website+page_url+'/',
                     'last_mod': modification_dates.get(page_url, 'None'),
                     'creation_date': creation_dates.get(page_url, 'None'),
+                    'number_edits': number_of_edits.get(page_url, 'None'),
                     'links': md.links,
                     'backlinks': [],
                     'title': title
                 })
+
+                if len(md.tags):
+                    for tag in md.tags:
+                        if tag not in tags:
+                            tags[tag] = []
+                        tags[tag].append(pages[page_url])
+
+
 
                 for link in md.links:
                     link = link.replace(' ', '_').lower()
@@ -132,8 +157,9 @@ def main(
                             meta={},
                             filename='',
                             url=base_website + link,
-                            last_mod=None,
-                            creation_date=None,
+                            last_mod='None',
+                            creation_date='None',
+                            number_edits='None',
                             description='',
                             title='',
                         )
@@ -141,6 +167,8 @@ def main(
                         pages[link]['backlinks'].append(pages[page_url])
 
     env = Environment(loader=FileSystemLoader(template_dir))
+    env.filters['datetime'] = datetimeformat
+
     template_article = env.get_template('article.html')
     template_index = env.get_template('index.html')
 
@@ -170,12 +198,52 @@ def main(
             except UnicodeEncodeError as e:
                 print(f'Problem creating page for {page}')
 
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sitemap.xml'), 'r') as f:
-        template = Template(f.read())
 
+    for tag, values in tags.items():
+        # tag = tag.strip('#')
+        context = {
+            'title': tag,
+            'backlinks': tags[tag],
+            'static': 'static',
+            'meta': {
+                'title': 'Tag: ' + tag,
+                'description': 'Articles containing the tag ' + tag
+            },
+            'page': {
+                'content': None,
+                'backlinks': tags[tag],
+            }
+        }
+
+        tag_dir = os.path.join(tags_dir, tag.strip('#'))
+        os.makedirs(tag_dir, exist_ok=True)
+
+        with open(os.path.join(tag_dir, 'index.html'), 'w') as out_file:
+            try:
+                out_file.write(template_article.render(context))
+            except UnicodeEncodeError as e:
+                print(f'Problem creating page for {page}')
+
+    min_number_edits = min(number_of_edits.values())
+    max_number_edits = max(number_of_edits.values())
+    today = datetime.now(tz=timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
+    env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+    env.filters['datetime'] = datetimeformat
+    sitemap = env.get_template('sitemap.xml')
     with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
-        f.write(template.render({'pages': pages}))
+        f.write(sitemap.render(
+            {'pages': pages,
+             'min_edits': min_number_edits,
+             'max_edits': max_number_edits,
+             'today': today}))
 
+    rss_feed = env.get_template('feed.rss')
+    with open(os.path.join(out_dir, 'feed.rss'), 'w') as f:
+        f.write(rss_feed.render(
+            {'pages': pages,
+             'min_edits': min_number_edits,
+             'max_edits': max_number_edits,
+             'today': today}))
 
 if __name__ == '__main__':
     main()

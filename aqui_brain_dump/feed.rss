@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+   <channel>
+      <title>Aquiles Carattino Corner of the Internet</title>
+      <link>https://www.aquiles.me/</link>
+      <description>Digital garden with notes about whatever I find interesting and think about</description>
+      <language>en-us</language>
+      <lastBuildDate>{{- today -}}</lastBuildDate>
+      <docs>https://www.rssboard.org/rss-specification</docs>
+      <category>Personal Website</category>
+      <generator>Aqui brain Dump</generator>
+      <managingEditor>hey@aquiles.me (Aquiles Carattino)</managingEditor>
+      <webMaster>hey@aquiles.me (Aquiles Carattino)</webMaster>
+      <image>
+          <url>https://www.aquiles.me/static/aquiles_square_small.jpg</url>
+          <title>Aquiles Carattino</title>
+          <link>https://www.aquiles.me/</link>
+          <width>144</width>
+          <height>144</height>
+      </image>
+
+      {% for page, values in pages.items() -%}
+      {% if values['content'] != None -%}
+      <item>
+         <title>{{ values['title'] }}</title>
+         <dc:creator><![CDATA[Aquiles Carattino]]></dc:creator>
+         <link>{{ values['url'] }}</link>
+         {% if "topics" in values -%}
+         {% for topic in values["topics"] -%}
+         <category>{{ topic }}</category>
+         {% endfor -%}
+         {% endif -%}
+         {% if values['description'] != '' %}
+             <description>{{ values['description'] }}</description>
+         {% endif -%}
+         <content:encoded><![CDATA[
+            {{ values["content"] }}
+         ]]></content:encoded>
+         {%- if values["last_mod"] != 'None' %}
+                <pubDate>{{ values["last_mod"]|datetime('%a, %d %b %Y %H:%M:%S %z') }}</pubDate>
+            {% elif values["creation_date"] != 'None' %}
+                <pubDate>{{ values["creation_date"]|datetime('%a, %d %b %Y %H:%M:%S %z') }}</pubDate>
+            {% endif %}
+         <guid isPermaLink="false">{{ values["url"] }}{{ values['number_edits'] }}</guid>
+      </item>
+      {% endif -%}
+      {% endfor -%}
+   </channel>
+</rss>

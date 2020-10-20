@@ -1,23 +1,35 @@
 @tailwind base;
 
 h1 {
-    @apply break-normal text-5xl mb-10 mt-1 font-head leading-none;
+    @apply break-normal text-5xl mb-10 font-head leading-tight;
 }
 
 h2 {
-    @apply break-normal text-4xl mb-2 mt-1 font-head;
+    @apply break-normal text-4xl mb-3 mt-6 font-head leading-tight;
 }
 
 h3 {
-    @apply break-normal text-3xl mb-2 mt-1 font-head;
+    @apply break-normal text-3xl mb-2 mt-6 font-head leading-tight;
 }
 
 h4 {
-    @apply break-normal text-2xl mb-2 my-1 font-head;
+    @apply break-normal text-xl mb-1 my-3 font-head leading-tight;
+}
+
+p {
+    @apply mb-4;
+}
+
+strong {
+    @apply font-strong;
 }
 
 a {
     @apply shadow-link no-underline;
+}
+
+a:hover {
+    @apply shadow-linkhover no-underline;
 }
 
 ul {
@@ -35,69 +47,61 @@ img {
 @tailwind components;
 
 .btn-blue {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
 }
+
 .btn-blue:hover {
-  @apply bg-blue-700;
+    @apply bg-blue-700;
 }
 
 @tailwind utilities;
 
 a.wikilink {
-    @apply no-underline shadow-wikilink;
+    @apply no-underline shadow-wikilink transition duration-300 ease-in-out;
+}
+
+a.wikilink:hover {
+    @apply shadow-wikihover;
 }
 
 .admonition {
     @apply m-2 shadow-sm;
 }
 
-@screen md{
-    .admonition {
-        @apply m-10;
-    }
-    p, ul {
-        @apply text-base;
-    }
-}
-
-@screen lg{
-    p, ul {
-        @apply text-lg;
-    }
-}
 .admonition.note {
     @apply border-solid border-gray-200 border shadow-lg rounded-md;
 }
 
-.admonition.note .admonition-title{
+.admonition.note .admonition-title {
     @apply py-2 pl-4 font-bold text-xl border-b-2 border-gray-300;
 }
 
-.admonition.note p{
+.admonition.note p {
     @apply py-4 px-8;
 }
 
 
-.admonition.image p{
+.admonition.image p {
     @apply mt-5;
 }
-.admonition.image{
+
+.admonition.image {
     @apply mx-auto;
 }
 
-.admonition.image .admonition-title{
-    @apply invisible;
+.admonition.image .admonition-title {
+    @apply invisible w-0 h-0;
 }
 
-.admonition.image.small{
+.admonition.image.small {
     @apply max-w-sm;
 }
 
-.admonition.image.medium{
+.admonition.image.medium {
     @apply max-w-md;
 }
 
-.footnote{
+.footnote {
     @apply mt-4;
 }
 
