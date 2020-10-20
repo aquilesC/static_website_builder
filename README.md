@@ -1,6 +1,6 @@
 # Static Website Builder
 
-This is a very simple static website builder, which I use for building [aquiles.me](aquiles.me). The idea is to grab a bunch of markdown files and render them as HTML files. 
+This is a very simple static website builder, which I use for building [aquiles.me](https://www.aquiles.me). The idea is to grab a bunch of markdown files and render them as HTML files. 
 
 Building from scratch was easier than trying to adjust existing solutions to my own needs. I a releasing this package mostly to help others learn. 
 
