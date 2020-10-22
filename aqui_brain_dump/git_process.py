@@ -2,7 +2,7 @@ import subprocess
 from collections import Counter
 from datetime import datetime
 
-import json
+
 def myconverter(o):
     if isinstance(o, datetime):
         return o.__str__()
@@ -50,7 +50,6 @@ def get_last_modification_date(content_dir):
                 if page_url not in modification_dates or date > modification_dates[page_url]:
                     modification_dates[page_url] = date
 
-    # json.dump(modification_dates, open('dates.json', 'w'), default=myconverter)
     return modification_dates
 
 
