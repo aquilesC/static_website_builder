@@ -180,7 +180,7 @@ def main(
             'content': values['content'],
             'static': 'static',
             'base_url': base_website,
-            'backlinks': values['links'],
+            'backlinks': values['backlinks'],
             'meta': values['meta'],
             'url': values['url'],
             'page': values,
