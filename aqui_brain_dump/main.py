@@ -103,6 +103,7 @@ def main(
                     number_of_edits='None',
                     description='',
                     title='',
+                    backlinks=[],
                 )
 
             with codecs.open(os.path.join(cur_dir, file), 'r', encoding='utf-8') as f:
@@ -134,7 +135,6 @@ def main(
                     'creation_date': creation_dates.get(page_url, 'None'),
                     'number_edits': number_of_edits.get(page_url, 'None'),
                     'links': md.links,
-                    'backlinks': [],
                     'title': title
                 })
 
