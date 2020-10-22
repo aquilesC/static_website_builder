@@ -2,6 +2,10 @@ import subprocess
 from collections import Counter
 from datetime import datetime
 
+import json
+def myconverter(o):
+    if isinstance(o, datetime):
+        return o.__str__()
 
 def get_creation_date(content_dir):
     result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', content_dir],
@@ -43,8 +47,10 @@ def get_last_modification_date(content_dir):
                     line = line[1:]
                 page_url = line.strip(content_dir).strip('.md').lower()
                 page_url = page_url.replace(' ', '_')
-                modification_dates[page_url] = date
+                if page_url not in modification_dates or date > modification_dates[page_url]:
+                    modification_dates[page_url] = date
 
+    # json.dump(modification_dates, open('dates.json', 'w'), default=myconverter)
     return modification_dates
 
 
