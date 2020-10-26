@@ -224,8 +224,12 @@ def main(
             except UnicodeEncodeError as e:
                 print(f'Problem creating page for {page}')
 
-    min_number_edits = min(number_of_edits.values())
-    max_number_edits = max(number_of_edits.values())
+    try:
+        min_number_edits = min(number_of_edits.values())
+        max_number_edits = max(number_of_edits.values())
+    except:
+        min_number_edits = 1
+        max_number_edits = 10
     today = datetime.now(tz=timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
     env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
     env.filters['datetime'] = datetimeformat
