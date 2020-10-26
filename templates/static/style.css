@@ -487,10 +487,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #a0aec0;
 }
 
-input::-ms-input-placeholder, textarea::-ms-input-placeholder {
-  color: #a0aec0;
-}
-
 input::placeholder,
 textarea::placeholder {
   color: #a0aec0;
@@ -630,6 +626,11 @@ h4 {
   line-height: 1.25;
 }
 
+h5 {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
 p {
   margin-bottom: 1rem;
 }
@@ -655,7 +656,7 @@ ul {
 }
 
 li {
-  margin-bottom: 0.75rem
+  margin-bottom: 0.25rem;
 }
 
 img {
@@ -735,6 +736,12 @@ img {
   background-color: rgba(237, 242, 247, var(--bg-opacity));
 }
 
+.bg-green-200 {
+  --bg-opacity: 1;
+  background-color: #c6f6d5;
+  background-color: rgba(198, 246, 213, var(--bg-opacity));
+}
+
 .bg-blue-100 {
   --bg-opacity: 1;
   background-color: #ebf8ff;
@@ -751,14 +758,28 @@ img {
   border-color: rgba(254, 235, 200, var(--border-opacity));
 }
 
+.border-green-900 {
+  --border-opacity: 1;
+  border-color: #22543d;
+  border-color: rgba(34, 84, 61, var(--border-opacity));
+}
+
 .border-teal-400 {
   --border-opacity: 1;
   border-color: #4fd1c5;
   border-color: rgba(79, 209, 197, var(--border-opacity));
 }
 
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
 .border-solid {
   border-style: solid;
+}
+
+.border-b-2 {
+  border-bottom-width: 2px;
 }
 
 .border-l-2 {
@@ -815,6 +836,10 @@ img {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 .font-extrabold {
@@ -973,6 +998,11 @@ img {
   padding-bottom: 0.25rem;
 }
 
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -1004,6 +1034,10 @@ img {
 
 .shadow-lg {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-inner {
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
 }
 
 .shadow-none {
@@ -1272,6 +1306,10 @@ a.wikilink:hover {
     border-radius: 0.25rem;
   }
 
+  .md\:flex {
+    display: flex;
+  }
+
   .md\:text-xl {
     font-size: 1.25rem;
   }
@@ -1287,6 +1325,10 @@ a.wikilink:hover {
   .md\:mx-auto {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .md\:mt-0 {
+    margin-top: 0;
   }
 
   .md\:mt-8 {
@@ -1314,11 +1356,6 @@ a.wikilink:hover {
     padding-bottom: 0.25rem;
   }
 
-  .md\:px-12 {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-
   .md\:pl-8 {
     padding-left: 2rem;
   }
@@ -1329,6 +1366,10 @@ a.wikilink:hover {
 
   .md\:w-4\/5 {
     width: 80%;
+  }
+
+  .md\:w-1\/6 {
+    width: 16.666667%;
   }
 
   .md\:grid-cols-2 {
@@ -1369,11 +1410,6 @@ a.wikilink:hover {
     font-size: 1.5rem;
   }
 
-  .lg\:mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .lg\:mt-12 {
     margin-top: 3rem;
   }
@@ -1382,8 +1418,8 @@ a.wikilink:hover {
     max-width: 1024px;
   }
 
-  .lg\:p-10 {
-    padding: 2.5rem;
+  .lg\:p-4 {
+    padding: 1rem;
   }
 
   .lg\:pl-6 {
@@ -1442,5 +1478,9 @@ a.wikilink:hover {
 
   .xl\:mt-16 {
     margin-top: 4rem;
+  }
+
+  .xl\:max-w-screen-xl {
+    max-width: 1280px;
   }
 }
