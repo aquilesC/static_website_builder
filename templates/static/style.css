@@ -1243,6 +1243,28 @@ a.wikilink:hover {
   font-size: 0.875rem;
 }
 
+.tooltip .tooltiptext {
+  visibility: hidden;
+  padding: 1rem;
+  position: absolute;
+  z-index: 50;
+  display: inline-block;
+  margin-left: 1rem;
+  font-size: 0.875rem;
+  width: 50%;
+  border-radius: 0.5rem;
+  --bg-opacity: 1;
+  background-color: #4a5568;
+  background-color: rgba(74, 85, 104, var(--bg-opacity));
+  --text-opacity: 1;
+  color: #fff;
+  color: rgba(255, 255, 255, var(--text-opacity));
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

@@ -112,3 +112,11 @@ a.wikilink:hover {
 .footnote p {
     @apply text-sm;
 }
+
+.tooltip .tooltiptext {
+  @apply invisible p-4 absolute z-50 inline-block ml-4 text-sm w-1/2 rounded-lg bg-gray-700 text-white;
+}
+
+.tooltip:hover .tooltiptext {
+  @apply visible;
+}

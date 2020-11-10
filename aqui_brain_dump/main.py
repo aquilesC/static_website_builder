@@ -10,8 +10,10 @@ import os
 from bs4 import BeautifulSoup
 
 from aqui_brain_dump.backlinks_wikilinks import WikiLinkExtension
+from aqui_brain_dump.extension_citations import CitationExtension
 from aqui_brain_dump.extension_tags import TagExtension
 from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date, get_number_commits
+from aqui_brain_dump.parse_bibliography import parse_bibliography
 
 THIS_DIR = os.getcwd()
 
@@ -30,6 +32,7 @@ def main(
         static_dir='static',
         template_dir='templates',
         index_page='index.md',
+        bibliography_file='citation_library.json',
 ):
     if len(sys.argv) > 1:
         base_website = sys.argv[1]
@@ -44,6 +47,9 @@ def main(
     creation_dates = get_creation_date(content_dir)
     modification_dates = get_last_modification_date(content_dir)
     number_of_edits = get_number_commits(content_dir)
+
+    bibliography_file = os.path.join(content_dir, bibliography_file)
+    bibliography = parse_bibliography(bibliography_file)
 
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
@@ -61,6 +67,7 @@ def main(
         'meta',
         WikiLinkExtension(),
         TagExtension(),
+        CitationExtension(bibliography_data=bibliography),
         'admonition',
         'markdown_checklist.extension',
         'fenced_code',
