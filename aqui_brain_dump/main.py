@@ -48,7 +48,7 @@ def main(
     modification_dates = get_last_modification_date(content_dir)
     number_of_edits = get_number_commits(content_dir)
 
-    bibliography_file = os.path.join(content_dir, bibliography_file)
+    # bibliography_file = os.path.join(content_dir, bibliography_file)
     bibliography = parse_bibliography(bibliography_file)
 
     if not os.path.isdir(out_dir):
