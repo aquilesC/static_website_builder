@@ -22,14 +22,12 @@ class CitationInlineProcessor(InlineProcessor):
             self.md.cites.append(cite)
             if cite in self.biblio:
                 a = etree.Element('span')
-                print(dir(a))
                 a.text = m[0]
                 b = etree.Element('span')
                 b.text = self.biblio[cite]['title']
                 b.set('class', 'tooltiptext')
                 a.append(b)
                 a.set('class', 'tooltip')
-                print(m[0])
             else:
                 a = m[0]
             return a, m.start(0), m.end(0)

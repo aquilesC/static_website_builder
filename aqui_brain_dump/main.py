@@ -132,7 +132,6 @@ def main(
                 else:
                     title = ' '.join(page_url.split('_')).strip('/')
 
-
                 pages[page_url].update({
                     'content': content,
                     'meta': post.metadata,
@@ -150,8 +149,6 @@ def main(
                         if tag not in tags:
                             tags[tag] = []
                         tags[tag].append(pages[page_url])
-
-
 
                 for link in md.links:
                     link = link.replace(' ', '_').lower()
@@ -195,16 +192,15 @@ def main(
         context.update(values['meta'])
 
         if index_page.startswith(page):
-            with open(os.path.join(out_dir, 'index.html'), 'w') as out_file:
+            with open(os.path.join(out_dir, 'index.html'), 'w', encoding="utf-8") as out_file:
                 out_file.write(template_index.render(context))
             continue
 
-        with open(os.path.join(out_dir, page, 'index.html'), 'w') as out_file:
+        with open(os.path.join(out_dir, page, 'index.html'), 'w', encoding="utf-8") as out_file:
             try:
                 out_file.write(template_article.render(context))
             except UnicodeEncodeError as e:
                 print(f'Problem creating page for {page}')
-
 
     for tag, values in tags.items():
         # tag = tag.strip('#')
@@ -223,13 +219,17 @@ def main(
         }
 
         tag_dir = os.path.join(tags_dir, tag.strip('#'))
-        os.makedirs(tag_dir, exist_ok=True)
+        try:
+            os.makedirs(tag_dir, exist_ok=True)
+        except OSError as e:
+            print(f'Problem creating tag: {tag.strip("#")}')
+            continue
 
         with open(os.path.join(tag_dir, 'index.html'), 'w') as out_file:
             try:
                 out_file.write(template_article.render(context))
             except UnicodeEncodeError as e:
-                print(f'Problem creating page for {page}')
+                print(f'Problem creating page for {tag.strip("#")}')
 
     try:
         min_number_edits = min(number_of_edits.values())
@@ -241,7 +241,7 @@ def main(
     env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
     env.filters['datetime'] = datetimeformat
     sitemap = env.get_template('sitemap.xml')
-    with open(os.path.join(out_dir, 'sitemap.xml'), 'w') as f:
+    with open(os.path.join(out_dir, 'sitemap.xml'), 'w', encoding='utf-8') as f:
         f.write(sitemap.render(
             {'pages': pages,
              'min_edits': min_number_edits,
@@ -249,12 +249,14 @@ def main(
              'today': today}))
 
     rss_feed = env.get_template('feed.rss')
-    with open(os.path.join(out_dir, 'feed.rss'), 'w') as f:
+    with open(os.path.join(out_dir, 'feed.rss'), 'w', encoding='utf-8') as f:
         f.write(rss_feed.render(
             {'pages': pages,
              'min_edits': min_number_edits,
              'max_edits': max_number_edits,
-             'today': today}))
+             'today': today
+             }))
+
 
 if __name__ == '__main__':
     main()
