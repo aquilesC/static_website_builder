@@ -183,7 +183,9 @@ def main(
     template_index = env.get_template('index.html')
 
     for page, values in pages.items():
-        if page.startswith('/'): page = page[1:]
+        if page.startswith('/'):
+            print(page)
+            page = page[1:]
         os.makedirs(os.path.join(out_dir, page), exist_ok=True)
         context = {
             'title': values['filename'].replace('_', ' '),
