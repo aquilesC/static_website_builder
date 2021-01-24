@@ -100,7 +100,7 @@ def main(
                 copyfile(os.path.join(cur_dir, file), os.path.join(out_dir, sub_dir, file))
                 continue
 
-            if sub_dir:
+            if sub_dir != '':
                 sub_dir = f'/{sub_dir}'
 
             filename = ''.join(file.split('.')[:-1])
