@@ -90,6 +90,8 @@ def main(
         if sub_dir:
             sub_dir = f'/{sub_dir}'
 
+        print(out_dir)
+        print(os.path.join(out_dir, sub_dir))
         os.makedirs(os.path.join(out_dir, sub_dir), exist_ok=True)
 
         for file in dirs[2]:
