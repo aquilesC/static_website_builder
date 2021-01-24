@@ -87,14 +87,16 @@ def main(
         if sub_dir.startswith('.'):
             continue
 
-        if sub_dir:
-            sub_dir = f'/{sub_dir}'
+
 
         for file in dirs[2]:
             if not file.endswith('.md'):
                 os.makedirs(os.path.join(out_dir, sub_dir), exist_ok=True)
                 copyfile(os.path.join(cur_dir, file), os.path.join(out_dir, sub_dir, file))
                 continue
+
+            if sub_dir:
+                sub_dir = f'/{sub_dir}'
 
             filename = ''.join(file.split('.')[:-1])
             page_url = f"{sub_dir}/{filename}".lower()
