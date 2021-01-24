@@ -87,13 +87,7 @@ def main(
         if sub_dir.startswith('.'):
             continue
 
-
-
-        print(out_dir)
-        print(os.path.join(out_dir, sub_dir))
         os.makedirs(os.path.join(out_dir, sub_dir), exist_ok=True)
-
-
 
         for file in dirs[2]:
             if not file.endswith('.md'):
@@ -186,8 +180,8 @@ def main(
 
     for page, values in pages.items():
         while page.startswith('/'):
-            print(page)
             page = page[1:]
+            
         os.makedirs(os.path.join(out_dir, page), exist_ok=True)
         context = {
             'title': values['filename'].replace('_', ' '),
