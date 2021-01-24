@@ -87,8 +87,8 @@ def main(
         if sub_dir.startswith('.'):
             continue
 
-        if sub_dir:
-            sub_dir = f'/{sub_dir}'
+        # if sub_dir:
+        #     sub_dir = f'/{sub_dir}'
 
         for file in dirs[2]:
             if not file.endswith('.md'):
@@ -96,7 +96,7 @@ def main(
                 continue
 
             filename = ''.join(file.split('.')[:-1])
-            page_url = f"{sub_dir}/{filename}".lower()
+            page_url = f"/{sub_dir}/{filename}".lower()
             page_url = page_url.replace(' ', '_')
             if page_url not in pages:
                 pages[page_url] = dict(
