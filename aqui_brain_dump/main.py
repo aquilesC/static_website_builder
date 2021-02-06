@@ -32,6 +32,7 @@ def main(
         static_dir='static',
         template_dir='templates',
         index_page='index.md',
+        not_found='404.md',
         bibliography_file='citation_library.json',
 ):
     if len(sys.argv) > 1:
@@ -198,6 +199,11 @@ def main(
         if index_page.startswith(page):
             with open(os.path.join(out_dir, 'index.html'), 'w', encoding="utf-8") as out_file:
                 out_file.write(template_index.render(context))
+            continue
+
+        if not_found.startswith(page):
+            with open(os.path.join(out_dir, '404.html'), 'w', encoding="utf-8") as out_file:
+                out_file.write(template_article.render(context))
             continue
 
         with open(os.path.join(out_dir, page, 'index.html'), 'w', encoding="utf-8") as out_file:
