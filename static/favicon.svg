@@ -7,15 +7,18 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="20mm"
-   height="20mm"
-   viewBox="0 0 20 20"
+   width="31.999998"
+   height="31.999998"
+   viewBox="0 0 8.4666662 8.4666662"
    version="1.1"
-   id="svg861"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="favicon.svg">
+   id="svg8"
+   inkscape:version="1.0.1 (c497b03c, 2020-09-10)"
+   sodipodi:docname="favicon.svg"
+   inkscape:export-filename="/Users/aquiles/Documents/Web/static_builder/static/favicon.ico.png"
+   inkscape:export-xdpi="780"
+   inkscape:export-ydpi="780">
   <defs
-     id="defs855" />
+     id="defs2" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -23,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.9624086"
-     inkscape:cx="-32.576114"
-     inkscape:cy="21.743285"
+     inkscape:zoom="1.3309942"
+     inkscape:cx="-7.6428038"
+     inkscape:cy="120.01024"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -34,13 +37,14 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1541"
-     inkscape:window-height="845"
-     inkscape:window-x="59"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1" />
+     units="px"
+     inkscape:window-width="1252"
+     inkscape:window-height="847"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0" />
   <metadata
-     id="metadata858">
+     id="metadata5">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -55,32 +59,24 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-105.01223,-117.70305)">
+     transform="translate(-56.727862,-68.257475)">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#953737;stroke-width:0.10094;stroke-dasharray:0.10094, 0.10094"
+       id="rect837"
+       width="8.3657265"
+       height="8.3657265"
+       x="56.778332"
+       y="68.307945" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="106.98517"
-       y="115.4186"
-       id="text1426"><tspan
+       style="font-style:normal;font-weight:normal;font-size:6.7496px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.16874"
+       x="56.688316"
+       y="74.85218"
+       id="text835"><tspan
          sodipodi:role="line"
-         id="tspan1424"
-         x="106.98517"
-         y="115.4186"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583" /></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;line-height:1.25;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="108.3925"
-       y="132.85258"
-       id="text1430"><tspan
-         sodipodi:role="line"
-         id="tspan1428"
-         x="108.3925"
-         y="132.85258"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:'Adinda Sayang';-inkscape-font-specification:'Adinda Sayang, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"><tspan
-           style="fill:#f44000;fill-opacity:1"
-           id="tspan1432">A</tspan><tspan
-           style="fill:#1f46c8;fill-opacity:1"
-           id="tspan1512">C</tspan></tspan></text>
+         id="tspan833"
+         x="56.688316"
+         y="74.85218"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.7496px;font-family:Geomanist;-inkscape-font-specification:'Geomanist, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke-width:0.16874">AC</tspan></text>
   </g>
 </svg>
