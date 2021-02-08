@@ -92,6 +92,7 @@ def main(
 
         for file in dirs[2]:
             if not file.endswith('.md'):
+                print(f'Copying {cur_dir}/{file} to {os.path.join(out_dir, sub_dir, file)}')
                 copyfile(os.path.join(cur_dir, file), os.path.join(out_dir, sub_dir, file))
                 continue
 
