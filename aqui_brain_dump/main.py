@@ -91,9 +91,7 @@ def main(
         os.makedirs(os.path.join(out_dir, sub_dir), exist_ok=True)
 
         for file in dirs[2]:
-            print(f'File: {file}')
             if not file.endswith('.md'):
-                print(f'Copying {cur_dir}/{file} to {os.path.join(out_dir, sub_dir, file)}')
                 copyfile(os.path.join(cur_dir, file), os.path.join(out_dir, sub_dir, file))
                 continue
 
@@ -103,7 +101,6 @@ def main(
             filename = ''.join(file.split('.')[:-1])
             page_url = f"{sub_dir}/{filename}".lower()
             page_url = page_url.replace(' ', '_')
-            print(f'Creating {page_url}')
             if page_url not in pages:
                 pages[page_url] = dict(
                     content=None,
@@ -186,7 +183,6 @@ def main(
         while page.startswith('/'):
             page = page[1:]
 
-        print(f'Out dir: {out_dir}, page: {page}')
         os.makedirs(os.path.join(out_dir, page), exist_ok=True)
         context = {
             'title': values['filename'].replace('_', ' '),
