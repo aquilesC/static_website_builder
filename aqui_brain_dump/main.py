@@ -183,6 +183,7 @@ def main(
         while page.startswith('/'):
             page = page[1:]
 
+        print(f'Out dir: {out_dir}, page: {page}')
         os.makedirs(os.path.join(out_dir, page), exist_ok=True)
         context = {
             'title': values['filename'].replace('_', ' '),
