@@ -1,5 +1,7 @@
 node_modules/
 output/
+new_output/
 content/
 __pycache__/
 .idea/
+aqui_brain_dump.egg-info/

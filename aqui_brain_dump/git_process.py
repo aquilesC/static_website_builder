@@ -1,14 +1,21 @@
 import subprocess
 from collections import Counter
 from datetime import datetime
+from pathlib import PurePath
 
 
 def myconverter(o):
     if isinstance(o, datetime):
         return o.__str__()
 
+def normalize_path(filename, content_dir):
+    filename = filename.strip(content_dir.name)
+    if filename.startswith('/'):
+        filename = filename[1:]
+    return filename
+
 def get_creation_date(content_dir):
-    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', content_dir],
+    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', str(content_dir)],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
     result = result.stdout.decode('utf-8').split('\n')
@@ -20,17 +27,14 @@ def get_creation_date(content_dir):
             date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
         else:
             if line.endswith('.md'):
-                if line.startswith('/'):
-                    line = line[1:]
-                page_url = line.strip(content_dir).strip('.md').lower()
-                page_url = page_url.replace(' ', '_')
-                creation_dates[page_url] = date
+                line = normalize_path(line,content_dir)
+                creation_dates[line] = date
 
     return creation_dates
 
 
 def get_last_modification_date(content_dir):
-    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=M', content_dir],
+    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=M', str(content_dir)],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
@@ -43,10 +47,7 @@ def get_last_modification_date(content_dir):
             date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
         else:
             if line.endswith('.md'):
-                if line.startswith('/'):
-                    line = line[1:]
-                page_url = line.strip(content_dir).strip('.md').lower()
-                page_url = page_url.replace(' ', '_')
+                page_url = normalize_path(line, content_dir)
                 if page_url not in modification_dates or date > modification_dates[page_url]:
                     modification_dates[page_url] = date
 
@@ -59,12 +60,12 @@ def get_number_commits(content_dir):
         'log',
         '--name-only',
         '--pretty=format:',
-        content_dir,
+        str(content_dir),
     ]
     result = subprocess.run(command,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
-    result = [r.strip(content_dir).strip('.md').lower().replace(' ', '_') for r in result.stdout.decode('utf-8').split('\n') if r.endswith('.md')]
+    result = [normalize_path(r, content_dir) for r in result.stdout.decode('utf-8').split('\n') if r.endswith('.md')]
     edits = Counter(result)
     return edits

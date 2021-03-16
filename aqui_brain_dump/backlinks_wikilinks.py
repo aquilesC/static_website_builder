@@ -60,7 +60,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
             href = label.split('|')[0].lower().replace(' ', '_')
             if not hasattr(self.md, 'links'):
                 self.md.links = []
-            self.md.links.append(href)
+            self.md.links.append(label.split('|')[0])
             url = self.config['build_url'](href, base_url, end_url)
             a = etree.Element('a')
             a.text = text
