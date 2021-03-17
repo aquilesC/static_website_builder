@@ -8,7 +8,7 @@ from jinja2 import Environment, FileSystemLoader
 from aqui_brain_dump import content_path, creation_dates, md, modification_dates, number_of_edits, output_path, \
     template_path
 from aqui_brain_dump.main import datetimeformat
-
+from aqui_brain_dump.util import path_to_url
 
 env = Environment(loader=FileSystemLoader(template_path))
 env.filters['datetime'] = datetimeformat
@@ -21,7 +21,7 @@ class Note:
 
     def __init__(self, file_path):
         self.file_path = file_path
-        rel_path = PurePath(file_path).relative_to(content_path)
+        rel_path = Path(file_path).relative_to(content_path)
         self.rel_path = rel_path
         self.content = None
         self.backlinks = []
@@ -30,7 +30,9 @@ class Note:
         self.metadata = {}
         self.tags = []
         self.parse_file()
-        self.notes[str(rel_path).lower()] = self
+        self.url = path_to_url(file_path, content_path)
+        self.notes[self.url] = self
+
 
     @classmethod
     def create_from_path(cls, file_path):
@@ -70,7 +72,9 @@ class Note:
             self.tags = md.tags
 
     def render(self):
-        out_path = output_path / self.rel_path.with_suffix('')
+        out_path = output_path / self.url[1:]
+        print(out_path)
+        out_path.mkdir(parents=True, exist_ok=True)
         context = {'note': self}
         if 'index' in str(self.rel_path):
             template = template_index

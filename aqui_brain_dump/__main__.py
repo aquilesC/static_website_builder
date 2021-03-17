@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from aqui_brain_dump.notes import Note
+from aqui_brain_dump.note import Note
 
 
 def main(content_dir='content'):
