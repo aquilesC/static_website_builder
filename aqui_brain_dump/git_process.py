@@ -6,23 +6,11 @@ from pathlib import Path, PurePath
 from aqui_brain_dump.util import path_to_url
 
 
-def myconverter(o):
-    if isinstance(o, datetime):
-        return o.__str__()
-
-
-def normalize_path(filename, content_dir):
-    filename = str(filename.absolute().relative_to(content_dir))
-    filename = filename.strip(content_dir.name)
-    if filename.startswith('/'):
-        filename = filename[1:]
-    return filename
-
-
 def get_creation_date(content_dir):
-    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', str(content_dir)],
+    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', content_dir],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
+
     result = result.stdout.decode('utf-8').split('\n')
     creation_dates = {}
     date = 0

@@ -88,6 +88,7 @@ def main(
         if sub_dir.startswith('.'):
             continue
 
+        creation_dates.update(get_creation_date(dirs[0]))
         os.makedirs(os.path.join(out_dir, sub_dir), exist_ok=True)
 
         for file in dirs[2]:
