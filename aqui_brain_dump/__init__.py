@@ -1,4 +1,4 @@
-from pathlib import Path, PurePath
+from pathlib import Path
 
 import markdown
 
@@ -14,6 +14,7 @@ output_path = Path('/Users/aquiles/Documents/Web/aquiles.me/new_output')
 template_path = Path('/Users/aquiles/Documents/Web/aquiles.me/templates')
 bibliography_file = '/Users/aquiles/Documents/Web/aquiles.me/citation_library.json'
 bibliography = parse_bibliography(bibliography_file)
+static_url = 'static'
 
 md = markdown.Markdown(extensions=[
         'meta',
@@ -27,7 +28,3 @@ md = markdown.Markdown(extensions=[
         'pyembed.markdown',
         'footnotes',
     ])
-
-creation_dates = get_creation_date(content_path)
-modification_dates = get_last_modification_date(content_path)
-number_of_edits = get_number_commits(content_path)

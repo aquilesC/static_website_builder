@@ -5,8 +5,8 @@ import frontmatter
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
 
-from aqui_brain_dump import content_path, creation_dates, md, modification_dates, number_of_edits, output_path, \
-    template_path
+from aqui_brain_dump import content_path, get_creation_date, get_last_modification_date, get_number_commits, md, \
+    output_path, static_url, template_path
 from aqui_brain_dump.main import datetimeformat
 from aqui_brain_dump.util import path_to_url
 
@@ -26,11 +26,11 @@ class Note:
         self.backlinks = []
         self.links = []
         self.title = ''
-        self.metadata = {}
+        self.meta = {}
         self.tags = []
         self.url = ''
         self.parse_file()
-        self.notes[self.path] = self
+        self.notes[str(self.path.absolute()).lower()] = self
 
     @classmethod
     def create_from_path(cls, file_path):
@@ -60,26 +60,31 @@ class Note:
             elif h1_title is not None:
                 self.title = h1_title
             else:
-                self.title = ' '.join(str(self.rel_path).split('_')).strip('/').strip('.md')
+                self.title = ' '.join(str(self.path).split('_')).strip('/').strip('.md')
 
             self.url = path_to_url(self.path)
             if 'slug' in post.metadata:
                 self.url = post.metadata.get('url')
-            self.metadata = post.metadata
-            self.last_mod = modification_dates.get(str(self.rel_path), None)
-            self.creation_date = creation_dates.get(str(self.rel_path), None)
-            self.number_edits = number_of_edits.get(str(self.rel_path), None)
+            self.meta = post.metadata
+            self.last_mod = get_last_modification_date(self.file_path)
+            self.creation_date = get_creation_date(self.file_path)
+            self.number_edits = get_number_commits(self.file_path)
             self.links = md.links
             self.tags = md.tags
 
     def render(self):
-        out_path = output_path / self.url[1:]
-        print(out_path)
-        out_path.mkdir(parents=True, exist_ok=True)
-        context = {'note': self}
-        if 'index' in str(self.rel_path):
+        context = {
+            'note': self,
+            'static': static_url,
+            }
+        if 'index' in str(self.path):
+            out_path = output_path
+            out_path.mkdir(parents=True, exist_ok=True)
             template = template_index
+            print(self.path)
         else:
+            out_path = output_path / self.url[1:]
+            out_path.mkdir(parents=True, exist_ok=True)
             template = template_article
         with open(out_path / 'index.html', 'w', encoding='utf-8') as out:
             print(self.title)
@@ -91,14 +96,16 @@ class Note:
             for link in note.links:
                 if link.startswith('/'):
                     link = link[1:]
-                if link.lower() + '.md' in cls.notes:
-                    link_to = cls.notes[link.lower() + '.md']
+                link = content_path / (str(link) + '.md')
+                if str(link.absolute()).lower() in cls.notes:
+                    link_to = cls.notes[str(link.absolute()).lower()]
                     link_to.backlinks.append(note)
                 else:
-                    Note.create_from_path(content_path / (link + '.md'))
+                    new_note = Note.create_from_path(content_path / (str(link) + '.md'))
+                    new_note.backlinks.append(note)
 
     def __str__(self):
-        return self.title or str(self.rel_path)
+        return self.title or str(self.path)
 
     def __repr__(self):
-        return f'<Note {self.file_path or self.rel_path}>'
+        return f'<Note {self.file_path or self.path}>'

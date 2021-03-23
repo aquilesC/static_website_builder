@@ -1,62 +1,73 @@
 import subprocess
 from collections import Counter
 from datetime import datetime
-from pathlib import Path, PurePath
-
-from aqui_brain_dump.util import path_to_url
+from pathlib import Path
 
 
-def get_creation_date(content_dir):
-    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', content_dir],
+def get_creation_date(filename):
+    """ Get the creation date of a filename using git.
+
+    :param filename: path to the file in question. """
+    if not filename.is_file():
+        print(filename)
+        return
+    command = ['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=A', str(filename.absolute())]
+    result = subprocess.run(command,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
+    result = result.stdout.decode('utf-8').split('\n')
+    for line in result:
+        line = line.strip('"')
+        if len(line) and line[0].isdigit():
+            date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
+            return date
+    return
+    # raise ValueError(f'File {filename} not found on git')
+
+
+def get_last_modification_date(filename):
+    """Get the last modification date of the given file.
+
+    :params filename: Path to the file
+    """
+    if not filename.is_file():
+        print(filename)
+        return
+    command = ['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=M', str(filename.absolute())]
+
+    result = subprocess.run(command,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
     result = result.stdout.decode('utf-8').split('\n')
-    creation_dates = {}
     date = 0
     for line in result:
         line = line.strip('"')
         if len(line) and line[0].isdigit():
             date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
-        else:
-            filename = Path(line)
-            creation_dates[filename] = date
-
-    return creation_dates
+            return date
+    # raise ValueError(f'File {filename} last modification not found on git')
 
 
-def get_last_modification_date(content_dir):
-    result = subprocess.run(['git', 'log', '--format="%ci"', '--name-only', '--diff-filter=M', str(content_dir)],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+def get_number_commits(filename):
+    """ Get the number of edits stored on git for a given file.
 
-    result = result.stdout.decode('utf-8').split('\n')
-    modification_dates = {}
-    date = 0
-    for line in result:
-        line = line.strip('"')
-        if len(line) and line[0].isdigit():
-            date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
-        else:
-            filename = Path(line)
-            if filename not in modification_dates or date > modification_dates[filename]:
-                    modification_dates[filename] = date
-
-    return modification_dates
-
-
-def get_number_commits(content_dir):
+    :param filename: Path to the file to check
+    """
+    if not filename.is_file():
+        print(filename)
+        return
     command = [
         'git',
         'log',
         '--name-only',
         '--pretty=format:',
-        str(content_dir),
+        str(filename.absolute()),
     ]
     result = subprocess.run(command,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
-    result = [Path(r) for r in result.stdout.decode('utf-8').split('\n')]
-    edits = Counter(result)
+    result = [Path(r).absolute() for r in result.stdout.decode('utf-8').split('\n')]
+    edits = Counter(result).get(filename.absolute(), 1)
     return edits
