@@ -1,5 +1,5 @@
 import codecs
-from pathlib import Path, PurePath
+from pathlib import Path
 
 import frontmatter
 from bs4 import BeautifulSoup
@@ -21,18 +21,16 @@ class Note:
 
     def __init__(self, file_path):
         self.file_path = file_path
-        rel_path = Path(file_path).relative_to(content_path)
-        self.rel_path = rel_path
+        self.path = Path(file_path).relative_to(content_path)
         self.content = None
         self.backlinks = []
         self.links = []
         self.title = ''
         self.metadata = {}
         self.tags = []
+        self.url = ''
         self.parse_file()
-        self.url = path_to_url(file_path, content_path)
-        self.notes[self.url] = self
-
+        self.notes[self.path] = self
 
     @classmethod
     def create_from_path(cls, file_path):
@@ -64,6 +62,9 @@ class Note:
             else:
                 self.title = ' '.join(str(self.rel_path).split('_')).strip('/').strip('.md')
 
+            self.url = path_to_url(self.path)
+            if 'slug' in post.metadata:
+                self.url = post.metadata.get('url')
             self.metadata = post.metadata
             self.last_mod = modification_dates.get(str(self.rel_path), None)
             self.creation_date = creation_dates.get(str(self.rel_path), None)

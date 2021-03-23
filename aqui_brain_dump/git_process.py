@@ -31,10 +31,8 @@ def get_creation_date(content_dir):
         if len(line) and line[0].isdigit():
             date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
         else:
-            if line.endswith('.md'):
-                filename = Path(line)
-                slug = path_to_url(filename, content_dir)
-                creation_dates[slug] = date
+            filename = Path(line)
+            creation_dates[filename] = date
 
     return creation_dates
 
@@ -52,11 +50,9 @@ def get_last_modification_date(content_dir):
         if len(line) and line[0].isdigit():
             date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
         else:
-            if line.endswith('.md'):
-                filename = Path(line)
-                page_url = path_to_url(filename, content_dir)
-                if page_url not in modification_dates or date > modification_dates[page_url]:
-                    modification_dates[page_url] = date
+            filename = Path(line)
+            if filename not in modification_dates or date > modification_dates[filename]:
+                    modification_dates[filename] = date
 
     return modification_dates
 
@@ -73,6 +69,6 @@ def get_number_commits(content_dir):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
 
-    result = [path_to_url(Path(r), content_dir) for r in result.stdout.decode('utf-8').split('\n') if r.endswith('.md')]
+    result = [Path(r) for r in result.stdout.decode('utf-8').split('\n')]
     edits = Counter(result)
     return edits
