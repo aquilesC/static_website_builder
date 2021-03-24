@@ -13,8 +13,14 @@ def path_to_url(filename: Path, content_dir: Path = None) -> str:
         rel_name = filename
     base = str(rel_name.parent).strip('.')
     file = slugify(str(rel_name.stem), separator='_')
-    url = base + '/' + file
+    if file == 'index':
+        url = base
+    else:
+        url = base + '/' + file
+
     if not url.startswith('/'):
         url = '/' + url
+    if not url.endswith('/'):
+        url += '/'
     return url
 

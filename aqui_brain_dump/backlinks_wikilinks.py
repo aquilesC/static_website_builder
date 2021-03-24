@@ -8,12 +8,17 @@ possible to build the graph of backlinks, but it still requires a two-pass appro
 ready for the template rendering.
 
 """
+import logging
 
 from markdown.extensions import Extension
 from markdown.inlinepatterns import InlineProcessor
 import xml.etree.ElementTree as etree
 import re
 
+from slugify import slugify
+
+
+logger = logging.getLogger(__name__)
 
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """
@@ -57,11 +62,12 @@ class WikiLinksInlineProcessor(InlineProcessor):
             base_url, end_url, html_class = self._getMeta()
             label = m.group(1).strip()
             text = label.split('|')[-1]
-            href = label.split('|')[0].lower().replace(' ', '_')
+            href = slugify(label.split('|')[0].lower(), separator='_')
+            url = self.config['build_url'](href, base_url, end_url)
+            logger.debug(f'Got link to {url}')
             if not hasattr(self.md, 'links'):
                 self.md.links = []
-            self.md.links.append(label.split('|')[0])
-            url = self.config['build_url'](href, base_url, end_url)
+            self.md.links.append(url)
             a = etree.Element('a')
             a.text = text
             a.set('href', url.lower())
