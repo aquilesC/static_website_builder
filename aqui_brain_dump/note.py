@@ -27,6 +27,7 @@ class Note:
     notes = {}
     note_executor = ThreadPoolExecutor(max_workers=10)
     futures_executor = []
+    tags_dict = {}
 
     def __init__(self, file_path):
         self.file_path = file_path
@@ -41,6 +42,7 @@ class Note:
 
     @classmethod
     def create_from_path(cls, file_path):
+        logger.debug(f'Creating note from file: {file_path}')
         rel_path = Path(file_path).relative_to(content_path)
         if note := cls.notes.get(path_to_url(rel_path), False):
             return note
@@ -51,12 +53,17 @@ class Note:
     def create_from_url(cls, url: str):
         """ Creates a note without content, normally product of links to non existing notes
         """
+        logger.debug(f'Creating note from url {url}')
         if url.startswith('/'):
             url = url[1:]
+        logger.debug(f'New Url: {url}')
         file_path = content_path / (url + '.md')
         note = cls(file_path)
-        note.title = url
+        note.title = url.replace('_', ' ').capitalize()
+        note.url = '/' + url.replace(' ', '_').lower()
         note.meta['epistemic'] = 'This note is auto generated'
+        note.notes[note.url] = note
+        logger.debug(f'Added {note} to notes with url {url}')
         return note
 
     def parse_file(self):
@@ -94,6 +101,12 @@ class Note:
 
             self.links = md.links
             self.tags = md.tags
+            for tag in self.tags:
+                tag = tag.lower()
+                if tag not in self.tags_dict:
+                    self.tags_dict[tag] =[self, ]
+                else:
+                    self.tags_dict[tag].append(self)
             self.futures_executor.append(self.note_executor.submit(self.update_git_information))
 
         self.notes[self.url] = self
@@ -116,6 +129,7 @@ class Note:
         else:
             template = template_article
         with open(out_path / 'index.html', 'w', encoding='utf-8') as out:
+            logger.debug(f'Writing {template} with {self} information, to {out_path}')
             out.write(template.render(context))
 
     @classmethod
