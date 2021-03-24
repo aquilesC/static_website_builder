@@ -12,7 +12,7 @@ def path_to_url(filename: Path, content_dir: Path = None) -> str:
     else:
         rel_name = filename
     base = str(rel_name.parent).strip('.')
-    file = slugify(str(rel_name.stem), separator='_')
+    file = str(rel_name.stem).lower().replace(' ', '_')
     if file == 'index':
         url = base
     else:

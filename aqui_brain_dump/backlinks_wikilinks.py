@@ -62,7 +62,9 @@ class WikiLinksInlineProcessor(InlineProcessor):
             base_url, end_url, html_class = self._getMeta()
             label = m.group(1).strip()
             text = label.split('|')[-1]
-            href = slugify(label.split('|')[0].lower(), separator='_')
+            href = label.split('|')[0].lower().replace(' ', '_')
+            if href.startswith('/'):
+                href = href[1:]
             url = self.config['build_url'](href, base_url, end_url)
             logger.debug(f'Got link to {url}')
             if not hasattr(self.md, 'links'):

@@ -109,6 +109,7 @@ class Note:
                     self.tags_dict[tag].append(self)
             self.futures_executor.append(self.note_executor.submit(self.update_git_information))
 
+        logger.debug(f'Added {self} with url {self.url}')
         self.notes[self.url] = self
 
     def update_git_information(self):

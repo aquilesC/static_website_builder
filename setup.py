@@ -20,7 +20,7 @@ setup(
     long_description_content_type='text/markdown',
     entry_points={
         'console_scripts': [
-            'brain_dump=aqui_brain_dump.main:main'
+            'brain_dump=aqui_brain_dump.__main__:main'
         ]
     },
     install_requires=[
