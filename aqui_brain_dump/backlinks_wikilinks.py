@@ -15,7 +15,6 @@ from markdown.inlinepatterns import InlineProcessor
 import xml.etree.ElementTree as etree
 import re
 
-from slugify import slugify
 
 
 logger = logging.getLogger(__name__)

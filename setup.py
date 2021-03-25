@@ -29,5 +29,6 @@ setup(
         'markdown-checklist',
         'pyembed-markdown',
         'python-frontmatter',
+        'beautifulsoup4',
     ]
 )

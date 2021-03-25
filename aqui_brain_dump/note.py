@@ -7,7 +7,6 @@ from pathlib import Path
 import frontmatter
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
-from slugify import slugify
 
 from aqui_brain_dump import content_path, get_creation_date, get_last_modification_date, get_number_commits, md, \
     output_path, static_url, template_path

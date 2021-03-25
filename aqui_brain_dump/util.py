@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from slugify import slugify
-
 
 def path_to_url(filename: Path, content_dir: Path = None) -> str:
     """ Transforms a file path to an url by following some simple rules such as transforming spaces to _ and setting
