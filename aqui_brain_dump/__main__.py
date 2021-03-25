@@ -1,19 +1,29 @@
 import os
 import sys
 import time
+from datetime import datetime, timezone
 from distutils.dir_util import copy_tree
 import logging
 from pathlib import Path
 from shutil import copyfile
 
-from aqui_brain_dump import base_url, content_path, output_path, static_path, static_url
+from jinja2 import Environment, FileSystemLoader
+
+from aqui_brain_dump import content_path, output_path, static_path, static_url
 from aqui_brain_dump.note import Note
 
 
 logger = logging.getLogger(__name__)
 
 
-def main():
+def datetimeformat(value, format='%Y-%m-%d'):
+    try:
+        return value.strftime(format)
+    except AttributeError:
+        return value
+
+
+def main(base_url='https://www.aquiles.me'):
     logger.info('Starting to compile the notes')
     if len(sys.argv) > 1:
         print(sys.argv)
@@ -69,6 +79,37 @@ def main():
         note.render()
 
     logger.info('Finished building notes')
+
+    logger.info('Building sitemap')
+
+    num_edits = [n.number_edits for n in Note.notes.values()]
+    min_number_edits = min(num_edits)
+    max_number_edits = max(num_edits)
+
+    logger.debug(f'Min num edits: {min_number_edits}, Max num edits: {max_number_edits}')
+    today = datetime.now(tz=timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
+    env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+    env.filters['datetime'] = datetimeformat
+    sitemap = env.get_template('sitemap.xml')
+    with open(output_path / 'sitemap.xml', 'w', encoding='utf-8') as f:
+        f.write(sitemap.render(
+            {'notes': Note.notes,
+             'min_edits': min_number_edits,
+             'max_edits': max_number_edits,
+             'today': today,
+             'base_url': base_url,
+                }))
+
+    logger.info('Building RSS Feed')
+    rss_feed = env.get_template('feed.rss')
+    with open(output_path / 'feed.rss', 'w', encoding='utf-8') as f:
+        f.write(rss_feed.render(
+            {'notes': Note.notes,
+             'min_edits': min_number_edits,
+             'max_edits': max_number_edits,
+             'today': today,
+             'base_url': base_url
+             }))
 
 
 if __name__ == '__main__':

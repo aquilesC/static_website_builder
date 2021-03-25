@@ -39,6 +39,9 @@ class Note:
         self.meta = {}
         self.tags = []
         self.url = ''
+        self.last_mod = None
+        self.number_edits = 1
+        self.creation_date = None
 
     @classmethod
     def create_from_path(cls, file_path):
@@ -55,6 +58,8 @@ class Note:
     def create_from_url(cls, url: str):
         """ Creates a note without content, normally product of links to non existing notes
         """
+        if not all(ord(c) < 128 for c in url):
+            logger.warning(f'{url} has non-ascii characters')
         logger.debug(f'Creating note from url {url}')
         if url.startswith('/'):
             url = url[1:]
@@ -74,6 +79,8 @@ class Note:
             logger.info(f'{self.file_path} does not exist, creating empty note')
             self.title = ' '.join(str(self.path).split('_')).strip('/').strip('.md')
             self.url = path_to_url(self.path)
+            if not all(ord(c) < 128 for c in self.url):
+                logger.warning(f'{self.url} has non-ascii characters')
             self.notes[str(self.path.absolute()).lower()] = self
             return
 

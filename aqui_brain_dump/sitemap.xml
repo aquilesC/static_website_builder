@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {% for page, values in pages.items() %}
+    {% for page, values in notes.items() %}
         <url>
-            <loc>{{ values["url"] }}</loc>
-            {%- if values["last_mod"] != 'None' %}
-                <lastmod>{{ values["last_mod"]|datetime }}</lastmod>
-            {% elif values["creation_date"] != 'None' %}
-                <lastmod>{{ values["creation_date"]|datetime }}</lastmod>
+            <loc>{{ base_url }}{{ values.url }}</loc>
+            {%- if values.last_mod != None %}
+                <lastmod>{{ values.last_mod|datetime }}</lastmod>
+            {% elif values.creation_date != None %}
+                <lastmod>{{ values.creation_date|datetime }}</lastmod>
             {% endif %}
             <changefreq>monthly</changefreq>
-        {% if values["number_edits"] != 'None' %}
-            <priority>{{ values["number_edits"]/max_edits }}</priority>
+        {% if values.number_edits != None %}
+            <priority>{{ values.number_edits/max_edits }}</priority>
         {% else %}
             <priority>0.1</priority>
         {% endif %}
