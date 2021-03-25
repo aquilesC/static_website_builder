@@ -9,10 +9,10 @@ from aqui_brain_dump.git_process import get_creation_date, get_last_modification
 from aqui_brain_dump.parse_bibliography import parse_bibliography
 
 
-content_path = Path('/Users/aquiles/Documents/Web/aquiles.me/content')
-output_path = Path('/Users/aquiles/Documents/Web/aquiles.me/new_output')
-template_path = Path('/Users/aquiles/Documents/Web/aquiles.me/templates')
-bibliography_file = '/Users/aquiles/Documents/Web/aquiles.me/citation_library.json'
+content_path = Path('./content').absolute()
+output_path = Path('./output').absolute()
+template_path = Path('./templates').absolute()
+bibliography_file = Path('./citation_library.json').absolute()
 bibliography = parse_bibliography(bibliography_file)
 static_url = 'static'
 
