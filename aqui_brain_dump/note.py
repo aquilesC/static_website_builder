@@ -43,10 +43,12 @@ class Note:
     def create_from_path(cls, file_path):
         logger.debug(f'Creating note from file: {file_path}')
         rel_path = Path(file_path).relative_to(content_path)
-        if note := cls.notes.get(path_to_url(rel_path), False):
+        note = cls.notes.get(path_to_url(rel_path), False)
+        if note:
             return note
         note = cls(file_path)
         note.parse_file()
+        return note
 
     @classmethod
     def create_from_url(cls, url: str):
@@ -137,7 +139,8 @@ class Note:
         for note in list(cls.notes.values()):
             for link in note.links:
                 logger.debug(f'{note.url} links to {link}')
-                if link_to := cls.notes.get(link, False):
+                link_to = cls.notes.get(link, False)
+                if link_to:
                     link_to.backlinks.append(note)
                     logger.debug(f'Appending {note} to backlinks of {link_to}')
                 else:
