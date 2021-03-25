@@ -8,7 +8,8 @@ import frontmatter
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
 
-from aqui_brain_dump import content_path, get_creation_date, get_last_modification_date, get_number_commits, md, \
+from aqui_brain_dump import base_url, content_path, get_creation_date, get_last_modification_date, get_number_commits, \
+    md, \
     output_path, static_url, template_path
 from aqui_brain_dump.main import datetimeformat
 from aqui_brain_dump.util import path_to_url
@@ -123,6 +124,7 @@ class Note:
         context = {
             'note': self,
             'static': static_url,
+            'base_url': base_url,
             }
         out_path = output_path / self.url[1:]
         out_path.mkdir(parents=True, exist_ok=True)

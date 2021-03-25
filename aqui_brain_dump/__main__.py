@@ -1,11 +1,12 @@
 import os
+import sys
 import time
 from distutils.dir_util import copy_tree
 import logging
 from pathlib import Path
 from shutil import copyfile
 
-from aqui_brain_dump import content_path, output_path, static_path, static_url
+from aqui_brain_dump import base_url, content_path, output_path, static_path, static_url
 from aqui_brain_dump.note import Note
 
 
@@ -14,6 +15,9 @@ logger = logging.getLogger(__name__)
 
 def main():
     logger.info('Starting to compile the notes')
+    if len(sys.argv) > 1:
+        print(sys.argv)
+        base_url = sys.argv[1]
 
     out_static_dir = output_path / static_url
     copy_tree(str(static_path.absolute()), str(out_static_dir.absolute()))
