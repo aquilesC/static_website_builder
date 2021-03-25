@@ -10,6 +10,7 @@ from aqui_brain_dump.parse_bibliography import parse_bibliography
 
 
 content_path = Path('./content').absolute()
+static_path = Path('.') / 'static'
 output_path = Path('./output').absolute()
 template_path = Path('./templates').absolute()
 bibliography_file = Path('./citation_library.json').absolute()

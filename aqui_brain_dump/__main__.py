@@ -5,21 +5,19 @@ import logging
 from pathlib import Path
 from shutil import copyfile
 
-from aqui_brain_dump import output_path
+from aqui_brain_dump import content_path, output_path, static_path, static_url
 from aqui_brain_dump.note import Note
 
 
 logger = logging.getLogger(__name__)
 
 
-def main(content_dir='content', static_dir='static'):
+def main():
     logger.info('Starting to compile the notes')
-    static_dir = Path.cwd() / static_dir
 
-    out_static_dir = output_path / 'static'
-    copy_tree(str(static_dir.absolute()), str(out_static_dir.absolute()))
+    out_static_dir = output_path / static_url
+    copy_tree(str(static_path.absolute()), str(out_static_dir.absolute()))
 
-    content_path = Path.cwd() / content_dir
     f_walk = os.walk(content_path)
     for dirs in f_walk:
         logger.info(f'Entering to {dirs[0]}')
@@ -60,8 +58,6 @@ def main(content_dir='content', static_dir='static'):
     while len([f for f in Note.futures_executor if f.running()]):
         time.sleep(.01)
     Note.note_executor.shutdown(wait=True)
-
-
 
     logger.info('Rendering notes')
     for rel_path, note in Note.notes.items():
