@@ -16,7 +16,7 @@ from aqui_brain_dump.util import path_to_url
 
 env = Environment(loader=FileSystemLoader(template_path))
 env.filters['datetime'] = datetimeformat
-template_article = env.get_template('article.html')
+template_article = env.get_template('note.html')
 template_index = env.get_template('index.html')
 
 
