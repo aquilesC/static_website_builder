@@ -126,7 +126,7 @@ class Note:
         self.creation_date = get_creation_date(self.file_path)
         self.number_edits = get_number_commits(self.file_path)
 
-    def render(self):
+    def render(self, base_url):
         logger.debug(f'Preparing to render {self}')
         context = {
             'note': self,
@@ -135,8 +135,8 @@ class Note:
             }
         out_path = output_path / self.url[1:]
         out_path.mkdir(parents=True, exist_ok=True)
-        if 'index.md' == self.file_path.name:
-            template = template_index
+        if 'template' in self.meta:
+            template = env.get_template(self.meta.get('template'))
         else:
             template = template_article
         with open(out_path / 'index.html', 'w', encoding='utf-8') as out:

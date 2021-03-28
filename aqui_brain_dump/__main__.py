@@ -76,7 +76,7 @@ def main(base_url='https://www.aquiles.me'):
     logger.info('Rendering notes')
     for rel_path, note in Note.notes.items():
         logger.debug(f'Rendering {note}')
-        note.render()
+        note.render(base_url=base_url)
 
     logger.info('Finished building notes')
 
