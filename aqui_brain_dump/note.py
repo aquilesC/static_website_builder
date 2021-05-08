@@ -77,7 +77,9 @@ class Note:
         logger.debug(f'Parsing contents of {self}')
         if not Path(self.file_path).is_file():
             logger.info(f'{self.file_path} does not exist, creating empty note')
-            self.title = ' '.join(str(self.path).split('_')).strip('/').strip('.md')
+            self.title = ' '.join(str(self.path).split('_')).strip('/')
+            if self.title.endswith('.md'):
+                self.title = self.title[:-3]
             self.url = path_to_url(self.path)
             if not all(ord(c) < 128 for c in self.url):
                 logger.warning(f'{self.url} has non-ascii characters')
@@ -101,7 +103,9 @@ class Note:
             elif h1_title is not None:
                 self.title = h1_title
             else:
-                self.title = ' '.join(str(self.path).split('_')).strip('/').strip('.md')
+                self.title = ' '.join(str(self.path).split('_')).strip('/').capitalize()
+                if self.title.endswith('.md'):
+                    self.title = self.title[:-3]
 
             self.url = path_to_url(self.path)
             if 'slug' in post.metadata:
