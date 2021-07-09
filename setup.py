@@ -6,9 +6,9 @@ README = open('README.md', 'r').read()
 
 setup(
     name='aqui_brain_dump',
-    version='1.0.1',
+    version='1.0.2',
     packages=find_packages(),
-    package_data={'': ['static/', 'templates/']},
+    data_files=[('', ['aqui_brain_dump/sitemap.xml', 'aqui_brain_dump/feed.rss'])],
     include_package_data=True,
     # package_dir={'': 'aqui_brain_dump'},
     url='https://github.com/aquilesC/static_website_builder',
