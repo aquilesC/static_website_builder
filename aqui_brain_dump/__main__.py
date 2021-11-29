@@ -34,13 +34,15 @@ def main(base_url='https://www.aquiles.me'):
 
     f_walk = os.walk(content_path)
     for dirs in f_walk:
+        if dirs[0].startswith('templates'):
+            continue
         logger.info(f'Entering to {dirs[0]}')
         cur_dir = dirs[0]
         sub_dir = os.path.abspath(cur_dir)
         if sub_dir == '.':
             sub_dir = ''
 
-        if sub_dir.startswith('.'):
+        if sub_dir.startswith('.') or sub_dir.startswith('templates'):
             continue
 
         sub_dir = Path(sub_dir).absolute()
