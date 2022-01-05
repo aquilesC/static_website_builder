@@ -26,7 +26,7 @@ def datetimeformat(value, format='%Y-%m-%d'):
 
 
 def main(
-        base_website="https://www.aquiles.me",
+        base_website="https://notes.aquiles.me",
         content_dir='content',
         output_dir='output',
         static_dir='static',

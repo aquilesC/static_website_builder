@@ -16,7 +16,7 @@ template_path = Path('./templates').absolute()
 bibliography_file = Path('./citation_library.json').absolute()
 bibliography = parse_bibliography(bibliography_file)
 static_url = 'static'
-base_url = 'https://www.aquiles.me'
+base_url = 'https://notes.aquiles.me'
 
 md = markdown.Markdown(extensions=[
         'meta',
