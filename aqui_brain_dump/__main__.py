@@ -23,7 +23,7 @@ def datetimeformat(value, format='%Y-%m-%d'):
         return value
 
 
-def main(base_url='https://www.aquiles.me'):
+def main(base_url='https://notes.aquiles.me'):
     logger.info('Starting to compile the notes')
     if len(sys.argv) > 1:
         print(sys.argv)
