@@ -2,7 +2,7 @@
 <rss version="2.0">
    <channel>
       <title>Aquiles Carattino Corner of the Internet</title>
-      <link>https://www.aquiles.me/</link>
+      <link>https://notes.aquiles.me/</link>
       <description>Digital garden with notes about whatever I find interesting and think about</description>
       <language>en-us</language>
       <lastBuildDate>{{- today -}}</lastBuildDate>
@@ -12,9 +12,9 @@
       <managingEditor>hey@aquiles.me (Aquiles Carattino)</managingEditor>
       <webMaster>hey@aquiles.me (Aquiles Carattino)</webMaster>
       <image>
-          <url>https://www.aquiles.me/static/aquiles_square_small.jpg</url>
+          <url>https://notes.aquiles.me/static/aquiles_square_small.jpg</url>
           <title>Aquiles Carattino</title>
-          <link>https://www.aquiles.me/</link>
+          <link>https://notes.aquiles.me/</link>
           <width>144</width>
           <height>144</height>
       </image>
