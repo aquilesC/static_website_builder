@@ -1,4 +1,4 @@
-#  Copyright (c) 2020.
+#  Copyright (c) 2022.
 
 from setuptools import setup, find_packages
 
@@ -24,6 +24,7 @@ setup(
         ]
     },
     install_requires=[
+        'markupsafe==2.0.1',
         'Jinja2==2.11.3',
         'Markdown==3.3.4',
         'markdown-checklist==0.4.3',
