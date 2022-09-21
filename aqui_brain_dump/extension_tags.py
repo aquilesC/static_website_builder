@@ -5,7 +5,7 @@ import re
 
 from markdown.extensions import Extension
 from markdown.inlinepatterns import InlineProcessor
-from markdown.util import etree
+import xml.etree.ElementTree as etree
 
 RE_TAGS = re.compile(r"(?<!`)(#+([^#\s.,\/!$%\^&\*;{}\[\]'\"=`~()<>”\\]|:[a-zA-Z0-9])+)")
 
