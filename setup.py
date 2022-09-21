@@ -24,11 +24,11 @@ setup(
         ]
     },
     install_requires=[
-        'Jinja2',
-        'markdown',
-        'markdown-checklist',
-        'pyembed-markdown',
-        'python-frontmatter',
-        'beautifulsoup4',
+        'Jinja2==2.11.3',
+        'Markdown==3.3.4',
+        'markdown-checklist==0.4.3',
+        'pyembed-markdown==1.1.0',
+        'python-frontmatter==1.0.0',
+        'beautifulsoup4==4.9.3',
     ]
 )
