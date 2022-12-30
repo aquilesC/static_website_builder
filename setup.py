@@ -24,12 +24,16 @@ setup(
         ]
     },
     install_requires=[
-        'markupsafe==2.0.1',
-        'Jinja2==2.11.3',
-        'Markdown==3.3.4',
-        'markdown-checklist==0.4.3',
+        'beautifulsoup4==4.11.1',
+        'Jinja2==3.1.2',
+        'Markdown==3.4.1',
+        'markdown-checklist==0.4.4',
+        'MarkupSafe==2.1.1',
+        'md4mathjax==0.1.3,'
+        'pyembed==1.3.3',
         'pyembed-markdown==1.1.0',
         'python-frontmatter==1.0.0',
-        'beautifulsoup4==4.9.3',
+        'PyYAML==6.0',
+        'text-unidecode==1.3',
     ]
 )
