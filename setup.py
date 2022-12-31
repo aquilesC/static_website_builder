@@ -29,7 +29,7 @@ setup(
         'Markdown==3.4.1',
         'markdown-checklist==0.4.4',
         'MarkupSafe==2.1.1',
-        'md4mathjax==0.1.3,'
+        'md4mathjax==0.1.3',
         'pyembed==1.3.3',
         'pyembed-markdown==1.1.0',
         'python-frontmatter==1.0.0',
