@@ -32,6 +32,7 @@ class Note:
     def __init__(self, file_path):
         self.file_path = file_path
         self.path = Path(file_path).relative_to(content_path)
+        self.parse_git = True
         self.content = None
         self.backlinks = []
         self.links = []
@@ -44,7 +45,7 @@ class Note:
         self.creation_date = None
 
     @classmethod
-    def create_from_path(cls, file_path):
+    def create_from_path(cls, file_path, parse_git=False):
         logger.debug(f'Creating note from file: {file_path}')
         rel_path = Path(file_path).relative_to(content_path)
         note = cls.notes.get(path_to_url(rel_path), False)
@@ -52,6 +53,7 @@ class Note:
             return note
         note = cls(file_path)
         note.parse_file()
+        note.parse_git = parse_git
         return note
 
     @classmethod
@@ -126,9 +128,14 @@ class Note:
         self.notes[self.url] = self
 
     def update_git_information(self):
-        self.last_mod = get_last_modification_date(self.file_path)
-        self.creation_date = get_creation_date(self.file_path)
-        self.number_edits = get_number_commits(self.file_path)
+        if self.parse_git:
+            self.last_mod = get_last_modification_date(self.file_path)
+            self.creation_date = get_creation_date(self.file_path)
+            self.number_edits = get_number_commits(self.file_path)
+        else:
+            self.last_mod = None
+            self.creation_date = None
+            self.number_edits = None
 
     def render(self, base_url):
         logger.debug(f'Preparing to render {self}')

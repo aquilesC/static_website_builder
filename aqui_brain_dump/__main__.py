@@ -29,6 +29,10 @@ def main(base_url='https://notes.aquiles.me'):
         print(sys.argv)
         base_url = sys.argv[1]
 
+    parse_git = True
+    if len(sys.argv) > 2:
+        parse_git = False
+
     out_static_dir = output_path / static_url
     copy_tree(str(static_path.absolute()), str(out_static_dir.absolute()))
 
@@ -55,7 +59,7 @@ def main(base_url='https://notes.aquiles.me'):
                 continue
             filepath = content_path / sub_dir / file
             logger.debug(f'Creating note for {filepath}')
-            Note.create_from_path(filepath)
+            Note.create_from_path(filepath, parse_git=parse_git)
 
     logger.info('Waiting for note parser executor to finish')
     while len([f for f in Note.futures_executor if f.running()]):
