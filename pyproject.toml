@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "aqui_brain_dump"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 beautifulsoup4 = "^4.12.2"
 Jinja2 = "^3.1.2"
 Markdown = "^3.4.3"
