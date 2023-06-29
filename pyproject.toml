@@ -3,7 +3,7 @@ name = "aqui-brain-dump"
 version = "0.1.2"
 description = "Create a static website based on notes from a digital garden"
 authors = ["Aquiles Carattino <aqui.carattino@gmail.com>"]
-license = "MIT"
+license = "BSD-3-Clause license"
 readme = "README.md"
 packages = [{include = "aqui_brain_dump"}]
 
