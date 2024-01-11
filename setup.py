@@ -25,7 +25,7 @@ setup(
     },
     install_requires=[
         'beautifulsoup4==4.11.1',
-        'Jinja2==3.1.2',
+        'Jinja2==3.1.3',
         'Markdown==3.4.1',
         'markdown-checklist==0.4.4',
         'MarkupSafe==2.1.1',
