@@ -21,13 +21,16 @@ def get_creation_date(filename):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
     result = result.stdout.decode('utf-8').split('\n')
+    date = None
     for line in result:
         line = line.strip('"')
         if len(line) and line[0].isdigit():
-            date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
-            logger.debug(f'{filename} creation date: {date}')
-            return date
-    return
+            try:
+                date = datetime.strptime(line, '%Y-%m-%d %H:%M:%S %z')
+                logger.debug(f'{filename} creation date: {date}')
+            except:
+                pass
+    return date
 
 
 def get_last_modification_date(filename):
