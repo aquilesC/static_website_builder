@@ -9,13 +9,15 @@ from aqui_brain_dump.extension_wikiimage import WikiImageExtension
 from aqui_brain_dump.git_process import get_creation_date, get_last_modification_date, get_number_commits
 from aqui_brain_dump.parse_bibliography import parse_bibliography
 
-
 content_path = Path('./content').absolute()
 static_path = Path('.') / 'static'
 output_path = Path('./output').absolute()
 template_path = Path('./templates').absolute()
 bibliography_file = Path('./citation_library.json').absolute()
-bibliography = parse_bibliography(bibliography_file)
+try:
+    bibliography = parse_bibliography(bibliography_file)
+except FileNotFoundError:
+    print('No bibliography file')
 static_url = 'static'
 base_url = 'https://notes.aquiles.me'
 
