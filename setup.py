@@ -1,4 +1,4 @@
-#  Copyright (c) 2022.
+#  Copyright (c) 2024.
 
 from setuptools import setup, find_packages
 
@@ -6,7 +6,7 @@ README = open('README.md', 'r').read()
 
 setup(
     name='aqui_brain_dump',
-    version='1.0.3',
+    version='1.0.4',
     packages=find_packages(),
     data_files=[('', ['aqui_brain_dump/sitemap.xml', 'aqui_brain_dump/feed.rss'])],
     include_package_data=True,
@@ -28,7 +28,7 @@ setup(
         'Jinja2==3.1.2',
         'Markdown==3.7',
         'markdown-checklist==0.4.4',
-        'MarkupSafe==3.0.1',
+        'MarkupSafe==2.1.1',
         'md4mathjax==0.1.3',
         'pyembed==1.3.3',
         'pyembed-markdown==1.1.0',
