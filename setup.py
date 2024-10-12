@@ -33,7 +33,7 @@ setup(
         'pyembed==1.3.3',
         'pyembed-markdown==1.1.0',
         'python-frontmatter==1.0.0',
-        'PyYAML==6.0',
+        'PyYAML==6.0.2',
         'text-unidecode==1.3',
     ]
 )

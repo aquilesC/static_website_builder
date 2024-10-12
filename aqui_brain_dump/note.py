@@ -1,4 +1,5 @@
 import codecs
+import datetime
 import logging
 import time
 from concurrent.futures.thread import ThreadPoolExecutor
@@ -133,9 +134,9 @@ class Note:
             self.creation_date = get_creation_date(self.file_path)
             self.number_edits = get_number_commits(self.file_path)
         else:
-            self.last_mod = None
-            self.creation_date = None
-            self.number_edits = None
+            self.last_mod = datetime.date.today()
+            self.creation_date = datetime.date.today()
+            self.number_edits = 1
 
     def render(self, base_url):
         logger.debug(f'Preparing to render {self}')
