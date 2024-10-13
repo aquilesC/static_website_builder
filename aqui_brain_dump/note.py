@@ -89,15 +89,17 @@ class Note:
             self.notes[str(self.path.absolute()).lower()] = self
             return
 
-        with codecs.open(self.file_path, 'r', encoding='utf-8') as f:
+        with open(self.file_path, 'r', encoding='utf-8') as f:
             md.reset()
             md.links = []
             post = frontmatter.load(f)
             self.content = md.convert(post.content)
+            logger.debug(f'Converted {self.file_path}')
             bs = BeautifulSoup(self.content, 'html.parser')
             h1 = bs.find('h1')
             h1_title = None
             if h1 is not None and h1.get_text() != '':
+                logger.debug(f'Found title: {h1.get_text()}')
                 h1_title = h1.get_text()
                 h1.decompose()
                 self.content = bs.prettify()
