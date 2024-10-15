@@ -1,0 +1,40 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=75.1.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aqui_brain_dump"
+version = "1.0.6"
+description = "Compile a set of notes into a browseable website"
+readme = "README.md"
+authors = [{ name = "Aquiles Carattino", email = "aqui.carattino@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["feed", "reader", "tutorial"]
+dependencies = [
+    'beautifulsoup4==4.11.1',
+    'Jinja2==3.1.4',
+    'Markdown==3.7',
+    'markdown-checklist==0.4.4',
+    'MarkupSafe==2.1.1',
+    'md4mathjax==0.1.3',
+    'pyembed==1.3.3',
+    'pyembed-markdown==1.1.0',
+    'python-frontmatter==1.1.0',
+    'PyYAML==6.0.2',
+    'text-unidecode==1.3',
+    'setuptools==75.1.0',
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/aquilesC/static_website_builder"
+
+[project.scripts]
+brain_dump = "aqui_brain_dump.__main__:main"
