@@ -9,32 +9,30 @@ from shutil import copyfile
 
 from jinja2 import Environment, FileSystemLoader
 
-from aqui_brain_dump import content_path, output_path, static_path, static_url
+from aqui_brain_dump import bibliography, content_path, datetimeformat, output_path, static_path, static_url
 from aqui_brain_dump.note import Note
 
 
 logger = logging.getLogger(__name__)
 
 
-def datetimeformat(value, format='%Y-%m-%d'):
-    try:
-        return value.strftime(format)
-    except AttributeError:
-        return value
-
-
-def main(base_url='https://notes.aquiles.me'):
+def main(base_url='https://notes.aquiles.me', parse_git=True):
     logger.info('Starting to compile the notes')
+    logger.info(f'Got base_url={base_url}')
+    logger.info(f'Got parse_git={parse_git}')
     if len(sys.argv) > 1:
-        print(sys.argv)
+        logger.info(f'Setting base url to {sys.argv[1]}')
         base_url = sys.argv[1]
 
-    parse_git = True
+    parse_git = parse_git
     if len(sys.argv) > 2:
+        logger.info('Setting parse git to False')
         parse_git = False
 
     out_static_dir = output_path / static_url
     copy_tree(str(static_path.absolute()), str(out_static_dir.absolute()))
+
+    Note.bibliography = bibliography
 
     f_walk = os.walk(content_path)
     for dirs in f_walk:
@@ -70,6 +68,10 @@ def main(base_url='https://notes.aquiles.me'):
         t = tag.strip('#')
         tag_page = Note.create_from_url(f'/tags/{t}')
         tag_page.backlinks = backlinks
+
+    for cite, backlinks in Note.lit_notes.items():
+        cite_page = Note.create_from_lit(cite)
+        cite_page.backlinks = backlinks
 
     logger.info('Building backlinks')
     Note.build_backlinks()
@@ -133,4 +135,4 @@ if __name__ == '__main__':
     log.addHandler(ch)
     log.addHandler(fh)
 
-    main()
+    main(parse_git=False)

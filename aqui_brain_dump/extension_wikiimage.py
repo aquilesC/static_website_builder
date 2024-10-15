@@ -1,13 +1,11 @@
 """
-Wikilinks with Backlinks
-========================
+WikiImage Extension
+===================
 
 Adapted directly from the official extension `Wikilinks <https://github.com/Python-Markdown/markdown/blob/master/markdown/extensions/meta.py>`_.
-It adds a new list attribute to the markdown object that holds all the targets of the wiki links. With this, it is
-possible to build the graph of backlinks, but it still requires a two-pass approach in order to have the information
-ready for the template rendering.
-
+The scope is to be able to render images that use the wikiformat (``![image](path.png)``).
 """
+
 import logging
 
 from markdown.extensions import Extension

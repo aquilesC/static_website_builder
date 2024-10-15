@@ -16,9 +16,9 @@ class TagInlineProcessor(InlineProcessor):
     def handleMatch(self, m, data):
         if m.group(1):
             if not hasattr(self.md, 'tags'):
-                self.md.tags = []
+                self.md.tags = set()
 
-            self.md.tags.append(m.group(1))
+            self.md.tags.add(m.group(1))
             a = etree.Element('a')
             a.text = m[0]
             a.set('href', '/tags/{}'.format(m.group(1).strip('#')))
@@ -32,7 +32,7 @@ class TagExtension(Extension):
         md.inlinePatterns.register(TagInlineProcessor(TagInlineProcessor.RE_TAGS, md), 'tags', 65)
 
     def reset(self):
-        self.md.tags = []
+        self.md.tags = set()
 
 
 def makeExtension(**kwargs):  # pragma: no cover

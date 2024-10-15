@@ -39,7 +39,7 @@ class WikiLinkExtension(Extension):
         super().__init__(**kwargs)
 
     def reset(self):
-        self.md.links = []
+        self.md.links = set()
 
     def extendMarkdown(self, md):
         self.md = md
@@ -67,8 +67,8 @@ class WikiLinksInlineProcessor(InlineProcessor):
             url = self.config['build_url'](href, base_url, end_url)
             logger.debug(f'Got link to {url}')
             if not hasattr(self.md, 'links'):
-                self.md.links = []
-            self.md.links.append(url)
+                self.md.links = set()
+            self.md.links.add(url)
             a = etree.Element('a')
             a.text = text
             a.set('href', url.lower())

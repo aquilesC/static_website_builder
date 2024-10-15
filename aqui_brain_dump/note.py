@@ -9,10 +9,10 @@ import frontmatter
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
 
-from aqui_brain_dump import base_url, content_path, get_creation_date, get_last_modification_date, get_number_commits, \
+from aqui_brain_dump import content_path, get_creation_date, get_last_modification_date, get_number_commits, \
     md, \
     output_path, static_url, template_path
-from aqui_brain_dump.main import datetimeformat
+from aqui_brain_dump import datetimeformat
 from aqui_brain_dump.util import path_to_url
 
 env = Environment(loader=FileSystemLoader(template_path))
@@ -26,24 +26,27 @@ logger = logging.getLogger(__name__)
 
 class Note:
     notes = {}
-    note_executor = ThreadPoolExecutor(max_workers=10)
+    note_executor = ThreadPoolExecutor(max_workers=20)
     futures_executor = []
     tags_dict = {}
+    lit_notes = {}
+    bibliography = {}
 
-    def __init__(self, file_path):
+    def __init__(self, file_path, parse_git = True):
         self.file_path = file_path
         self.path = Path(file_path).relative_to(content_path)
-        self.parse_git = True
+        self.parse_git = parse_git
         self.content = None
-        self.backlinks = []
-        self.links = []
+        self.backlinks = set()
+        self.links = set()
+        self.cites = set()
         self.title = ''
         self.meta = {}
-        self.tags = []
+        self.tags = set()
         self.url = ''
-        self.last_mod = None
+        self.last_mod = datetime.datetime.now()
         self.number_edits = 1
-        self.creation_date = None
+        self.creation_date = datetime.datetime.now()
 
     @classmethod
     def create_from_path(cls, file_path, parse_git=False):
@@ -91,7 +94,6 @@ class Note:
 
         with open(self.file_path, 'r', encoding='utf-8') as f:
             md.reset()
-            md.links = []
             post = frontmatter.load(f)
             self.content = md.convert(post.content)
             logger.debug(f'Converted {self.file_path}')
@@ -119,12 +121,20 @@ class Note:
 
             self.links = md.links
             self.tags = md.tags
+            self.cites = md.cites
             for tag in self.tags:
                 tag = tag.lower()
                 if tag not in self.tags_dict:
                     self.tags_dict[tag] =[self, ]
                 else:
                     self.tags_dict[tag].append(self)
+
+            for cite in self.cites:
+                if cite not in self.lit_notes:
+                    self.lit_notes[cite] = [self, ]
+                else:
+                    self.lit_notes[cite].append(self)
+
             self.futures_executor.append(self.note_executor.submit(self.update_git_information))
 
         logger.debug(f'Added {self} with url {self.url}')
@@ -164,15 +174,33 @@ class Note:
                 logger.debug(f'{note.url} links to {link}')
                 link_to = cls.notes.get(link, False)
                 if link_to:
-                    link_to.backlinks.append(note)
+                    link_to.backlinks.add(note)
                     logger.debug(f'Appending {note} to backlinks of {link_to}')
                 else:
                     new_note = Note.create_from_url(link)
                     while len([f for f in Note.futures_executor if f.running()]):
                         time.sleep(.01)
-                    new_note.backlinks.append(note)
+                    new_note.backlinks.add(note)
                     logger.debug(f'Creating {new_note} and appending {note} to its backlinks')
 
+    @classmethod
+    def create_from_lit(cls, cite_key):
+        logger.debug(f'Building note from lit cite {cite_key}')
+        if cite_key not in cls.bibliography:
+            logger.warning(f'{cite_key} not in bibliography')
+        file_path = content_path / (cite_key + '.md')
+        note = cls(file_path)
+        biblio = note.bibliography.get(cite_key, None)
+        if biblio:
+            note.title = cls.bibliography[cite_key]['title']
+        else:
+            note.title = cite_key
+        note.meta['template'] = "lit_note.html"
+        note.url = f"/lit_note/@{cite_key}/"
+        note.notes[note.url] = note
+        note.content = biblio
+        logger.debug(f'Added {note} to notes with url {note.url}')
+        return note
 
     def __str__(self):
         return self.title or str(self.path)

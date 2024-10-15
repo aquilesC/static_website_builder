@@ -18,22 +18,21 @@ try:
     bibliography = parse_bibliography(bibliography_file)
 except FileNotFoundError:
     print('No bibliography file')
+    bibliography = {}
 static_url = 'static'
 base_url = 'https://notes.aquiles.me'
 
 md = markdown.Markdown(extensions=[
-        'meta',
-        WikiLinkExtension(),
-        WikiImageExtension(),
-        TagExtension(),
-        CitationExtension(bibliography_data=bibliography),
-        'admonition',
-        'markdown_checklist.extension',
-        'fenced_code',
-        'codehilite',
-        # 'pyembed.markdown',
-        'footnotes',
-        'md4mathjax',
+    'meta',
+    WikiLinkExtension(),
+    WikiImageExtension(),
+    TagExtension(),
+    CitationExtension(bibliography_data=bibliography),
+    'admonition',
+    'markdown_checklist.extension',
+    'fenced_code',
+    'codehilite',
+    'footnotes',
     ])
 
 DEFUALT_MATHJAX_SETTING = r"""
@@ -50,3 +49,10 @@ window.MathJax = {
   },
 }
 """
+
+
+def datetimeformat(value, format='%Y-%m-%d'):
+    try:
+        return value.strftime(format)
+    except AttributeError:
+        return value
