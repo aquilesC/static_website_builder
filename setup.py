@@ -6,7 +6,7 @@ README = open('README.md', 'r').read()
 
 setup(
     name='aqui_brain_dump',
-    version='1.0.4',
+    version='1.0.5',
     packages=find_packages(),
     data_files=[('', ['aqui_brain_dump/sitemap.xml', 'aqui_brain_dump/feed.rss'])],
     include_package_data=True,
@@ -25,7 +25,7 @@ setup(
     },
     install_requires=[
         'beautifulsoup4==4.11.1',
-        'Jinja2==3.1.2',
+        'Jinja2==3.1.4',
         'Markdown==3.7',
         'markdown-checklist==0.4.4',
         'MarkupSafe==2.1.1',
