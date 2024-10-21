@@ -1,4 +1,3 @@
-import codecs
 import datetime
 import logging
 import time
@@ -50,7 +49,7 @@ class Note:
 
     @classmethod
     def create_from_path(cls, file_path, parse_git=False):
-        logger.debug(f'Creating note from file: {file_path}')
+        logger.info(f'Creating note from file: {file_path}')
         rel_path = Path(file_path).relative_to(content_path)
         note = cls.notes.get(path_to_url(rel_path), False)
         if note:
@@ -80,7 +79,7 @@ class Note:
         return note
 
     def parse_file(self):
-        logger.debug(f'Parsing contents of {self}')
+        logger.info(f'Parsing contents of {self}')
         if not Path(self.file_path).is_file():
             logger.info(f'{self.file_path} does not exist, creating empty note')
             self.title = ' '.join(str(self.path).split('_')).strip('/')
@@ -94,6 +93,8 @@ class Note:
 
         with open(self.file_path, 'r', encoding='utf-8') as f:
             md.reset()
+            md.links = set()
+
             post = frontmatter.load(f)
             self.content = md.convert(post.content)
             logger.debug(f'Converted {self.file_path}')
@@ -118,8 +119,8 @@ class Note:
             if 'slug' in post.metadata:
                 self.url = post.metadata.get('url')
             self.meta = post.metadata
-
             self.links = md.links
+            logger.debug(f'{self.title} links: {self.links}')
             self.tags = md.tags
             self.cites = md.cites
             for tag in self.tags:
@@ -175,7 +176,7 @@ class Note:
                 link_to = cls.notes.get(link, False)
                 if link_to:
                     link_to.backlinks.add(note)
-                    logger.debug(f'Appending {note} to backlinks of {link_to}')
+                    logger.debug(f'Adding {note} to backlinks of {link_to}')
                 else:
                     new_note = Note.create_from_url(link)
                     while len([f for f in Note.futures_executor if f.running()]):

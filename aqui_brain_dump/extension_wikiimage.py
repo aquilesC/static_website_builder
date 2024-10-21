@@ -36,7 +36,7 @@ class WikiImageExtension(Extension):
         super().__init__(**kwargs)
 
     def reset(self):
-        self.md.links = []
+        self.md.images = []
 
     def extendMarkdown(self, md):
         self.md = md
@@ -59,8 +59,6 @@ class WikiImageInlineProcessor(InlineProcessor):
             label = m.group(1).strip()
             alt = label.split('|')[-1]
             src = label.split('|')[0]
-            # if src.startswith('/'):
-            #     href = href[1:]
             url = self.config['build_url'](src, base_url, end_url)
             logger.debug(f'Got image at {url}')
             img = etree.Element('img')
@@ -79,12 +77,12 @@ class WikiImageInlineProcessor(InlineProcessor):
         end_url = self.config['end_url']
         html_class = self.config['html_class']
         if hasattr(self.md, 'Meta'):
-            if 'wiki_base_url' in self.md.Meta:
-                base_url = self.md.Meta['wiki_base_url'][0]
-            if 'wiki_end_url' in self.md.Meta:
-                end_url = self.md.Meta['wiki_end_url'][0]
-            if 'wiki_html_class' in self.md.Meta:
-                html_class = self.md.Meta['wiki_html_class'][0]
+            if 'base_url' in self.md.Meta:
+                base_url = self.md.Meta['base_url'][0]
+            if 'end_url' in self.md.Meta:
+                end_url = self.md.Meta['end_url'][0]
+            if 'html_class' in self.md.Meta:
+                html_class = self.md.Meta['html_class'][0]
         return base_url, end_url, html_class
 
 

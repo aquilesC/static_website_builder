@@ -43,7 +43,7 @@ class WikiLinkExtension(Extension):
 
     def extendMarkdown(self, md):
         self.md = md
-
+        self.reset()
         # append to end of inline patterns
         WIKILINK_RE = r'\[\[([\w_\|\/ -.]+)\]\]'
         wikilinkPattern = WikiLinksInlineProcessor(WIKILINK_RE, self.getConfigs())
@@ -68,6 +68,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
             logger.debug(f'Got link to {url}')
             if not hasattr(self.md, 'links'):
                 self.md.links = set()
+
             self.md.links.add(url)
             a = etree.Element('a')
             a.text = text
