@@ -35,6 +35,7 @@ setup(
         'python-frontmatter==1.1.0',
         'PyYAML==6.0.2',
         'text-unidecode==1.3',
+        'networkx==3.5',
         'setuptools==75.1.0',
     ]
 )

@@ -47,6 +47,8 @@ soupsieve==2.6
     # via beautifulsoup4
 text-unidecode==1.3
     # via aqui_brain_dump (pyproject.toml)
+networkx==3.5
+    # via aqui_brain_dump (pyproject.toml)
 urllib3==2.2.3
     # via requests
 

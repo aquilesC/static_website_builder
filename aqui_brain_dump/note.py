@@ -3,6 +3,9 @@ import logging
 import time
 from concurrent.futures.thread import ThreadPoolExecutor
 from pathlib import Path
+import json
+
+import networkx as nx
 
 import frontmatter
 from bs4 import BeautifulSoup
@@ -46,6 +49,119 @@ class Note:
         self.last_mod = datetime.datetime.now()
         self.number_edits = 1
         self.creation_date = datetime.datetime.now()
+
+    def _local_network(self):
+        """Return nodes and edges for local network graph"""
+        nodes = {self.url: self}
+        for b in self.backlinks:
+            nodes[b.url] = b
+        for link in self.links:
+            n = self.notes.get(link)
+            if n:
+                nodes[n.url] = n
+
+        G = nx.DiGraph()
+        for u in nodes:
+            G.add_node(u)
+        edges = []
+        for link in self.links:
+            tgt = self.notes.get(link)
+            if tgt:
+                edges.append({'source': self.url, 'target': tgt.url})
+                G.add_edge(self.url, tgt.url)
+        for b in self.backlinks:
+            edges.append({'source': b.url, 'target': self.url})
+            G.add_edge(b.url, self.url)
+
+        pos = nx.spring_layout(G, seed=1)
+        node_data = []
+        for u, n in nodes.items():
+            x, y = pos[u]
+            node_data.append({
+                'id': u,
+                'title': n.title,
+                'size': len(n.backlinks),
+                'x': float(x),
+                'y': float(y),
+            })
+        return {'nodes': node_data, 'edges': edges}
+
+    def _inject_network_graph(self, html):
+        soup = BeautifulSoup(html, 'html.parser')
+        body = soup.body
+        if body is None:
+            return html
+        button = soup.new_tag('button', id='show-network')
+        button.string = 'Show Connections'
+        body.append(button)
+
+        popup = soup.new_tag('div', id='network-popup')
+        popup['style'] = (
+            'display:none; position:fixed; top:0; left:0; width:100%; height:100%; '
+            'background-color:rgba(0,0,0,0.6); z-index:1000;')
+        inner = soup.new_tag('div', id='network-container')
+        inner['style'] = (
+            'position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); '
+            'background:white; padding:1em;')
+        close_b = soup.new_tag('button', id='close-network')
+        close_b.string = 'Close'
+        inner.append(close_b)
+        graph_div = soup.new_tag('div', id='network-graph')
+        inner.append(graph_div)
+        popup.append(inner)
+        body.append(popup)
+
+        script = soup.new_tag('script')
+        data = json.dumps(self._local_network())
+        script.string = f"const networkData = {data};\n" + """
+function drawNetwork(data){
+  const w=600,h=400;
+  const svgNS='http://www.w3.org/2000/svg';
+  const container=document.getElementById('network-graph');
+  container.innerHTML='';
+  const svg=document.createElementNS(svgNS,'svg');
+  svg.setAttribute('width',w);
+  svg.setAttribute('height',h);
+  function sx(x){return (x+1)/2*w;}
+  function sy(y){return (y+1)/2*h;}
+  data.edges.forEach(e=>{
+    const s=data.nodes.find(n=>n.id===e.source);
+    const t=data.nodes.find(n=>n.id===e.target);
+    if(!s||!t) return;
+    const l=document.createElementNS(svgNS,'line');
+    l.setAttribute('x1',sx(s.x));
+    l.setAttribute('y1',sy(s.y));
+    l.setAttribute('x2',sx(t.x));
+    l.setAttribute('y2',sy(t.y));
+    l.setAttribute('stroke','#999');
+    svg.appendChild(l);
+  });
+  data.nodes.forEach(n=>{
+    const c=document.createElementNS(svgNS,'circle');
+    c.setAttribute('cx',sx(n.x));
+    c.setAttribute('cy',sy(n.y));
+    c.setAttribute('r',5+2*n.size);
+    c.setAttribute('fill','#1f77b4');
+    svg.appendChild(c);
+    const text=document.createElementNS(svgNS,'text');
+    text.setAttribute('x',sx(n.x)+8);
+    text.setAttribute('y',sy(n.y)+4);
+    text.textContent=n.title;
+    text.setAttribute('font-size','10');
+    svg.appendChild(text);
+  });
+  container.appendChild(svg);
+}
+document.getElementById('show-network').addEventListener('click',()=>{
+  document.getElementById('network-popup').style.display='block';
+  drawNetwork(networkData);
+});
+document.getElementById('close-network').addEventListener('click',()=>{
+  document.getElementById('network-popup').style.display='none';
+});
+"""
+        body.append(script)
+        return str(soup)
 
     @classmethod
     def create_from_path(cls, file_path, parse_git=False):
@@ -164,9 +280,11 @@ class Note:
             template = env.get_template(self.meta.get('template'))
         else:
             template = template_article
+        html = template.render(context)
+        html = self._inject_network_graph(html)
         with open(out_path / 'index.html', 'w', encoding='utf-8') as out:
             logger.debug(f'Writing {template} with {self} information, to {out_path}')
-            out.write(template.render(context))
+            out.write(html)
 
     @classmethod
     def build_backlinks(cls):
