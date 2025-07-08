@@ -32,7 +32,7 @@ Each note that ends with ``.md`` will be transformed into a folder such as as ``
 
 Each note can have internal links, in which I use the wikilink syntax: ``[[ ]]``. Each link is then appended to the target page, so that lists of backlinks can be built. I find the idea of backlinks crucial for lowering the barrier, since new content can be automatically be shown on older content. 
 
-Also, links to non-existing pages will force the creation of an 'empty' node that only displays backlinks. 
+Also, links to non-existing pages will force the creation of an 'empty' node that only displays backlinks. These links will now receive an additional CSS class ``wikilink-missing`` so they can be styled differently (for example using a lighter yellow).
 
 ## Extra Markdown
 There are some custom solutions embedded into the program. For example, wikilinks parse the presence of ``|`` as a separator for the href. In this way, ``[[target|link]]`` will show up as ``link`` but will be targeted at ``target``. The wikilinks also remove all the spaces and transform them to underscores to be consistent with how I deal with URL's. 
