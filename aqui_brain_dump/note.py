@@ -54,9 +54,8 @@ class Note:
         note = cls.notes.get(path_to_url(rel_path), False)
         if note:
             return note
-        note = cls(file_path)
+        note = cls(file_path, parse_git=parse_git)
         note.parse_file()
-        note.parse_git = parse_git
         return note
 
     @classmethod
