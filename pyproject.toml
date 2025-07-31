@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aqui_brain_dump"
-version = "1.0.6"
+version = "1.0.8"
 description = "Compile a set of notes into a browseable website"
 readme = "README.md"
 authors = [{ name = "Aquiles Carattino", email = "aqui.carattino@gmail.com" }]
@@ -39,3 +39,6 @@ Homepage = "https://github.com/aquilesC/static_website_builder"
 
 [project.scripts]
 brain_dump = "aqui_brain_dump.__main__:main"
+
+[tool.setuptools]
+license-files = []
