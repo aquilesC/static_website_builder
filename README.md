@@ -53,3 +53,4 @@ You can read more on my [about page](https://www.aquiles.me/about).
 The code is released under BSD 3 Clause License. See LICENSE for more information. You are free to use and re-distribute, provided that you acknowledge my work. Seems fair enough. 
 
 Of course, if you are trying to learn from the program, or building on it, don't hesitate to reach out at **aqui.carattino@gmail.com** 
+The code is released under BSD 3 Clause License. See LICENSE for more information. You are free to use and re-distribute, provided that you aknowledge my work. Seems fair enough.

@@ -6,7 +6,7 @@ README = open('README.md', 'r').read()
 
 setup(
     name='aqui_brain_dump',
-    version='1.0.7',
+    version='1.0.8',
     packages=find_packages(),
     data_files=[('', ['aqui_brain_dump/sitemap.xml', 'aqui_brain_dump/feed.rss'])],
     include_package_data=True,
