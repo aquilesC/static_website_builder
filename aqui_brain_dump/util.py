@@ -1,5 +1,12 @@
 from pathlib import Path
 
+INVALID_FILENAME_CHARS = set('<>:"|?*')
+
+def has_invalid_filename_chars(name: str):
+    """Returns True and the set of invalid characters if the name contains any invalid Windows filename characters."""
+    found = set(name) & INVALID_FILENAME_CHARS
+    return bool(found), found
+
 
 def path_to_url(filename: Path, content_dir: Path = None) -> str:
     """Transforms a file path to a URL by following some simple rules such as transforming spaces to _ and setting all the characters to lowercase."""

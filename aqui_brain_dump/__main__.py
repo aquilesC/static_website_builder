@@ -2,10 +2,9 @@ import os
 import sys
 import time
 from datetime import datetime, timezone
-from distutils.dir_util import copy_tree
 import logging
 from pathlib import Path
-from shutil import copyfile
+from shutil import copyfile, copytree
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -30,7 +29,10 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
         parse_git = False
 
     out_static_dir = output_path / static_url
-    copy_tree(str(static_path.absolute()), str(out_static_dir.absolute()))
+    if out_static_dir.exists():
+        import shutil
+        shutil.rmtree(out_static_dir)
+    copytree(str(static_path.absolute()), str(out_static_dir.absolute()))
 
     Note.bibliography = bibliography
 

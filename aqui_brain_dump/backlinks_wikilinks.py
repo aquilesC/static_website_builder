@@ -78,7 +78,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
 
             classes = []
             if html_class:
-                classes.append(html_class)
+                classes.append("shadow-wikilink hover:shadow-wikihover transition-all duration-300")
 
             try:
                 from aqui_brain_dump import content_path
@@ -88,7 +88,7 @@ class WikiLinksInlineProcessor(InlineProcessor):
                 c_path = content_path
 
             if not (c_path / f"{href}.md").is_file():
-                classes.append("wikilink-missing")
+                classes.append("shadow-wikilink-missing hover:shadow-wikilink-missing-hover")
 
             if classes:
                 a.set("class", " ".join(classes))

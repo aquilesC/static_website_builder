@@ -15,7 +15,7 @@ from aqui_brain_dump import content_path, get_creation_date, get_last_modificati
     md, \
     output_path, static_url, template_path
 from aqui_brain_dump import datetimeformat
-from aqui_brain_dump.util import path_to_url
+from aqui_brain_dump.util import path_to_url, has_invalid_filename_chars
 
 env = Environment(loader=FileSystemLoader(template_path))
 env.filters['datetime'] = datetimeformat
@@ -203,6 +203,10 @@ document.getElementById('close-network').addEventListener('click',()=>{
             self.url = path_to_url(self.path)
             if not all(ord(c) < 128 for c in self.url):
                 logger.warning(f'{self.url} has non-ascii characters')
+            # Check for invalid filename characters in the note path
+            has_invalid, chars = has_invalid_filename_chars(str(self.path))
+            if has_invalid:
+                logger.warning(f'Invalid filename characters {chars} in note path: {self.path}')
             self.notes[str(self.path.absolute()).lower()] = self
             return
 
@@ -240,6 +244,10 @@ document.getElementById('close-network').addEventListener('click',()=>{
             self.cites = md.cites
             for tag in self.tags:
                 tag = tag.lower()
+                # Check for invalid filename characters in tag
+                has_invalid, chars = has_invalid_filename_chars(tag)
+                if has_invalid:
+                    logger.warning(f'Invalid filename characters {chars} in tag: {tag} (file: {self.file_path})')
                 if tag not in self.tags_dict:
                     self.tags_dict[tag] =[self, ]
                 else:
@@ -274,7 +282,16 @@ document.getElementById('close-network').addEventListener('click',()=>{
             'base_url': base_url,
             }
         out_path = output_path / self.url[1:]
-        out_path.mkdir(parents=True, exist_ok=True)
+        # Check for invalid filename characters in the output path
+        # has_invalid, chars = has_invalid_filename_chars(str(out_path))
+        # if has_invalid:
+        #     logger.warning(f'Invalid filename characters {chars} in output path: {out_path} (source: {self.file_path})')
+        try:
+            out_path.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            logger.error(f'Error creating output path {out_path}: {e}')
+            return
+
         if 'template' in self.meta:
             template = env.get_template(self.meta.get('template'))
         else:
@@ -306,6 +323,10 @@ document.getElementById('close-network').addEventListener('click',()=>{
         logger.debug(f'Building note from lit cite {cite_key}')
         if cite_key not in cls.bibliography:
             logger.warning(f'{cite_key} not in bibliography')
+        # Check for invalid filename characters in citation key
+        has_invalid, chars = has_invalid_filename_chars(cite_key)
+        if has_invalid:
+            logger.warning(f'Invalid filename characters {chars} in citation key: {cite_key}')
         file_path = content_path / (cite_key + '.md')
         note = cls(file_path)
         biblio = note.bibliography.get(cite_key, None)
