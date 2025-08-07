@@ -213,8 +213,11 @@ document.getElementById('close-network').addEventListener('click',()=>{
         with open(self.file_path, 'r', encoding='utf-8') as f:
             md.reset()
             md.links = set()
-
-            post = frontmatter.load(f)
+            try:
+                post = frontmatter.load(f)
+            except Exception as e:
+                logger.error(f'Error loading {self.file_path}: {e}')
+                return
             self.content = md.convert(post.content)
             logger.debug(f'Converted {self.file_path}')
             bs = BeautifulSoup(self.content, 'html.parser')
