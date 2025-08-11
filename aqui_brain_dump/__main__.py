@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import logging
 from pathlib import Path
 from shutil import copyfile, copytree
+from collections import OrderedDict
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -112,9 +113,28 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
 
     logger.info('Building RSS Feed')
     rss_feed = env.get_template('feed.rss')
+    # Order notes by last modification date (fallback to creation date) and limit to newest 50
+    def _note_last_mod_timestamp(item):
+        # item is (key, note)
+        _, n = item
+        import datetime as dt
+        value = getattr(n, 'last_mod', None) or getattr(n, 'creation_date', None)
+        if isinstance(value, dt.datetime):
+            vdt = value
+        elif isinstance(value, dt.date):
+            vdt = dt.datetime.combine(value, dt.time.min, tzinfo=dt.timezone.utc)
+        else:
+            return 0
+        try:
+            return vdt.timestamp()
+        except Exception:
+            return 0
+
+    sorted_items = sorted(Note.notes.items(), key=_note_last_mod_timestamp, reverse=True)
+    limited_notes = OrderedDict(sorted_items[:50])
     with open(output_path / 'feed.rss', 'w', encoding='utf-8') as f:
         f.write(rss_feed.render(
-            {'notes': Note.notes,
+            {'notes': limited_notes,
              'min_edits': min_number_edits,
              'max_edits': max_number_edits,
              'today': today,
