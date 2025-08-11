@@ -214,8 +214,13 @@ document.getElementById('close-network').addEventListener('click',()=>{
             md.reset()
             md.links = set()
 
-            post = frontmatter.load(f)
-            self.content = md.convert(post.content)
+            try:
+                post = frontmatter.load(f)
+                self.content = md.convert(post.content)
+            except Exception as e:
+                logger.error(f'Error parsing {self.file_path}: {e}')
+                self.content = ''
+
             logger.debug(f'Converted {self.file_path}')
             bs = BeautifulSoup(self.content, 'html.parser')
             h1 = bs.find('h1')

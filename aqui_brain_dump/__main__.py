@@ -6,6 +6,7 @@ import logging
 from pathlib import Path
 from shutil import copyfile, copytree
 from collections import OrderedDict
+import math
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -39,7 +40,7 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
 
     f_walk = os.walk(content_path)
     for dirs in f_walk:
-        if dirs[0].startswith('templates'):
+        if 'templates' in dirs[0]:
             continue
         logger.info(f'Entering to {dirs[0]}')
         cur_dir = dirs[0]
@@ -102,11 +103,29 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
     env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
     env.filters['datetime'] = datetimeformat
     sitemap = env.get_template('sitemap.xml')
+    # Compute network-based priorities using incoming (backlinks) and outgoing (links)
+    # Use log1p to dampen large degrees; weight incoming higher than outgoing
+    network_scores = {}
+    for url, n in Note.notes.items():
+        in_deg = len(getattr(n, 'backlinks', []) or [])
+        out_deg = len(getattr(n, 'links', []) or [])
+        score = 2.0 * math.log1p(in_deg) + 1.0 * math.log1p(out_deg)
+        network_scores[url] = score
+    max_network_score = max(network_scores.values()) if network_scores else 0.0
+    network_priorities = {}
+    for url, s in network_scores.items():
+        if max_network_score > 0:
+            pr = s / max_network_score
+            pr = pr if pr >= 0.1 else 0.1
+        else:
+            pr = 0.1
+        network_priorities[url] = round(pr, 3)
     with open(output_path / 'sitemap.xml', 'w', encoding='utf-8') as f:
         f.write(sitemap.render(
             {'notes': Note.notes,
              'min_edits': min_number_edits,
              'max_edits': max_number_edits,
+             'network_priorities': network_priorities,
              'today': today,
              'base_url': base_url,
                 }))

@@ -11,11 +11,15 @@
                 <lastmod>{{ values.creation_date|datetime }}</lastmod>
             {% endif %}
             <changefreq>monthly</changefreq>
-        {% if values.number_edits != None %}
-            <priority>{{ values.number_edits/max_edits }}</priority>
-        {% else %}
-            <priority>0.1</priority>
-        {% endif %}
+            {# Network-based priority: prefer provided network score; fallback to edit-based #}
+            {% set pr = network_priorities.get(values.url, None) %}
+            {% if pr is not none %}
+                <priority>{{ pr }}</priority>
+            {% elif values.number_edits != None %}
+                <priority>{{ values.number_edits/max_edits }}</priority>
+            {% else %}
+                <priority>0.1</priority>
+            {% endif %}
         </url>
         {% endif %}
     {% endfor %}
