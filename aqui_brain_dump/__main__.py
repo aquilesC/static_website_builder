@@ -42,6 +42,8 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
     for dirs in f_walk:
         if 'templates' in dirs[0]:
             continue
+        if 'templates' in dirs[0]:
+            continue
         logger.info(f'Entering to {dirs[0]}')
         cur_dir = dirs[0]
         sub_dir = os.path.abspath(cur_dir)

@@ -28,9 +28,7 @@ setup(
         'Jinja2>=3.1.0',
         'Markdown>=3.5.0',
         'markdown-checklist>=0.4.0',
-        'MarkupSafe>=2.1.0',
         'networkx>=3.2.0',
         'python-frontmatter>=1.0.0',
-        'PyYAML>=6.0.0',
     ]
 )
