@@ -1,6 +1,6 @@
 # Static Website Builder
 
-This is a very simple static website builder, which I use for building [aquiles.me](https://www.aquiles.me). The idea is to grab a bunch of markdown files and render them as HTML files. 
+This is a very simple static website builder, which I use for building [aquiles.me](https://notes.aquiles.me). The idea is to grab a bunch of markdown files and render them as HTML files. 
 
 Building from scratch was easier than trying to adjust existing solutions to my own needs. I am releasing this package mostly to help others learn. 
 
@@ -37,7 +37,7 @@ Also, links to non-existing pages will force the creation of an 'empty' node tha
 ## Extra Markdown
 There are some custom solutions embedded into the program. For example, wikilinks parse the presence of ``|`` as a separator for the href. In this way, ``[[target|link]]`` will show up as ``link`` but will be targeted at ``target``. The wikilinks also remove all the spaces and transform them to underscores to be consistent with how I deal with URL's. 
 
-The frontmatter is separated using an initial ``---`` and final ``---``. The keywords used for the moment are: ``title`` and ``description``, which are used for the meta tags of the html, ``epistemic``, which adds a note at the top of each article to display the [epistemic status](https://www.aquiles.me/epistemic_status). Other fields are accepted but are not currently used when generating content.
+The frontmatter is separated using an initial ``---`` and final ``---``. The keywords used for the moment are: ``title`` and ``description``, which are used for the meta tags of the html, ``epistemic``, which adds a note at the top of each article to display the [epistemic status](https://notes.aquiles.me/epistemic_status). Other fields are accepted but are not currently used when generating content.
 
 I also make use of ``admonition`` to include images of different widths. The ``style.css`` defines two types of images: medium and small that can be used by inserting something like this in the markdown file:
 
@@ -47,7 +47,7 @@ I also make use of ``admonition`` to include images of different widths. The ``s
 ## Git-based creation and modification dates
 Since my working flow is based on git, I use it to compute the creation and modification dates of each file. It is not super accurate, since it measures the moment a file was added to git and not really created on the computer. Normally the offset is lower than a day. This approach seems to give more consistent results than using the operating system's dates, and is compatible with Netlify. 
 
-You can read more on my [about page](https://www.aquiles.me/about).
+You can read more on my [about page](https://notes.aquiles.me/§about).
 
 ## License
 The code is released under BSD 3 Clause License. See LICENSE for more information. You are free to use and re-distribute, provided that you acknowledge my work. Seems fair enough. 
