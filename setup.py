@@ -20,7 +20,8 @@ setup(
     long_description_content_type='text/markdown',
     entry_points={
         'console_scripts': [
-            'brain_dump=aqui_brain_dump.__main__:main'
+            'brain_dump=aqui_brain_dump.__main__:main',
+            'garden_tools=aqui_brain_dump.garden_tools:main'
         ]
     },
     install_requires=[
@@ -30,5 +31,6 @@ setup(
         'markdown-checklist>=0.4.0',
         'networkx>=3.2.0',
         'python-frontmatter>=1.0.0',
+        'requests>=2.28.0',
     ]
 )
