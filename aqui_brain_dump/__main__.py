@@ -134,7 +134,7 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
 
     logger.info('Building RSS Feed')
     rss_feed = env.get_template('feed.rss')
-    # Order notes by last modification date (fallback to creation date) and limit to newest 50
+    # Filter notes modified/created in the last week
     def _note_last_mod_timestamp(item):
         # item is (key, note)
         _, n = item
@@ -151,8 +151,38 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
         except Exception:
             return 0
 
-    sorted_items = sorted(Note.notes.items(), key=_note_last_mod_timestamp, reverse=True)
-    limited_notes = OrderedDict(sorted_items[:50])
+    # Filter notes to only include those with content (actual notes, not auto-generated pages)
+    # and modified/created in the last 7 days
+    import datetime as dt
+    one_week_ago = dt.datetime.now(tz=dt.timezone.utc) - dt.timedelta(days=7)
+    
+    filtered_items = []
+    for key, note in Note.notes.items():
+        # Skip notes without content (auto-generated tag pages, etc.)
+        if note.content is None or note.content == '':
+            continue
+        
+        # Get the last modification or creation date
+        value = getattr(note, 'last_mod', None) or getattr(note, 'creation_date', None)
+        if isinstance(value, dt.datetime):
+            note_date = value
+            # Make timezone-aware if it's naive
+            if note_date.tzinfo is None:
+                note_date = note_date.replace(tzinfo=dt.timezone.utc)
+        elif isinstance(value, dt.date):
+            note_date = dt.datetime.combine(value, dt.time.min, tzinfo=dt.timezone.utc)
+        else:
+            continue
+        
+        # Include if modified/created in the last week
+        if note_date >= one_week_ago:
+            filtered_items.append((key, note))
+    
+    # Sort by most recent first
+    sorted_items = sorted(filtered_items, key=_note_last_mod_timestamp, reverse=True)
+    limited_notes = OrderedDict(sorted_items)
+    
+    logger.info(f'Found {len(limited_notes)} notes modified/created in the last week for RSS feed')
     with open(output_path / 'feed.rss', 'w', encoding='utf-8') as f:
         f.write(rss_feed.render(
             {'notes': limited_notes,
