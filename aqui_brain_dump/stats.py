@@ -173,6 +173,50 @@ def generate_statistics(output_file='stats/garden_stats.json', parse_git=True):
     for tag, notes in Note.tags_dict.items():
         stats['tag_distribution'][tag] = len(notes)
     
+    # Generate graph
+    graph = {
+        'nodes': [],
+        'links': []
+    }
+    
+    added_nodes = set()
+    
+    for url, note in Note.notes.items():
+        # Determine group
+        group = 'note'
+        is_tag = False
+        
+        if note.url.startswith('/tags/'):
+            group = 'tag'
+            is_tag = True
+        elif hasattr(note, 'tags') and note.tags:
+            group = list(note.tags)[0].lower()
+            
+        # A note is considered to "exist" if it has content AND it's not simply an auto-generated tag page
+        exists = note.content is not None and note.content != ''
+        if is_tag:
+            exists = True # We consider tags to always exist for coloring purposes as requested
+            
+        graph['nodes'].append({
+            'id': note.url,
+            'title': note.title,
+            'group': group,
+            'exists': exists,
+            'is_tag': is_tag,
+            'word_count': count_words(note.content),
+            'connections': len(getattr(note, 'links', [])) + len(getattr(note, 'backlinks', []))
+        })
+        added_nodes.add(note.url)
+        
+    for url, note in Note.notes.items():
+        for link in getattr(note, 'links', []):
+            linked_note = Note.notes.get(link)
+            if linked_note:
+                graph['links'].append({
+                    'source': note.url,
+                    'target': linked_note.url
+                })
+    
     # Calculate averages
     if stats['notes_with_content'] > 0:
         stats['avg_words_per_note'] = round(stats['total_words'] / stats['notes_with_content'], 2)
@@ -196,13 +240,24 @@ def generate_statistics(output_file='stats/garden_stats.json', parse_git=True):
     
     logger.info(f'Statistics saved to {output_path}')
     
+    # Save graph
+    graph_path = output_path.parent / 'garden_graph.json'
+    with open(graph_path, 'w', encoding='utf-8') as f:
+        json.dump(graph, f, indent=2, ensure_ascii=False)
+        
+    logger.info(f'Graph saved to {graph_path}')
+    
     # Also save a timestamped version for historical tracking
     timestamp = datetime.now(tz=timezone.utc).strftime('%Y%m%d_%H%M%S')
     historical_path = output_path.parent / f'garden_stats_{timestamp}.json'
     with open(historical_path, 'w', encoding='utf-8') as f:
         json.dump(stats, f, indent=2, ensure_ascii=False)
     
-    logger.info(f'Historical snapshot saved to {historical_path}')
+    historical_graph_path = output_path.parent / f'garden_graph_{timestamp}.json'
+    with open(historical_graph_path, 'w', encoding='utf-8') as f:
+        json.dump(graph, f, indent=2, ensure_ascii=False)
+    
+    logger.info(f'Historical snapshot saved to {historical_path} and {historical_graph_path}')
     
     return stats
 

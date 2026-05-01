@@ -192,6 +192,18 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
              'base_url': base_url
              }))
 
+    logger.info('Copying stats files to output directory')
+    import shutil
+    out_stats_dir = output_path / 'stats'
+    out_stats_dir.mkdir(parents=True, exist_ok=True)
+    stats_dir = Path('stats')
+    if stats_dir.exists():
+        for f in ['garden_stats.json', 'garden_graph.json']:
+            src = stats_dir / f
+            if src.exists():
+                logger.debug(f'Copying {src} to {out_stats_dir / f}')
+                shutil.copyfile(src, out_stats_dir / f)
+
 
 if __name__ == '__main__':
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
