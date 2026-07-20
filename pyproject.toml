@@ -26,7 +26,7 @@ dependencies = [
     'python-frontmatter>=1.0.0',
     'requests>=2.28.0',
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.urls]
 Homepage = "https://github.com/aquilesC/static_website_builder"
@@ -34,6 +34,13 @@ Homepage = "https://github.com/aquilesC/static_website_builder"
 [project.scripts]
 brain_dump = "aqui_brain_dump.__main__:main"
 garden_tools = "aqui_brain_dump.garden_tools:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aqui_brain_dump*"]
+
+[tool.setuptools.package-data]
+"aqui_brain_dump" = ["sitemap.xml", "feed.rss"]
 
 [tool.setuptools]
 license-files = []

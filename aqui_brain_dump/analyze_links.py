@@ -42,6 +42,8 @@ def analyze_internal_links(output_file='stats/link_analysis.json', parse_git=Fal
         for file in dirs[2]:
             if not file.endswith('.md'):
                 continue
+            if file.startswith('@'):
+                continue
             filepath = Path(cur_dir) / file
             logger.debug(f'Creating note for link analysis: {filepath}')
             Note.create_from_path(filepath, parse_git=parse_git)

@@ -146,6 +146,8 @@ def check_external_links(output_file='stats/external_links.json', parse_git=Fals
         for file in dirs[2]:
             if not file.endswith('.md'):
                 continue
+            if file.startswith('@'):
+                continue
             filepath = Path(cur_dir) / file
             logger.debug(f'Creating note for external link check: {filepath}')
             Note.create_from_path(filepath, parse_git=parse_git)

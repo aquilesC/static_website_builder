@@ -54,6 +54,8 @@ def generate_statistics(output_file='stats/garden_stats.json', parse_git=True):
         for file in dirs[2]:
             if not file.endswith('.md'):
                 continue
+            if file.startswith('@'):
+                continue
             filepath = Path(cur_dir) / file
             logger.debug(f'Creating note for statistics: {filepath}')
             Note.create_from_path(filepath, parse_git=parse_git)
