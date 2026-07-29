@@ -8,7 +8,7 @@ from shutil import copyfile, copytree
 from collections import OrderedDict
 import math
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from aqui_brain_dump import bibliography, content_path, datetimeformat, output_path, static_path, static_url
 from aqui_brain_dump.note import Note
@@ -100,7 +100,10 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
 
     logger.debug(f'Min num edits: {min_number_edits}, Max num edits: {max_number_edits}')
     today = datetime.now(tz=timezone.utc).strftime('%a, %d %b %Y %H:%M:%S %z')
-    env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+    env = Environment(
+        loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))),
+        autoescape=select_autoescape(['xml', 'html', 'rss']),
+    )
     env.filters['datetime'] = datetimeformat
     sitemap = env.get_template('sitemap.xml')
     # Compute network-based priorities using incoming (backlinks) and outgoing (links)

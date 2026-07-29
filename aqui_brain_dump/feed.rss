@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
    <channel>
       <title>Aquiles Carattino Corner of the Internet</title>
       <link>https://notes.aquiles.me/</link>
@@ -35,7 +35,7 @@
              <description>{{ values.description }}</description>
          {% endif -%}
          <content:encoded><![CDATA[
-            {{ values.content }}
+            {{ values.content|safe }}
          ]]></content:encoded>
          {%- if values.last_mod != None %}
                 <pubDate>{{ values.last_mod|datetime('%a, %d %b %Y %H:%M:%S %z') }}</pubDate>

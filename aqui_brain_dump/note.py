@@ -7,7 +7,7 @@ import json
 
 import frontmatter
 from bs4 import BeautifulSoup
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from aqui_brain_dump import content_path, get_creation_date, get_last_modification_date, get_number_commits, \
     md, \
@@ -15,7 +15,10 @@ from aqui_brain_dump import content_path, get_creation_date, get_last_modificati
 from aqui_brain_dump import datetimeformat
 from aqui_brain_dump.util import path_to_url, has_invalid_filename_chars, is_private_path
 
-env = Environment(loader=FileSystemLoader(template_path))
+env = Environment(
+    loader=FileSystemLoader(template_path),
+    autoescape=select_autoescape(['html', 'xml', 'htm']),
+)
 env.filters['datetime'] = datetimeformat
 try:
     template_article = env.get_template('note.html')
