@@ -27,3 +27,11 @@ def path_to_url(filename: Path, content_dir: Path = None) -> str:
         url += '/'
     return url
 
+
+def is_private_path(path) -> bool:
+    """Returns True if any directory component in the path is named '_private'."""
+    if not path:
+        return False
+    return '_private' in Path(path).parts
+
+

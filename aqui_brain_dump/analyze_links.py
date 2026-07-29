@@ -10,6 +10,7 @@ from pathlib import Path
 
 from aqui_brain_dump import content_path
 from aqui_brain_dump.note import Note
+from aqui_brain_dump.util import is_private_path
 
 logger = logging.getLogger(__name__)
 
@@ -30,21 +31,21 @@ def analyze_internal_links(output_file='stats/link_analysis.json', parse_git=Fal
     # Parse all notes
     import os
     f_walk = os.walk(content_path)
-    for dirs in f_walk:
-        if 'templates' in dirs[0]:
+    for root, dirs, files in f_walk:
+        dirs[:] = [d for d in dirs if d != '_private' and d != 'templates' and not d.startswith('.')]
+        if is_private_path(root):
             continue
-        cur_dir = dirs[0]
+        cur_dir = root
         sub_dir = Path(cur_dir).absolute()
         
-        if str(sub_dir).startswith('.') or 'templates' in str(sub_dir):
-            continue
-        
-        for file in dirs[2]:
+        for file in files:
             if not file.endswith('.md'):
                 continue
             if file.startswith('@'):
                 continue
             filepath = Path(cur_dir) / file
+            if is_private_path(filepath):
+                continue
             logger.debug(f'Creating note for link analysis: {filepath}')
             Note.create_from_path(filepath, parse_git=parse_git)
     

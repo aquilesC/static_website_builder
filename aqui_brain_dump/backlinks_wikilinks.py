@@ -14,10 +14,13 @@ from markdown.extensions import Extension
 from markdown.inlinepatterns import InlineProcessor
 import xml.etree.ElementTree as etree
 import re
+from pathlib import Path
 
+from aqui_brain_dump.util import is_private_path
 
 
 logger = logging.getLogger(__name__)
+
 
 def build_url(label, base, end):
     """ Build a url from the label, a base, and an end. """
@@ -66,6 +69,16 @@ class WikiLinksInlineProcessor(InlineProcessor):
                 href = href[1:]
             url = self.config['build_url'](href, base_url, end_url)
             logger.debug(f'Got link to {url}')
+            if is_private_path(url) or is_private_path(href) or is_private_path(label):
+                logger.debug(f'Wikilink {label} points to a private note, skipping wikilink processing.')
+                if '|' in label:
+                    display_text = label.split('|')[-1]
+                else:
+                    target = label.split('|')[0].strip('/')
+                    display_text = Path(target).name
+                return display_text, m.start(0), m.end(0)
+
+
             if not hasattr(self.md, 'links'):
                 self.md.links = set()
 

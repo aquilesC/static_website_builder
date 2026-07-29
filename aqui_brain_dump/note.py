@@ -13,12 +13,17 @@ from aqui_brain_dump import content_path, get_creation_date, get_last_modificati
     md, \
     output_path, static_url, template_path
 from aqui_brain_dump import datetimeformat
-from aqui_brain_dump.util import path_to_url, has_invalid_filename_chars
+from aqui_brain_dump.util import path_to_url, has_invalid_filename_chars, is_private_path
 
 env = Environment(loader=FileSystemLoader(template_path))
 env.filters['datetime'] = datetimeformat
-template_article = env.get_template('note.html')
-template_index = env.get_template('index.html')
+try:
+    template_article = env.get_template('note.html')
+    template_index = env.get_template('index.html')
+except Exception:
+    template_article = None
+    template_index = None
+
 
 
 logger = logging.getLogger(__name__)
@@ -99,6 +104,9 @@ class Note:
 
     @classmethod
     def create_from_path(cls, file_path, parse_git=False):
+        if is_private_path(file_path):
+            logger.info(f'Skipping private file: {file_path}')
+            return None
         logger.info(f'Creating note from file: {file_path}')
         rel_path = Path(file_path).relative_to(content_path)
         note = cls.notes.get(path_to_url(rel_path), False)
@@ -112,8 +120,12 @@ class Note:
     def create_from_url(cls, url: str):
         """ Creates a note without content, normally product of links to non existing notes
         """
+        if is_private_path(url):
+            logger.info(f'Skipping creation of note for private url: {url}')
+            return None
         if not all(ord(c) < 128 for c in url):
             logger.warning(f'{url} has non-ascii characters')
+
         logger.debug(f'Creating note from url {url}')
         if url.startswith('/'):
             url = url[1:]
@@ -234,7 +246,8 @@ class Note:
         if 'template' in self.meta:
             template = env.get_template(self.meta.get('template'))
         else:
-            template = template_article
+            template = template_article or env.get_template('note.html')
+
         html = template.render(context)
         
         # Write the HTML file
@@ -251,18 +264,25 @@ class Note:
     @classmethod
     def build_backlinks(cls):
         for note in list(cls.notes.values()):
+            if is_private_path(getattr(note, 'file_path', None)) or is_private_path(getattr(note, 'path', None)):
+                continue
             for link in note.links:
+                if is_private_path(link):
+                    continue
                 logger.debug(f'{note.url} links to {link}')
                 link_to = cls.notes.get(link, False)
                 if link_to:
-                    link_to.backlinks.add(note)
-                    logger.debug(f'Adding {note} to backlinks of {link_to}')
+                    if not (is_private_path(getattr(link_to, 'file_path', None)) or is_private_path(getattr(link_to, 'path', None))):
+                        link_to.backlinks.add(note)
+                        logger.debug(f'Adding {note} to backlinks of {link_to}')
                 else:
                     new_note = Note.create_from_url(link)
-                    while len([f for f in Note.futures_executor if f.running()]):
-                        time.sleep(.01)
-                    new_note.backlinks.add(note)
-                    logger.debug(f'Creating {new_note} and appending {note} to its backlinks')
+                    if new_note:
+                        while len([f for f in Note.futures_executor if f.running()]):
+                            time.sleep(.01)
+                        new_note.backlinks.add(note)
+                        logger.debug(f'Creating {new_note} and appending {note} to its backlinks')
+
 
     @classmethod
     def create_from_lit(cls, cite_key):

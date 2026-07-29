@@ -12,6 +12,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from aqui_brain_dump import bibliography, content_path, datetimeformat, output_path, static_path, static_url
 from aqui_brain_dump.note import Note
+from aqui_brain_dump.util import is_private_path
 
 
 logger = logging.getLogger(__name__)
@@ -39,31 +40,28 @@ def main(base_url='https://notes.aquiles.me', parse_git=True):
     Note.bibliography = bibliography
 
     f_walk = os.walk(content_path)
-    for dirs in f_walk:
-        if 'templates' in dirs[0]:
+    for root, dirs, files in f_walk:
+        dirs[:] = [d for d in dirs if d != '_private' and d != 'templates' and not d.startswith('.')]
+        if is_private_path(root):
             continue
-        if 'templates' in dirs[0]:
-            continue
-        logger.info(f'Entering to {dirs[0]}')
-        cur_dir = dirs[0]
-        sub_dir = os.path.abspath(cur_dir)
-        if sub_dir == '.':
-            sub_dir = ''
-
-        if sub_dir.startswith('.') or sub_dir.startswith('templates'):
-            continue
-
-        sub_dir = Path(sub_dir).absolute()
-        out_subdir = output_path / sub_dir.relative_to(content_path)
+        cur_dir = root
+        sub_dir = Path(os.path.abspath(cur_dir))
+        if sub_dir == content_path:
+            out_subdir = output_path
+        else:
+            out_subdir = output_path / sub_dir.relative_to(content_path)
         out_subdir.mkdir(exist_ok=True, parents=True)
-        for file in dirs[2]:
-            if not file.endswith('.md'):
-                logger.debug(f'Copying {file} to {output_path / sub_dir.relative_to(content_path) / file}')
-                copyfile(os.path.join(cur_dir, file), output_path / sub_dir.relative_to(content_path) / file)
+        for file in files:
+            filepath = sub_dir / file
+            if is_private_path(filepath):
                 continue
-            filepath = content_path / sub_dir / file
+            if not file.endswith('.md'):
+                logger.debug(f'Copying {file} to {out_subdir / file}')
+                copyfile(os.path.join(cur_dir, file), out_subdir / file)
+                continue
             logger.debug(f'Creating note for {filepath}')
             Note.create_from_path(filepath, parse_git=parse_git)
+
 
     logger.info('Waiting for note parser executor to finish')
     while len([f for f in Note.futures_executor if f.running()]):
