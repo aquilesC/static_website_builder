@@ -20,3 +20,4 @@
 1. **Separation of Concerns**: Do not store garden content files inside `static_website_builder`. Code belongs here; content belongs in `../aquiles.me`.
 2. **Environment**: Always use `uv` for python commands in this project.
 3. **Verification**: When editing engine logic, verify changes by compiling the garden in `../aquiles.me` using `uv run` and testing/inspecting the resulting HTML/XML output.
+4. **Session Startup Directive**: At the start of any new coding session or before making changes, ask the user if they want to pull the latest changes from git (`git pull`).

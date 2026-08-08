@@ -178,7 +178,7 @@ class Note:
                 logger.debug(f'Found title: {h1.get_text()}')
                 h1_title = h1.get_text()
                 h1.decompose()
-                self.content = bs.prettify()
+                self.content = str(bs)
             if 'title' in post.metadata:
                 self.title = post.metadata['title']
             elif h1_title is not None:
