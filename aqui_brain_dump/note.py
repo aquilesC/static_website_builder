@@ -4,13 +4,14 @@ import time
 from concurrent.futures.thread import ThreadPoolExecutor
 from pathlib import Path
 import json
+import re
 
 import frontmatter
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from aqui_brain_dump import content_path, get_creation_date, get_last_modification_date, get_number_commits, \
-    md, \
+    get_md, md, \
     output_path, static_url, template_path
 from aqui_brain_dump import datetimeformat
 from aqui_brain_dump.util import path_to_url, has_invalid_filename_chars, is_private_path
@@ -18,6 +19,7 @@ from aqui_brain_dump.util import path_to_url, has_invalid_filename_chars, is_pri
 env = Environment(
     loader=FileSystemLoader(template_path),
     autoescape=select_autoescape(['html', 'xml', 'htm']),
+    cache_size=400,
 )
 env.filters['datetime'] = datetimeformat
 try:
@@ -31,18 +33,41 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
+LIST_ITEM_RE = re.compile(r'^\s*([-*]|\d+[\.\)])\s+')
+
+
+def fix_markdown_lists(text):
+    if not text:
+        return text
+    lines = text.split('\n')
+    new_lines = []
+    for i, line in enumerate(lines):
+        if i > 0:
+            prev = lines[i - 1].strip()
+            if LIST_ITEM_RE.match(line) and prev and not LIST_ITEM_RE.match(lines[i - 1]) and not prev.startswith('#') and not prev.startswith('>'):
+                new_lines.append('')
+        new_lines.append(line)
+    return '\n'.join(new_lines)
+
+
 
 class Note:
     notes = {}
-    note_executor = ThreadPoolExecutor(max_workers=20)
+    note_executor = ThreadPoolExecutor(max_workers=10)
     futures_executor = []
     tags_dict = {}
     lit_notes = {}
     bibliography = {}
+    git_info_cache = {}
+
+    @classmethod
+    def preload_git_info(cls, repo_path):
+        from aqui_brain_dump.git_process import get_all_git_info
+        cls.git_info_cache = get_all_git_info(repo_path)
 
     def __init__(self, file_path, parse_git = True):
-        self.file_path = file_path
-        self.path = Path(file_path).relative_to(content_path)
+        self.file_path = Path(file_path).absolute()
+        self.path = self.file_path.relative_to(content_path.absolute())
         self.parse_git = parse_git
         self.content = None
         self.backlinks = set()
@@ -108,10 +133,10 @@ class Note:
     @classmethod
     def create_from_path(cls, file_path, parse_git=False):
         if is_private_path(file_path):
-            logger.info(f'Skipping private file: {file_path}')
+            logger.debug(f'Skipping private file: {file_path}')
             return None
-        logger.info(f'Creating note from file: {file_path}')
-        rel_path = Path(file_path).relative_to(content_path)
+        logger.debug(f'Creating note from file: {file_path}')
+        rel_path = Path(file_path).absolute().relative_to(content_path.absolute())
         note = cls.notes.get(path_to_url(rel_path), False)
         if note:
             return note
@@ -124,7 +149,7 @@ class Note:
         """ Creates a note without content, normally product of links to non existing notes
         """
         if is_private_path(url):
-            logger.info(f'Skipping creation of note for private url: {url}')
+            logger.debug(f'Skipping creation of note for private url: {url}')
             return None
         if not all(ord(c) < 128 for c in url):
             logger.warning(f'{url} has non-ascii characters')
@@ -143,9 +168,9 @@ class Note:
         return note
 
     def parse_file(self):
-        logger.info(f'Parsing contents of {self}')
+        logger.debug(f'Parsing contents of {self}')
         if not Path(self.file_path).is_file():
-            logger.info(f'{self.file_path} does not exist, creating empty note')
+            logger.debug(f'{self.file_path} does not exist, creating empty note')
             self.title = ' '.join(str(self.path).split('_')).strip('/')
             if self.title.endswith('.md'):
                 self.title = self.title[:-3]
@@ -156,16 +181,19 @@ class Note:
             has_invalid, chars = has_invalid_filename_chars(str(self.path))
             if has_invalid:
                 logger.warning(f'Invalid filename characters {chars} in note path: {self.path}')
-            self.notes[str(self.path.absolute()).lower()] = self
+            self.notes[str(self.file_path.absolute()).lower()] = self
             return
 
         with open(self.file_path, 'r', encoding='utf-8') as f:
-            md.reset()
-            md.links = set()
+            local_md = get_md(self.bibliography)
+            local_md.reset()
+            local_md.links = set()
 
+            post = None
             try:
                 post = frontmatter.load(f)
-                self.content = md.convert(post.content)
+                content_text = fix_markdown_lists(post.content)
+                self.content = local_md.convert(content_text)
             except Exception as e:
                 logger.error(f'Error parsing {self.file_path}: {e}')
                 self.content = ''
@@ -179,7 +207,7 @@ class Note:
                 h1_title = h1.get_text()
                 h1.decompose()
                 self.content = str(bs)
-            if 'title' in post.metadata:
+            if post is not None and 'title' in post.metadata:
                 self.title = post.metadata['title']
             elif h1_title is not None:
                 self.title = h1_title
@@ -189,13 +217,13 @@ class Note:
                     self.title = self.title[:-3]
 
             self.url = path_to_url(self.path)
-            if 'slug' in post.metadata:
-                self.url = post.metadata.get('url')
-            self.meta = post.metadata
-            self.links = md.links
+            if post is not None and 'slug' in post.metadata:
+                self.url = post.metadata.get('slug')
+            self.meta = post.metadata if post is not None else {}
+            self.links = getattr(local_md, 'links', set())
             logger.debug(f'{self.title} links: {self.links}')
-            self.tags = md.tags
-            self.cites = md.cites
+            self.tags = getattr(local_md, 'tags', set())
+            self.cites = getattr(local_md, 'cites', set())
             for tag in self.tags:
                 tag = tag.lower()
                 # Check for invalid filename characters in tag
@@ -217,12 +245,25 @@ class Note:
 
         logger.debug(f'Added {self} with url {self.url}')
         self.notes[self.url] = self
+        self.notes[str(self.file_path.absolute()).lower()] = self
 
     def update_git_information(self):
         if self.parse_git:
-            self.last_mod = get_last_modification_date(self.file_path)
-            self.creation_date = get_creation_date(self.file_path)
-            self.number_edits = get_number_commits(self.file_path)
+            abs_path = self.file_path.absolute()
+            if self.git_info_cache:
+                info = self.git_info_cache.get(abs_path)
+                if info:
+                    self.last_mod = info['last_mod']
+                    self.creation_date = info['creation_date']
+                    self.number_edits = info['number_edits']
+                else:
+                    self.last_mod = datetime.date.today()
+                    self.creation_date = datetime.date.today()
+                    self.number_edits = 1
+            else:
+                self.last_mod = get_last_modification_date(self.file_path)
+                self.creation_date = get_creation_date(self.file_path)
+                self.number_edits = get_number_commits(self.file_path)
         else:
             self.last_mod = datetime.date.today()
             self.creation_date = datetime.date.today()
@@ -230,10 +271,19 @@ class Note:
 
     def render(self, base_url):
         logger.debug(f'Preparing to render {self}')
+        effective_base_url = base_url
+        if base_url in ('.', '', 'relative') or (isinstance(base_url, str) and base_url.startswith('.')):
+            clean_url = self.url.strip('/')
+            if not clean_url:
+                effective_base_url = '.'
+            else:
+                depth = len(clean_url.split('/'))
+                effective_base_url = '/'.join(['..'] * depth)
+
         context = {
             'note': self,
             'static': static_url,
-            'base_url': base_url,
+            'base_url': effective_base_url,
             }
         out_path = output_path / self.url[1:]
         # Check for invalid filename characters in the output path
@@ -246,10 +296,12 @@ class Note:
             logger.error(f'Error creating output path {out_path}: {e}')
             return
 
-        if 'template' in self.meta:
-            template = env.get_template(self.meta.get('template'))
-        else:
-            template = template_article or env.get_template('note.html')
+        template_name = self.meta.get('template', 'note.html')
+        try:
+            template = env.get_template(template_name)
+        except Exception as e:
+            logger.error(f'Error loading template {template_name}: {e}')
+            return
 
         html = template.render(context)
         

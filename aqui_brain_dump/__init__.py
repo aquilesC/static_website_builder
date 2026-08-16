@@ -22,18 +22,22 @@ except FileNotFoundError:
 static_url = 'static'
 base_url = 'https://notes.aquiles.me'
 
-md = markdown.Markdown(extensions=[
-    'meta',
-    WikiLinkExtension(),
-    WikiImageExtension(),
-    TagExtension(),
-    CitationExtension(bibliography_data=bibliography),
-    'admonition',
-    'markdown_checklist.extension',
-    'fenced_code',
-    'codehilite',
-    'footnotes',
+def get_md(biblio=None):
+    b = biblio if biblio is not None else bibliography
+    return markdown.Markdown(extensions=[
+        'meta',
+        WikiLinkExtension(bibliography_data=b),
+        WikiImageExtension(),
+        TagExtension(),
+        CitationExtension(bibliography_data=b),
+        'admonition',
+        'markdown_checklist.extension',
+        'fenced_code',
+        'codehilite',
+        'footnotes',
     ])
+
+md = get_md()
 
 DEFUALT_MATHJAX_SETTING = r"""
 window.MathJax = {

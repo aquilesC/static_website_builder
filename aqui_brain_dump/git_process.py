@@ -8,6 +8,70 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
+def get_all_git_info(repo_path):
+    """Get creation date, last modification date, and commit counts for all files in repo_path in a single git command.
+
+    :param repo_path: Path to the repository root
+    :return: dict mapping absolute Path objects to dict with keys 'creation_date', 'last_mod', 'number_edits'
+    """
+    repo_path = Path(repo_path).absolute()
+    logger.info(f'Fetching batched git information for {repo_path}')
+    command = ['git', '-c', 'core.quotePath=false', 'log', '--name-status', '--format=COMMIT|%ci']
+    try:
+        result = subprocess.run(
+            command,
+            cwd=str(repo_path),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding='utf-8',
+            errors='replace'
+        )
+    except Exception as e:
+        logger.error(f'Error executing git log: {e}')
+        return {}
+
+    git_info = {}
+    current_date = None
+
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith('COMMIT|'):
+            date_str = line[7:].strip()
+            try:
+                current_date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S %z')
+            except Exception:
+                current_date = None
+            continue
+
+        if current_date is None:
+            continue
+
+        parts = line.split('\t')
+        if len(parts) < 2:
+            continue
+
+        rel_file_str = parts[-1].strip().strip('"\'')
+        if not rel_file_str:
+            continue
+
+        file_abs = (repo_path / rel_file_str).absolute()
+
+        if file_abs not in git_info:
+            git_info[file_abs] = {
+                'last_mod': current_date,
+                'creation_date': current_date,
+                'number_edits': 1,
+            }
+        else:
+            git_info[file_abs]['creation_date'] = current_date
+            git_info[file_abs]['number_edits'] += 1
+
+    return git_info
+
+
 def get_creation_date(filename):
     """ Get the creation date of a filename using git.
 

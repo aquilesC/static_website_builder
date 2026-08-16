@@ -37,6 +37,7 @@ class WikiLinkExtension(Extension):
             'end_url': ['/', 'String to append to end of URL.'],
             'html_class': ['wikilink', 'CSS hook. Leave blank for none.'],
             'build_url': [build_url, 'Callable formats URL from label.'],
+            'bibliography_data': [{}, 'Bibliography data dictionary'],
         }
 
         super().__init__(**kwargs)
@@ -48,7 +49,7 @@ class WikiLinkExtension(Extension):
         self.md = md
         self.reset()
         # append to end of inline patterns
-        WIKILINK_RE = r'\[\[([\w_\|\/ -.]+)\]\]'
+        WIKILINK_RE = r'\[\[([\w_\|\/ \-.\@:]+)\]\]'
         wikilinkPattern = WikiLinksInlineProcessor(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
         md.inlinePatterns.register(wikilinkPattern, 'wikilink', 75)
@@ -83,12 +84,24 @@ class WikiLinksInlineProcessor(InlineProcessor):
                 self.md.links = set()
 
             self.md.links.add(url)
-            a = etree.Element('a')
-            a.text = text
-            a.set('href', url.lower())
 
-            if html_class:
-                a.set('class', html_class)
+            cite_key = text.strip('@').lower()
+            biblio = self.config['bibliography_data'][0] if isinstance(self.config['bibliography_data'], (list, tuple)) else self.config.get('bibliography_data', {})
+            if cite_key in biblio:
+                a = etree.Element('a')
+                a.text = text
+                a.set('href', url.lower())
+                a.set('class', 'litnote tooltip')
+                span = etree.Element('span')
+                span.text = biblio[cite_key]['title']
+                span.set('class', 'tooltiptext')
+                a.append(span)
+            else:
+                a = etree.Element('a')
+                a.text = text
+                a.set('href', url.lower())
+                if html_class:
+                    a.set('class', html_class)
         else:
             a = ''
         return a, m.start(0), m.end(0)

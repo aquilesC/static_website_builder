@@ -40,6 +40,9 @@ def generate_statistics(output_file='stats/garden_stats.json', parse_git=True):
     """
     logger.info('Generating digital garden statistics')
     
+    if parse_git:
+        Note.preload_git_info(content_path.parent)
+
     # Parse all notes
     import os
     f_walk = os.walk(content_path)
